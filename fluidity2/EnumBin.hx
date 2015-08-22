@@ -26,4 +26,9 @@ class EnumBin<K:EnumValue,V> {
             return obj;
         }
     }
+
+    public function remove(key:K)
+    {
+        binMap.remove(key);
+    }
 }

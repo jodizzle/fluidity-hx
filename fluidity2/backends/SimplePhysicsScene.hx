@@ -9,10 +9,25 @@ class SimplePhysicsScene{
     public var objects:Array<SimplePhysicsObject> = [];
     public var objectsToRemove:Array<SimplePhysicsObject> = [];
 
-    public function new(){};
+    public var typeObjectBin:TypeBin<SimplePhysicsType,Array<SimplePhysicsObject>>;
+
+    public var typesInScene:Array<SimplePhysicsType> = [];
+
+    public function new()
+    {
+        typeObjectBin = new TypeBin<SimplePhysicsType,Array<SimplePhysicsObject>>(function(type:SimplePhysicsType)
+            {
+                return new Array<SimplePhysicsObject>();
+            });
+    };
 
     public function add(obj:SimplePhysicsObject)
     {
+        if(typeObjectBin.get(obj.type).length == 0)
+        {
+            typesInScene.push(obj.type);
+        }
+        typeObjectBin.get(obj.type).push(obj);
         objects.push(obj);
     }
 
@@ -25,7 +40,13 @@ class SimplePhysicsScene{
     {
         for(obj in objectsToRemove)
         {
-            objects.remove(obj);
+            if(objects.remove(obj))
+            {
+                if(typeObjectBin.get(obj.type).length == 0)
+                {
+                    typesInScene.remove(obj.type);
+                }
+            }
         }
         objectsToRemove = [];
     }
@@ -33,20 +54,65 @@ class SimplePhysicsScene{
     public function update()
     {
         removeObjects();
-        var len = objects.length;
-        for(i in 0...(len - 1))
+        // var len = objects.length;
+        // for(i in 0...(len - 1))
+        // {
+        //     var obj1 = objects[i];
+        //     for(j in (i+1)...len)
+        //     {
+        //         var obj2 = objects[j];
+        //         if (checkInteracts(obj1,obj2)) {
+        //             var msv = minimumSeparationVector(obj1,obj2);
+        //             handleInteracts(obj1,obj2,msv);
+        //         }
+        //     }
+        // }
+
+
+                // var processedMSVs = new Map<GameObject,Vec2>();
+        for(type in typesInScene)
         {
-            var obj1 = objects[i];
-            for(j in (i+1)...len)
+            for(obj1 in typeObjectBin.get(type))
             {
-                var obj2 = objects[j];
-                if (checkInteracts(obj1,obj2)) {
-                    var msv = minimumSeparationVector(obj1,obj2);
-                    handleInteracts(obj1,obj2,msv);
+                for(otherType in type.sensorTypes)
+                {
+                    for(obj2 in typeObjectBin.get(type))
+                    {
+                        if(obj1 != obj2)
+                        {
+                            var msv = minimumSeparationVector(obj1,obj2);
+                            handleInteracts(obj1,obj2,msv);
+                        }
+                    }
+                }
+                for(otherType in type.collisionTypes)
+                {
+                    for(obj2 in typeObjectBin.get(type))
+                    {
+                        if(obj1 != obj2)
+                        {
+                            var msv = minimumSeparationVector(obj1,obj2);
+                            handleInteracts(obj1,obj2,msv);
+                        }
+                    }
                 }
             }
         }
         removeObjects();
+    }
+
+    private function handleCollisions(obj1:SimplePhysicsObject,obj2:SimplePhysicsObject,msv:Vec2)
+    {
+        var collides1 = hasCollisions(obj1,obj2);
+        var collides2 = hasCollisions(obj2,obj1);
+        if(collides1 && collides2)
+        {
+            var hmsv = msv.copy();
+            hmsv.length /= 2;
+
+            obj1.gameObject.translate(hmsv);
+            obj2.gameObject.translate(new Vec2(-hmsv.x,-hmsv.y));
+        }
     }
 
     private function handleInteracts(obj1:SimplePhysicsObject,obj2:SimplePhysicsObject,msv:Vec2)
@@ -55,17 +121,6 @@ class SimplePhysicsScene{
         {
             handleInteractionCollision(obj1,obj2);
             handleInteractionCollision(obj2,obj1);
-
-            var collides1 = hasCollisions(obj1,obj2);
-            var collides2 = hasCollisions(obj2,obj1);
-            if(collides1 && collides2)
-            {
-                var hmsv = msv.copy();
-                hmsv.length /= 2;
-
-                obj1.gameObject.translate(hmsv);
-                obj2.gameObject.translate(new Vec2(-hmsv.x,-hmsv.y));
-            }
         }
     }
 

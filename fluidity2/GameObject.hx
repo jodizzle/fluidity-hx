@@ -28,6 +28,10 @@ class GameObject{
 
     public var type:ObjectType;
 
+    public var graphic:Graphic;
+
+    // public var scene:Scene;
+
     public function new()
     {
         Backend.physics.newObject(this);
@@ -218,6 +222,12 @@ class GameObject{
 
         currentAnimationTime += 1;
     }
+
+    // public function dispose()
+    // {
+    //     Backend.physics.objectDispose(this);
+    //     Backend.graphics.objectDispose(this);
+    // }
 
     public function addEventTrigger(eventName:String,func:GameObject->Bool)
     {

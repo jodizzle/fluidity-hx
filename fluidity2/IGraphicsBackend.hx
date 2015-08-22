@@ -14,6 +14,7 @@ interface IGraphicsBackend {
 
     public function newObject(obj:GameObject):Void;
     public function objectSet(obj:GameObject,graphic:Graphic):Void;
+    public function objectDispose(obj:GameObject):Void;
     // public function objectAddChild(obj:GameObject,child:GameObject):Void;
     // public function objectRemoveChild(obj:GameObject,child:GameObject):Void;
     public function objectUpdate(obj:GameObject):Void;

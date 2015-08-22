@@ -34,15 +34,27 @@ class GameScene{
     {
         if(objects.remove(obj))
         {
-
             Backend.graphics.sceneRemove(this,obj);
             Backend.physics.sceneRemove(this,obj);
         }
         return this;
     }
 
+    public function delete(obj:GameObject)
+    {
+        if(objects.remove(obj))
+        {
+            Backend.graphics.sceneRemove(this,obj);
+            Backend.physics.sceneRemove(this,obj);
+        }
+        Backend.graphics.objectDispose(obj);
+        Backend.physics.objectDispose(obj);
+        return this;
+    }
+
     public function update()
     {
+        onUpdate();
         for(obj in objects)
         {
             obj.update();
@@ -82,6 +94,11 @@ class GameScene{
     }
 
     public function onStart()
+    {
+
+    }
+
+    public function onUpdate()
     {
 
     }

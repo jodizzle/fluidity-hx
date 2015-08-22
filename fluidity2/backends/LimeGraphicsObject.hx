@@ -15,6 +15,8 @@ class LimeGraphicsObject {
     public static var mvMatrixUniformLocation:GLUniformLocation;
     public static var texSizeUniformLocation:GLUniformLocation;
     public static var texOffsetUniformLocation:GLUniformLocation;
+    public static var scaleUniformLocation:GLUniformLocation;
+    // public static var rotationUniformLocation:GLUniformLocation;
     // public static var textures:Map<String,GLTexture>;
     public static var vertexAttribute:Int;
     public static var textureAttribute:Int;
@@ -45,6 +47,8 @@ class LimeGraphicsObject {
         mvMatrixUniformLocation = GL.getUniformLocation(program,"uModelViewMatrix");
         texSizeUniformLocation = GL.getUniformLocation(program,"uTexSize");
         texOffsetUniformLocation = GL.getUniformLocation(program,"uTexOffset");
+        scaleUniformLocation = GL.getUniformLocation(program,"uScale");
+        // rotationUniformLocation = GL.getUniformLocation(program,"uRotation");
 
         var data = 
             [                
@@ -105,9 +109,9 @@ class LimeGraphicsObject {
         GL.activeTexture (GL.TEXTURE0);
         GL.bindTexture (GL.TEXTURE_2D, texture);
         
-        // #if desktop
+        #if desktop
         GL.enable (GL.TEXTURE_2D);
-        // #end  
+        #end  
 
         GL.bindBuffer (GL.ARRAY_BUFFER, quadBuffer);
         GL.vertexAttribPointer (vertexAttribute, 3, GL.FLOAT, false, 5 * Float32Array.BYTES_PER_ELEMENT, 0);
@@ -151,12 +155,15 @@ class LimeGraphicsObject {
         GL.uniform2f(texOffsetUniformLocation,offsetX,0);
         GL.uniform2f(texSizeUniformLocation,drawWidth,1);
 
+        GL.uniform2f(scaleUniformLocation,obj.scale * width,obj.scale * height);
+        // GL.uniform1f(rotationUniformLocation,obj.angle);
+
         customRenderPreFunc(obj);
         var mvMatrix = new lime.math.Matrix4();
 
-        mvMatrix.appendScale(width*obj.scale,height*obj.scale,1);
-        mvMatrix.appendRotation(obj.angle,lime.math.Vector4.Z_AXIS);
-        mvMatrix.appendTranslation(obj.position.x,obj.position.y,0);
+        // mvMatrix.appendScale(width*obj.scale,height*obj.scale,1);
+        // mvMatrix.appendRotation(obj.angle,lime.math.Vector4.Z_AXIS);
+        mvMatrix.appendTranslation(obj.position.x,obj.position.y,obj.z);
 
         GL.uniformMatrix4fv (mvMatrixUniformLocation, false, mvMatrix);
         

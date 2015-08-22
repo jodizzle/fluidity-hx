@@ -94,13 +94,30 @@ class LimeGraphicsBackend implements IGraphicsBackend {
             uniform mat4 uModelViewMatrix;
             uniform vec2 uTexSize;
             uniform vec2 uTexOffset;
+
+            uniform vec2 uScale;
+            // uniform float uRotation;
             
             void main(void) {
                 
                 vTexCoord = uTexOffset + aTexCoord * uTexSize;
-                gl_Position = uProjectionMatrix * uModelViewMatrix * aPosition;
+                // mat4 rot = rotationMatrix(uRotation);
+                vec4 scale = aPosition * vec4(uScale,1,1);
+                gl_Position = uProjectionMatrix * uModelViewMatrix * scale;
                 
-            }";
+            }
+            // mat4 rotationMatrix(float angle)
+            // {
+            //     float s = sin(angle);
+            //     float c = cos(angle);
+            //     float oc = 1.0 - c;
+                
+            //     return mat4(c,       - 1.0 * s, 0.0,                0.0,
+            //                 1.0 * s, c,         0.0,                0.0,
+            //                 0.0,     0.0,       oc * 1.0 * 1.0 + c, 0.0,
+            //                 0.0,     0.0,       0.0,                1.0);
+            // }
+            ";
         }
         
         var fragmentSource = '';
@@ -143,8 +160,9 @@ class LimeGraphicsBackend implements IGraphicsBackend {
         
         // var texOffsetUniform = GL.getUniformLocation (program, "uTexOffset");
         
-        GL.blendFunc (GL.SRC_ALPHA, GL.ONE_MINUS_SRC_ALPHA);
-        GL.enable (GL.BLEND);
+        // GL.blendFunc (GL.SRC_ALPHA, GL.ONE_MINUS_SRC_ALPHA);
+        // GL.enable (GL.BLEND);
+        GL.enable(GL.DEPTH_TEST);
 
         LimeGraphicsObject.init(program);
     }
@@ -155,6 +173,11 @@ class LimeGraphicsBackend implements IGraphicsBackend {
     public function sceneUpdate(scene:GameScene){};
     public function sceneStart(scene:GameScene){};
     public function sceneStop(scene:GameScene){};
+
+    public function objectDispose(obj:GameObject)
+    {
+        objectLists.get(objects.get(obj.graphic)).remove(obj);
+    }
 
     public function sceneRender(scene:GameScene)
     {
@@ -176,6 +199,11 @@ class LimeGraphicsBackend implements IGraphicsBackend {
     public function newObject(obj:GameObject){};
     public function objectSet(obj:GameObject,graphic:Graphic)
     {
+        if(obj.graphic != null)
+        {
+            objectLists.get(objects.get(obj.graphic)).remove(obj);
+        }
+        obj.graphic = graphic;
         objectLists.get(objects.get(graphic)).push(obj);
     };
 

@@ -26,4 +26,9 @@ class TypeBin<K:{ },V> {
             return obj;
         }
     }
+
+    public function remove(key:K)
+    {
+        binMap.remove(key);
+    }
 }

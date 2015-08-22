@@ -74,6 +74,11 @@ class SimplePhysicsBackend implements IPhysicsBackend{
         objects.set(obj,{gameObject:obj,collider:None,type:null});
     }
 
+    public function objectDispose(obj:GameObject)
+    {
+        objects.remove(obj);
+    }
+
     public function objectSet(obj:GameObject,collider:Collider)
     {
         objects.get(obj).collider = collider;

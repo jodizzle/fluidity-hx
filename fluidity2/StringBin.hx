@@ -24,4 +24,9 @@ class StringBin<V> {
             return obj;
         }
     }
+
+    public function remove(key:String)
+    {
+        binMap.remove(key);
+    }
 }
