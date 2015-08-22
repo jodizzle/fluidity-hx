@@ -1,0 +1,10 @@
+{
+    "name":         "fluidity",
+    "url":          "https://github.com/deltaluca/nape",
+    "license":      "BSD",
+    "tags":         ["cross", "game"],
+    "description":  "fluidity - an event based, display-list game engine with integrated Nape physics",
+    "version":      "1.0.0",
+    "releasenote":  "Minor improvements to memory usage in space.step(..) after pull request merge",
+    "contributors": ["aaron"]
+}
