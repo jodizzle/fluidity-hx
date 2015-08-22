@@ -162,8 +162,11 @@ class LimeGraphicsObject {
         var mvMatrix = new lime.math.Matrix4();
 
         // mvMatrix.appendScale(width*obj.scale,height*obj.scale,1);
-        // mvMatrix.appendRotation(obj.angle,lime.math.Vector4.Z_AXIS);
-        mvMatrix.appendTranslation(obj.position.x,obj.position.y,obj.z);
+        if(obj.angle != 0)
+        {
+            mvMatrix.appendRotation(obj.angle,lime.math.Vector4.Z_AXIS);
+        }
+        mvMatrix.appendTranslation(obj.position.x,obj.position.y,obj.z/10000);
 
         GL.uniformMatrix4fv (mvMatrixUniformLocation, false, mvMatrix);
         

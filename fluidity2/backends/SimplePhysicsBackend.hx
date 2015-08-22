@@ -105,6 +105,7 @@ class SimplePhysicsBackend implements IPhysicsBackend{
     public function objectUpdate(obj:GameObject)
     {
         obj.position.addeq(obj.velocity);
+        obj.angle += obj.angularVelocity;
     }
 
     public function getSimplePhysicsType(type:ObjectType):SimplePhysicsType
