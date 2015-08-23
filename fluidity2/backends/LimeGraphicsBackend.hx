@@ -187,7 +187,7 @@ class LimeGraphicsBackend implements IGraphicsBackend {
         GL.clear (GL.COLOR_BUFFER_BIT);
 
         var projectionMatrixUniform = GL.getUniformLocation (program, "uProjectionMatrix");
-        var matrix = lime.math.Matrix4.createOrtho (-400/2, 400/2, 300/2, -300/2, -2000, 2000);
+        var matrix = lime.math.Matrix4.createOrtho (-400/2 + scene.camera.x, 400/2 + scene.camera.x, 300/2 + scene.camera.y, -300/2 + scene.camera.y, -2000, 2000);
         GL.uniformMatrix4fv (projectionMatrixUniform, false, matrix);
 
         for(object in objects.binMap)

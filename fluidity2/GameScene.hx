@@ -11,6 +11,8 @@ class GameScene{
 
     public var active(default,null):Bool = false;
     public var input:Input;
+
+    public var camera:Vec2 = new Vec2();
     // public var state:FState<GameObject,GameEvent>;
 
     public function new(?gravity:Vec2)
