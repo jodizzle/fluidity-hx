@@ -2,8 +2,7 @@ package fluidity2.backends;
 
 import fluidity2.GameObject;
 import fluidity2.Collider;
-
-import nape.geom.Vec2;
+import fluidity2.Vec2;
 
 class SimplePhysicsBackend implements IPhysicsBackend{ 
 

@@ -1,8 +1,6 @@
 
 package fluidity2;
 
-import nape.geom.Vec2;
-
 import haxe.ds.StringMap;
 
 import gtoolbox.Input;
@@ -13,7 +11,8 @@ class GameScene{
     public var input:Input;
 
     public var camera:Vec2 = new Vec2();
-    // public var state:FState<GameObject,GameEvent>;
+
+    public var cameraScale:Float = 1;
 
     public function new(?gravity:Vec2)
     {
@@ -44,13 +43,16 @@ class GameScene{
 
     public function delete(obj:GameObject)
     {
-        if(objects.remove(obj))
+        if(obj!= null)
         {
-            Backend.graphics.sceneRemove(this,obj);
-            Backend.physics.sceneRemove(this,obj);
+            if(objects.remove(obj))
+            {
+                Backend.graphics.sceneRemove(this,obj);
+                Backend.physics.sceneRemove(this,obj);
+            }
+            Backend.graphics.objectDispose(obj);
+            Backend.physics.objectDispose(obj);
         }
-        Backend.graphics.objectDispose(obj);
-        Backend.physics.objectDispose(obj);
         return this;
     }
 

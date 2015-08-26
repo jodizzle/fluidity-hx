@@ -1,10 +1,12 @@
 
 package fluidity2;
 
+import haxe.ds.StringMap;
+
 class GameEvent {
 
     public var id:String;
-    public var userData(default,null):Dynamic<Dynamic>;
+    private var attributes:StringMap<Dynamic> = new StringMap<Dynamic>();
     // public var userData(default,null):Dynamic<Dynamic> = new Dynamic<Dynamic>();
 
     public var collision:Collision;
@@ -13,5 +15,16 @@ class GameEvent {
     {
         this.id = id;
         collision = col;
+    }
+
+    public function setAttribute(attrib:String, value:Dynamic):GameEvent
+    {
+        attributes.set(attrib,value);
+        return this;
+    }
+
+    public function getAttribute(attrib:String):Dynamic
+    {
+        return attributes.get(attrib);
     }
 }

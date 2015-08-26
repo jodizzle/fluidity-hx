@@ -104,11 +104,8 @@ class LimeGraphicsObject {
         GL.bindTexture (GL.TEXTURE_2D, null);
     }
 
-    public function renderList(objects:Array<GameObject>)
+    public static function bindGeneral()
     {
-        GL.activeTexture (GL.TEXTURE0);
-        GL.bindTexture (GL.TEXTURE_2D, texture);
-        
         #if desktop
         GL.enable (GL.TEXTURE_2D);
         #end  
@@ -116,17 +113,39 @@ class LimeGraphicsObject {
         GL.bindBuffer (GL.ARRAY_BUFFER, quadBuffer);
         GL.vertexAttribPointer (vertexAttribute, 3, GL.FLOAT, false, 5 * Float32Array.BYTES_PER_ELEMENT, 0);
         GL.vertexAttribPointer (textureAttribute, 2, GL.FLOAT, false, 5 * Float32Array.BYTES_PER_ELEMENT, 3 * Float32Array.BYTES_PER_ELEMENT);
-            
-        for(obj in objects)
-        {
-            render(obj);
-        }    
+    }
 
+    public function bind()
+    {
+        GL.activeTexture (GL.TEXTURE0);
+        GL.bindTexture (GL.TEXTURE_2D, texture);
+    }
+
+    public function unbind()
+    {
         GL.bindTexture(GL.TEXTURE_2D, null);
+    }
+
+    public static function unbindGeneral()
+    {
         GL.bindBuffer (GL.ARRAY_BUFFER, null);
     }
 
-    private function render(obj:GameObject)
+    // public function renderList(objects:Array<GameObject>)
+    // {
+    //     GL.activeTexture (GL.TEXTURE0);
+    //     GL.bindTexture (GL.TEXTURE_2D, texture);
+          
+    //     for(obj in objects)
+    //     {
+    //         render(obj);
+    //     }    
+
+    //     GL.bindTexture(GL.TEXTURE_2D, null);
+    //     GL.bindBuffer (GL.ARRAY_BUFFER, null);
+    // }
+
+    public function render(obj:GameObject)
     {
 
         var offsetX:Float = 0;
@@ -155,7 +174,12 @@ class LimeGraphicsObject {
         GL.uniform2f(texOffsetUniformLocation,offsetX,0);
         GL.uniform2f(texSizeUniformLocation,drawWidth,1);
 
-        GL.uniform2f(scaleUniformLocation,obj.scale * width,obj.scale * height);
+        var flip = 1;
+        if(obj.flip)
+        {
+            flip = -1;
+        }
+        GL.uniform2f(scaleUniformLocation,flip*obj.scale * width,obj.scale * height);
         // GL.uniform1f(rotationUniformLocation,obj.angle);
 
         customRenderPreFunc(obj);

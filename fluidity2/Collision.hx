@@ -1,7 +1,5 @@
 
 package fluidity2;
-
-import nape.geom.Vec2;
  
 class Collision{
 

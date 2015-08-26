@@ -207,9 +207,9 @@ class LimeGraphicsBackend implements IGraphicsBackend {
 
         }
         LimeGraphicsObject.unbindGeneral();
-    }
+    };
 
-    public function newObject(obj:GameObject){}
+    public function newObject(obj:GameObject){};
     public function objectSet(obj:GameObject,graphic:Graphic)
     {
         // if(obj.graphic != null)
@@ -227,25 +227,20 @@ class LimeGraphicsBackend implements IGraphicsBackend {
         // objectLists.get(objects.get(graphic)).push(obj);
 
 
-    }
+    };
 
     public function objectUpdate(obj:GameObject)
     {
         var z = obj.z;
         if(z != objectMap.get(obj).z)
         {
-            objectMap.get(obj).z = z;
             var sorted = false;
             var index = objectMap.get(obj).i;
 
             while(sorted == false)
             {
-                while(index > 0 && objectList[index - 1].z < z)
-                {
-                    index -= 1;
-                }
-                while(index < objectList)
+                if(objectList[index - 1] < )
             }
         }
-    }
+    };
 }

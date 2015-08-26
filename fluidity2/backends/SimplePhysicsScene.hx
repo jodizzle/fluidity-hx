@@ -1,7 +1,7 @@
 
 package fluidity2.backends;
 
-import nape.geom.Vec2;
+import fluidity2.Vec2;
 
 class SimplePhysicsScene{
 
@@ -42,6 +42,7 @@ class SimplePhysicsScene{
         {
             if(objects.remove(obj))
             {
+                typeObjectBin.get(obj.type).remove(obj);
                 if(typeObjectBin.get(obj.type).length == 0)
                 {
                     typesInScene.remove(obj.type);
@@ -74,20 +75,21 @@ class SimplePhysicsScene{
         {
             for(obj1 in typeObjectBin.get(type))
             {
-                for(otherType in type.sensorTypes)
+                for(otherType in type.sensorTypes.keys())
                 {
-                    for(obj2 in typeObjectBin.get(type))
+                    for(obj2 in typeObjectBin.get(otherType))
                     {
                         if(obj1 != obj2)
                         {
                             var msv = minimumSeparationVector(obj1,obj2);
+                            // trace(msv.length);
                             handleInteracts(obj1,obj2,msv);
                         }
                     }
                 }
                 for(otherType in type.collisionTypes)
                 {
-                    for(obj2 in typeObjectBin.get(type))
+                    for(obj2 in typeObjectBin.get(otherType))
                     {
                         if(obj1 != obj2)
                         {
@@ -120,7 +122,7 @@ class SimplePhysicsScene{
         if(msv.length > 0)
         {
             handleInteractionCollision(obj1,obj2);
-            handleInteractionCollision(obj2,obj1);
+            // handleInteractionCollision(obj2,obj1);
         }
     }
 

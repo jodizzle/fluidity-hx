@@ -1,7 +1,6 @@
 
 package fluidity2;
 
-import nape.geom.Vec2;
 import evsm.FState;
 
 import haxe.ds.StringMap;
@@ -29,6 +28,8 @@ class GameObject{
     public var type:ObjectType;
 
     public var graphic:Graphic;
+
+    public var flip:Bool = false;
 
     // public var scene:Scene;
 
@@ -113,7 +114,7 @@ class GameObject{
 
     public function setPosition(v:Vec2):GameObject
     {
-        position.set(v);
+        position.set(v.copy());
         Backend.physics.objectChanged(this);
         return this;
     }
