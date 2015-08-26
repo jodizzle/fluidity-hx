@@ -3,14 +3,14 @@ package fluidity2.backends;
 import fluidity2.GameObject;
 import fluidity2.TypeBin;
 import lime.graphics.opengl.*;
-// import lime.utils.Float32Array;
 import lime.utils.GLUtils;
 import lime.ui.Window;
 
 class LimeGraphicsBackend implements IGraphicsBackend { 
 
-    public var objectLists:TypeBin<LimeGraphicsObject,Array<GameObject>>;
-    public var objects:EnumBin<Graphic,LimeGraphicsObject>;
+    public var objectMap:Map<GameObject,Float> = new Map<GameObject,Float>();
+    public var objectList:Array<GameObject> = [];
+    public var graphicBin:EnumBin<Graphic,LimeGraphicsObject>;
 
     public var program:GLProgram;
 
@@ -35,13 +35,7 @@ class LimeGraphicsBackend implements IGraphicsBackend {
     private function initBins()
     {
 
-        objectLists = new TypeBin<LimeGraphicsObject,Array<GameObject>>(
-            function(g:LimeGraphicsObject)
-            {
-                return [];
-            });
-
-        objects = new EnumBin<Graphic,LimeGraphicsObject>(
+        graphicBin = new EnumBin<Graphic,LimeGraphicsObject>(
             function(g:Graphic)
             {
                 var obj = new LimeGraphicsObject(g);
@@ -59,24 +53,6 @@ class LimeGraphicsBackend implements IGraphicsBackend {
 
     private function initGL()
     {
-
-        // var vertexSource = 
-            
-        //     "attribute vec4 aPosition;
-        //     attribute vec2 aTexCoord;
-        //     varying vec2 vTexCoord;
-            
-        //     uniform mat4 uMvMatrix;
-        //     uniform mat4 uProjectionMatrix;
-        //     uniform vec2 uTexOffset;
-        //     uniform vec2 uTexSize;
-            
-        //     void main(void) {
-                
-        //         vTexCoord = aTexCoord*uTexSize + uTexOffset;
-        //         gl_Position = uProjectionMatrix * uMvMatrix * aPosition;
-                
-        //     }";
         var vertexSource = '';
         if(customRenderer != null && customRenderer.vertexSource != null)
         {
@@ -157,12 +133,8 @@ class LimeGraphicsBackend implements IGraphicsBackend {
         {
             customRenderer.customInitFunc(program);
         }
-        
-        // var texOffsetUniform = GL.getUniformLocation (program, "uTexOffset");
-        
-        // GL.blendFunc (GL.SRC_ALPHA, GL.ONE_MINUS_SRC_ALPHA);
-        // GL.enable (GL.BLEND);
-        // GL.enable(GL.DEPTH_TEST);
+
+        GL.depthFunc(GL.NEVER);
 
         LimeGraphicsObject.init(program);
     }
@@ -178,7 +150,8 @@ class LimeGraphicsBackend implements IGraphicsBackend {
     {
         if(obj.graphic != null)
         {
-            objectLists.get(objects.get(obj.graphic)).remove(obj);
+            objectList.remove(obj);
+            objectMap.remove(obj);
         }
     }
 
@@ -190,62 +163,82 @@ class LimeGraphicsBackend implements IGraphicsBackend {
         GL.clear (GL.COLOR_BUFFER_BIT);
 
         var projectionMatrixUniform = GL.getUniformLocation (program, "uProjectionMatrix");
+
         // var matrix = lime.math.Matrix4.createOrtho (-window.width/2, window.width/2, window.height/2, -window.height/2, -2000, 2000);
         var matrix = lime.math.Matrix4.createOrtho (-400/2/scene.cameraScale + scene.camera.x, 400/2/scene.cameraScale + scene.camera.x, 300/2/scene.cameraScale + scene.camera.y, -300/2/scene.cameraScale + scene.camera.y, -2000, 2000);
         GL.uniformMatrix4fv (projectionMatrixUniform, false, matrix);
 
         LimeGraphicsObject.bindGeneral();
-        for(graphicsObject in objects.binMap)
-        {
-            // graphicsObject.renderList(objectLists.get(graphicsObject));
-            graphicsObject.bind();
-            for(gameObject in objectLists.get(graphicsObject))
-            {
-                graphicsObject.render(gameObject);
-            }
-            graphicsObject.unbind();
 
+        var currentGraphic:LimeGraphicsObject = null;
+        for(obj in objectList)
+        {
+            if(graphicBin.get(obj.graphic) != currentGraphic)
+            {
+                if(currentGraphic != null)
+                {
+                    currentGraphic.unbind();
+                }
+                currentGraphic = graphicBin.get(obj.graphic);
+                currentGraphic.bind();
+            }
+            currentGraphic.render(obj);
+        }
+        if(currentGraphic != null)
+        {
+            currentGraphic.unbind();
         }
         LimeGraphicsObject.unbindGeneral();
     }
 
-    public function newObject(obj:GameObject){}
+    public function newObject(obj:GameObject){};
     public function objectSet(obj:GameObject,graphic:Graphic)
     {
-        // if(obj.graphic != null)
-        // {
-        //     objectLists.get(objects.get(obj.graphic)).remove(obj);
-        // }
+        if(obj.graphic != null)
+        {
+            objectList.remove(obj);
+            objectList.push(obj);
+        }
+        else
+        {
+
+            var i = Math.floor(objectList.length/2);
+
+            objectMap.set(obj,obj.z + 1);
+            objectList.push(obj);
+            updatePosition(obj);
+        }
         obj.graphic = graphic;
-
-        var i = Math.floor(objectList.length/2);
-
-        objectMap.set(obj,{z:obj.z + 1,i:i,obj:obj});
-        objectList.insert(i,obj);
-
-        objectUpdate(obj);
-        // objectLists.get(objects.get(graphic)).push(obj);
 
 
     }
 
-    public function objectUpdate(obj:GameObject)
+    public function updatePosition(obj:GameObject)
     {
-        var z = obj.z;
-        if(z != objectMap.get(obj).z)
+        if(objectMap.exists(obj))
         {
-            objectMap.get(obj).z = z;
-            var sorted = false;
-            var index = objectMap.get(obj).i;
-
-            while(sorted == false)
+            var z = obj.z;
+            if(z != objectMap.get(obj))
             {
-                while(index > 0 && objectList[index - 1].z < z)
+                var originalIndex:Int;
+                var index = originalIndex = objectList.indexOf(obj);
+
+                while(index > 0 && objectList[index - 1].z > z)
                 {
-                    index -= 1;
+                    index--;
                 }
-                while(index < objectList)
+                while(index < objectList.length - 1 && objectList[index + 1].z <= z)
+                {
+                    index++;
+                }
+                objectList.insert(index,objectList.splice(originalIndex,1)[0]);
+                objectMap.set(obj,z);
             }
         }
+    }
+
+    public function objectUpdate(obj:GameObject)
+    {
+        updatePosition(obj);
     }
 }
