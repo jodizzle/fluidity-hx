@@ -5,6 +5,7 @@ import fluidity2.TypeBin;
 import lime.graphics.opengl.*;
 import lime.utils.GLUtils;
 import lime.ui.Window;
+import lime.utils.Float32Array;
 
 class LimeGraphicsBackend implements IGraphicsBackend { 
 
@@ -14,9 +15,15 @@ class LimeGraphicsBackend implements IGraphicsBackend {
 
     public var program:GLProgram;
 
+    public var postProcessProgram:GLProgram;
+
     public var window:Window;
 
     public var customRenderer:CustomRenderer;
+
+    var rttFramebuffer:GLFramebuffer;
+    var rttTexture:GLTexture;
+    var quadBuffer:GLBuffer;
 
     public function new(w)
     {
@@ -118,6 +125,101 @@ class LimeGraphicsBackend implements IGraphicsBackend {
         }
         
         program = GLUtils.createProgram (vertexSource, fragmentSource);
+
+        GL.depthFunc(GL.NEVER);
+
+        LimeGraphicsObject.init(program);
+
+
+        vertexSource = '';
+        if(false && customRenderer != null && customRenderer.vertexSource != null)
+        {
+            vertexSource = customRenderer.vertexSource;
+        }
+        else
+        {
+            vertexSource = 
+            
+            "
+            attribute vec4 aPosition;
+            attribute vec2 aTexCoord;
+            varying vec2 vTexCoord;
+
+            void main(void) {
+              gl_Position = aPosition;
+              vTexCoord = aTexCoord;
+            }
+            ";
+        }
+        
+        fragmentSource = '';
+        if(false && customRenderer != null && customRenderer.fragmentSource != null)
+        {
+            fragmentSource = customRenderer.fragmentSource;
+        }
+        else
+        {
+            fragmentSource = 
+            
+            #if !desktop
+            "precision mediump float;" +
+            #end
+            "varying vec2 vTexCoord;
+            uniform sampler2D uImage0;
+            
+            void main(void)
+            {
+                gl_FragColor = texture2D (uImage0, vTexCoord);
+            }";
+        }
+
+        postProcessProgram = GLUtils.createProgram (vertexSource, fragmentSource);
+
+        GL.activeTexture(GL.TEXTURE0);
+        rttTexture = GL.createTexture();
+        GL.bindTexture(GL.TEXTURE_2D, rttTexture);
+        GL.texParameteri (GL.TEXTURE_2D, GL.TEXTURE_MAG_FILTER, GL.NEAREST);
+        GL.texParameteri (GL.TEXTURE_2D, GL.TEXTURE_MIN_FILTER, GL.NEAREST);
+        GL.texParameteri (GL.TEXTURE_2D, GL.TEXTURE_WRAP_S, GL.CLAMP_TO_EDGE);
+        GL.texParameteri (GL.TEXTURE_2D, GL.TEXTURE_WRAP_T, GL.CLAMP_TO_EDGE);
+        GL.texImage2D(GL.TEXTURE_2D, 0, GL.RGBA, 400, 300, 0, GL.RGBA, GL.UNSIGNED_BYTE, null);
+
+        /* Depth buffer */
+        // glGenRenderbuffers(1, &rbo_depth);
+        // glBindRenderbuffer(GL.RENDERBUFFER, rbo_depth);
+        // glRenderbufferStorage(GL.RENDERBUFFER, GL.DEPTH_COMPONENT16, 400, 600);
+        // glBindRenderbuffer(GL.RENDERBUFFER, 0);
+
+        /* Framebuffer to link everything together */
+        rttFramebuffer = GL.createFramebuffer();
+        GL.bindFramebuffer(GL.FRAMEBUFFER, rttFramebuffer);
+        // rttFramebuffer.width = 400;
+        // rttFramebuffer.height = 600;
+
+        GL.framebufferTexture2D(GL.FRAMEBUFFER, GL.COLOR_ATTACHMENT0, GL.TEXTURE_2D, rttTexture, 0);
+        // glFramebufferRenderbuffer(GL.FRAMEBUFFER, GL.DEPTH_ATTACHMENT, GL.RENDERBUFFER, rbo_depth);
+
+        GL.bindTexture(GL.TEXTURE_2D, null);
+        GL.bindFramebuffer(GL.FRAMEBUFFER, null);
+
+        var data = 
+            [          
+                1, 1, 0,    1, 1,
+                1, -1, 0,    1, 0,
+                -1, 1, 0,    0, 1,
+                -1, -1, 0,    0, 0   
+            ];
+        
+        quadBuffer = GL.createBuffer ();
+        GL.bindBuffer (GL.ARRAY_BUFFER, quadBuffer);
+        GL.bufferData (GL.ARRAY_BUFFER, new Float32Array (data), GL.STATIC_DRAW);
+        GL.bindBuffer (GL.ARRAY_BUFFER, null);
+
+
+    }
+
+    private function normalShader()
+    {
         GL.useProgram (program);
 
         var vertexAttribute = GL.getAttribLocation (program, "aPosition");
@@ -128,15 +230,26 @@ class LimeGraphicsBackend implements IGraphicsBackend {
         
         var imageUniform = GL.getUniformLocation (program, "uImage0");
         GL.uniform1i (imageUniform, 0);
-        
+
+        GL.bindFramebuffer(GL.FRAMEBUFFER, rttFramebuffer);
+
         if(customRenderer != null && customRenderer.customInitFunc != null)
         {
             customRenderer.customInitFunc(program);
         }
+    }
 
-        GL.depthFunc(GL.NEVER);
+    private function postProcessShader()
+    {
+        GL.useProgram (postProcessProgram);
 
-        LimeGraphicsObject.init(program);
+        var imageUniform = GL.getUniformLocation (program, "uImage0");
+        GL.uniform1i (imageUniform, 0);
+
+        // glUniform1i(uniform_rttTexture, 0);
+        // glEnableVertexAttribArray(attribute_v_coord_postproc);
+
+        GL.bindFramebuffer(GL.FRAMEBUFFER, null);
     }
 
     public function newScene(scene:GameScene){};
@@ -157,9 +270,10 @@ class LimeGraphicsBackend implements IGraphicsBackend {
 
     public function sceneRender(scene:GameScene)
     {
-
-        GL.viewport (0, 0, window.width, window.height);
+        GL.viewport (0, 0, 400, 300);
         GL.clearColor (0,0,0,1);
+
+        normalShader();
         GL.clear (GL.COLOR_BUFFER_BIT);
 
         var projectionMatrixUniform = GL.getUniformLocation (program, "uProjectionMatrix");
@@ -167,6 +281,7 @@ class LimeGraphicsBackend implements IGraphicsBackend {
         // var matrix = lime.math.Matrix4.createOrtho (-window.width/2, window.width/2, window.height/2, -window.height/2, -2000, 2000);
         var matrix = lime.math.Matrix4.createOrtho (-400/2/scene.cameraScale + scene.camera.x, 400/2/scene.cameraScale + scene.camera.x, 300/2/scene.cameraScale + scene.camera.y, -300/2/scene.cameraScale + scene.camera.y, -2000, 2000);
         GL.uniformMatrix4fv (projectionMatrixUniform, false, matrix);
+
 
         LimeGraphicsObject.bindGeneral();
 
@@ -189,6 +304,26 @@ class LimeGraphicsBackend implements IGraphicsBackend {
             currentGraphic.unbind();
         }
         LimeGraphicsObject.unbindGeneral();
+
+
+        GL.viewport (0, 0, window.width, window.height);
+        postProcessShader();
+
+        var vertexAttribute = GL.getAttribLocation (program, "aPosition");
+        var textureAttribute = GL.getAttribLocation (program, "aTexCoord");
+        GL.bindBuffer (GL.ARRAY_BUFFER, quadBuffer);
+        GL.vertexAttribPointer (vertexAttribute, 3, GL.FLOAT, false, 5 * Float32Array.BYTES_PER_ELEMENT, 0);
+        GL.vertexAttribPointer (textureAttribute, 2, GL.FLOAT, false, 5 * Float32Array.BYTES_PER_ELEMENT, 3 * Float32Array.BYTES_PER_ELEMENT);
+                
+        // GL.bindBuffer (GL.ARRAY_BUFFER, quadBuffer);
+        // GL.vertexAttribPointer (vertexAttribute, 2, GL.FLOAT, false, 2 * Float32Array.BYTES_PER_ELEMENT, 0);
+        GL.activeTexture (GL.TEXTURE0);
+        GL.bindTexture(GL.TEXTURE_2D, rttTexture);
+
+        GL.drawArrays (GL.TRIANGLE_STRIP, 0, 4);
+
+        GL.bindBuffer (GL.ARRAY_BUFFER, null);
+        GL.bindTexture(GL.TEXTURE_2D, null);
     }
 
     public function newObject(obj:GameObject){};
