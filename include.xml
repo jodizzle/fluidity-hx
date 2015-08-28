@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+
+    <dependency name="https://cdn1.kongregate.com/javascripts/kongregate_api.js" if="kongregate"/>
+    <dependency path="fluidity/dependencies/kong.js" if="kongregate"/>
+    <haxedef name="kongregate" if="kongregate"/>
+
+    <haxelib name="samcodes-admob" if="android"/>
+    <haxelib name="evsm" />
+    
+</project>

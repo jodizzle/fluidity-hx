@@ -1,5 +1,5 @@
 
-package fluidity2;
+package fluidity;
 
 import haxe.ds.StringMap;
 

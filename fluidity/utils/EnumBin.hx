@@ -1,11 +1,11 @@
 
-package fluidity2;
+package fluidity.utils;
 
-import haxe.ds.ObjectMap;
+import haxe.ds.EnumValueMap;
 
-class TypeBin<K:{ },V> {
+class EnumBin<K:EnumValue,V> {
 
-    public var binMap:ObjectMap<K,V> = new ObjectMap<K,V>();
+    public var binMap:EnumValueMap<K,V> = new EnumValueMap<K,V>();
 
     public var instantiator:K->V;
 

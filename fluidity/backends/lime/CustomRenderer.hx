@@ -1,5 +1,5 @@
 
-package fluidity2.backends;
+package fluidity.backends.lime;
 
 import lime.graphics.opengl.GLProgram;
 

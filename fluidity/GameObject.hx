@@ -1,10 +1,13 @@
 
-package fluidity2;
+package fluidity;
 
 import evsm.FState;
 
 import haxe.ds.StringMap;
  
+import fluidity.utils.Vec2;
+import fluidity.backends.Backend;
+
 class GameObject{
 
     public var state:FState<GameObject,GameEvent>;

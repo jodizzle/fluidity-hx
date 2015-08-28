@@ -1,27 +1,28 @@
 
-package fluidity2.backends;
+package fluidity.backends.simple;
 
-import fluidity2.Vec2;
+import fluidity.utils.Vec2;
+import fluidity.utils.TypeBin;
 
-class SimplePhysicsScene{
+class PhysicsSimpleScene{
 
-    // public var objectMap:Map<SimplePhysicsObject,Bool> = new Map<SimplePhysicsObject,Bool>();
-    public var objects:Array<SimplePhysicsObject> = [];
-    public var objectsToRemove:Array<SimplePhysicsObject> = [];
+    // public var objectMap:Map<PhysicsSimpleObject,Bool> = new Map<PhysicsSimpleObject,Bool>();
+    public var objects:Array<PhysicsSimpleObject> = [];
+    public var objectsToRemove:Array<PhysicsSimpleObject> = [];
 
-    public var typeObjectBin:TypeBin<SimplePhysicsType,Array<SimplePhysicsObject>>;
+    public var typeObjectBin:TypeBin<SimpleType,Array<PhysicsSimpleObject>>;
 
-    public var typesInScene:Array<SimplePhysicsType> = [];
+    public var typesInScene:Array<SimpleType> = [];
 
     public function new()
     {
-        typeObjectBin = new TypeBin<SimplePhysicsType,Array<SimplePhysicsObject>>(function(type:SimplePhysicsType)
+        typeObjectBin = new TypeBin<SimpleType,Array<PhysicsSimpleObject>>(function(type:SimpleType)
             {
-                return new Array<SimplePhysicsObject>();
+                return new Array<PhysicsSimpleObject>();
             });
     };
 
-    public function add(obj:SimplePhysicsObject)
+    public function add(obj:PhysicsSimpleObject)
     {
         if(typeObjectBin.get(obj.type).length == 0)
         {
@@ -31,7 +32,7 @@ class SimplePhysicsScene{
         objects.push(obj);
     }
 
-    public function remove(obj:SimplePhysicsObject)
+    public function remove(obj:PhysicsSimpleObject)
     {
         objectsToRemove.push(obj);
     }
@@ -103,7 +104,7 @@ class SimplePhysicsScene{
         removeObjects();
     }
 
-    private function handleCollisions(obj1:SimplePhysicsObject,obj2:SimplePhysicsObject,msv:Vec2)
+    private function handleCollisions(obj1:PhysicsSimpleObject,obj2:PhysicsSimpleObject,msv:Vec2)
     {
         var collides1 = hasCollisions(obj1,obj2);
         var collides2 = hasCollisions(obj2,obj1);
@@ -117,7 +118,7 @@ class SimplePhysicsScene{
         }
     }
 
-    private function handleInteracts(obj1:SimplePhysicsObject,obj2:SimplePhysicsObject,msv:Vec2)
+    private function handleInteracts(obj1:PhysicsSimpleObject,obj2:PhysicsSimpleObject,msv:Vec2)
     {
         if(msv.length > 0)
         {
@@ -126,7 +127,7 @@ class SimplePhysicsScene{
         }
     }
 
-    private function handleInteractionCollision(obj1:SimplePhysicsObject,obj2:SimplePhysicsObject)
+    private function handleInteractionCollision(obj1:PhysicsSimpleObject,obj2:PhysicsSimpleObject)
     {
         var interaction = obj1.type.sensorTypes.get(obj2.type);
         if(interaction != null)
@@ -135,22 +136,22 @@ class SimplePhysicsScene{
         }
     }
 
-    private function checkInteracts(obj1:SimplePhysicsObject,obj2:SimplePhysicsObject)
+    private function checkInteracts(obj1:PhysicsSimpleObject,obj2:PhysicsSimpleObject)
     {
         return (obj1.type.sensorTypes.exists(obj2.type) || hasCollisions(obj1,obj2));
     }
 
-    private function hasCollisions(obj1:SimplePhysicsObject,obj2:SimplePhysicsObject)
+    private function hasCollisions(obj1:PhysicsSimpleObject,obj2:PhysicsSimpleObject)
     {
         return obj1.type.collisionTypes.indexOf(obj2.type) >= 0;
     }
 
-    // public function colliding(obl1:SimplePhysicsObject,obj2:SimplePhysicsObject)
+    // public function colliding(obl1:PhysicsSimpleObject,obj2:PhysicsSimpleObject)
     // {
     //     return minimumSeparationVector(obj1,obj2).length == 0;
     // }
 
-    public function minimumSeparationVector(obj1:SimplePhysicsObject,obj2:SimplePhysicsObject)
+    public function minimumSeparationVector(obj1:PhysicsSimpleObject,obj2:PhysicsSimpleObject)
     {
         switch (obj1.collider)
         {

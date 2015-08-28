@@ -1,9 +1,15 @@
 
-package fluidity2;
+package fluidity;
 
 import haxe.ds.StringMap;
 
-import gtoolbox.Input;
+import evsm.FState;
+
+import fluidity.backends.Input;
+import fluidity.backends.Backend;
+
+import fluidity.utils.StringBin;
+import fluidity.utils.Vec2;
 
 class GameScene{
 
@@ -14,12 +20,19 @@ class GameScene{
 
     public var cameraScale:Float = 1;
 
+    public var states:StringBin<FState<GameObject,GameEvent>>;
+
     public function new(?gravity:Vec2)
     {
         input = Backend.input;
         input.reset();
         Backend.physics.newScene(this);
         Backend.graphics.newScene(this);
+
+        states = new StringBin<FState<GameObject,GameEvent>>(function(name:String)
+            {
+                return new FState<GameObject,GameEvent>(name);
+            });
     }
 
     public function add(obj:GameObject)

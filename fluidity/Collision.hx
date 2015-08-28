@@ -1,5 +1,7 @@
 
-package fluidity2;
+package fluidity;
+ 
+import fluidity.utils.Vec2;
  
 class Collision{
 

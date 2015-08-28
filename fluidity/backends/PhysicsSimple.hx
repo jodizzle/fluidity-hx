@@ -1,15 +1,19 @@
-package fluidity2.backends;
 
-import fluidity2.GameObject;
-import fluidity2.Collider;
-import fluidity2.Vec2;
+package fluidity.backends;
 
-class SimplePhysicsBackend implements IPhysicsBackend{ 
+import fluidity.backends.simple.*;
 
-    public var scenes:Map<GameScene,SimplePhysicsScene>;
-    public var objects:Map<GameObject,SimplePhysicsObject>;
+import fluidity.GameObject;
+import fluidity.Collider;
+import fluidity.utils.Vec2;
 
-    public var simplePhysicsTypes:Map<ObjectType,SimplePhysicsType>;
+
+class PhysicsSimple implements IPhysicsBackend{ 
+
+    public var scenes:Map<GameScene,PhysicsSimpleScene>;
+    public var objects:Map<GameObject,PhysicsSimpleObject>;
+
+    public var simpleTypes:Map<ObjectType,SimpleType>;
 
     public function new()
     {
@@ -18,15 +22,15 @@ class SimplePhysicsBackend implements IPhysicsBackend{
 
     public function clear()
     {
-        scenes = new Map<GameScene,SimplePhysicsScene>();
-        objects = new Map<GameObject,SimplePhysicsObject>();
+        scenes = new Map<GameScene,PhysicsSimpleScene>();
+        objects = new Map<GameObject,PhysicsSimpleObject>();
 
-        simplePhysicsTypes = new Map<ObjectType,SimplePhysicsType>();
+        simpleTypes = new Map<ObjectType,SimpleType>();
     }
 
     public function newScene(scene:GameScene)
     {
-        scenes.set(scene,new SimplePhysicsScene());
+        scenes.set(scene,new PhysicsSimpleScene());
     }
 
     public function sceneAdd(scene:GameScene,obj:GameObject)
@@ -56,12 +60,12 @@ class SimplePhysicsBackend implements IPhysicsBackend{
 
     public function typeAddInteractionStartEvent(type:ObjectType, eventName:String,otherType:ObjectType)
     { 
-        getSimplePhysicsType(type).sensorTypes.set(getSimplePhysicsType(otherType),eventName);
+        getSimpleType(type).sensorTypes.set(getSimpleType(otherType),eventName);
     }
 
     public function typeAddInteractionStopEvent(type:ObjectType, eventName:String,otherType:ObjectType)
     {
-        // getSimplePhysicsType(type).addTypeStartEvent(eventName,otherType);
+        // getSimpleType(type).addTypeStartEvent(eventName,otherType);
     }
 
     // public function sceneAddCollision(scene:GameScene,?eventName:String,type:ObjectType,otherType:ObjectType,?verifier:Collision->Bool);
@@ -85,7 +89,7 @@ class SimplePhysicsBackend implements IPhysicsBackend{
 
     public function objectAddType(obj:GameObject,type:ObjectType)
     {
-        var spType = getSimplePhysicsType(type);
+        var spType = getSimpleType(type);
 
         objects.get(obj).type = spType;
         spType.objects.push(objects.get(obj));
@@ -93,7 +97,7 @@ class SimplePhysicsBackend implements IPhysicsBackend{
 
     // public function objectRemoveType(obj:GameObject,type:ObjectType)
     // {
-    //     objects.get(obj).body.simplePhysicsTypes.remove(getSimplePhysicsType(type));
+    //     objects.get(obj).body.simpleTypes.remove(getSimpleType(type));
     // }
 
     public function objectChanged(obj:GameObject)
@@ -107,16 +111,16 @@ class SimplePhysicsBackend implements IPhysicsBackend{
         obj.angle += obj.angularVelocity;
     }
 
-    public function getSimplePhysicsType(type:ObjectType):SimplePhysicsType
+    public function getSimpleType(type:ObjectType):SimpleType
     {
-        if(!simplePhysicsTypes.exists(type))
+        if(!simpleTypes.exists(type))
         {
-            simplePhysicsTypes.set(type,{
-                                objects:new Array<SimplePhysicsObject>(),
-                                sensorTypes:new Map<SimplePhysicsType,String>(),
-                                collisionTypes: new Array<SimplePhysicsType>()
+            simpleTypes.set(type,{
+                                objects:new Array<PhysicsSimpleObject>(),
+                                sensorTypes:new Map<SimpleType,String>(),
+                                collisionTypes: new Array<SimpleType>()
                             });
         }
-        return simplePhysicsTypes.get(type);
+        return simpleTypes.get(type);
     }
 }

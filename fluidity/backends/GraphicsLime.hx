@@ -1,17 +1,21 @@
-package fluidity2.backends;
+package fluidity.backends;
 
-import fluidity2.GameObject;
-import fluidity2.TypeBin;
+import fluidity.GameObject;
+import fluidity.utils.TypeBin;
+import fluidity.utils.EnumBin;
+import fluidity.backends.lime.*;
+
 import lime.graphics.opengl.*;
+
 import lime.utils.GLUtils;
 import lime.ui.Window;
 import lime.utils.Float32Array;
 
-class LimeGraphicsBackend implements IGraphicsBackend { 
+class GraphicsLime implements IGraphicsBackend { 
 
     public var objectMap:Map<GameObject,Float> = new Map<GameObject,Float>();
     public var objectList:Array<GameObject> = [];
-    public var graphicBin:EnumBin<Graphic,LimeGraphicsObject>;
+    public var graphicBin:EnumBin<Graphic,GraphicsLimeObject>;
 
     public var program:GLProgram;
 
@@ -20,6 +24,9 @@ class LimeGraphicsBackend implements IGraphicsBackend {
     public var window:Window;
 
     public var customRenderer:CustomRenderer;
+
+    public var width:Int = 0;
+    public var height:Int = 0;
 
     var rttFramebuffer:GLFramebuffer;
     var rttTexture:GLTexture;
@@ -42,10 +49,10 @@ class LimeGraphicsBackend implements IGraphicsBackend {
     private function initBins()
     {
 
-        graphicBin = new EnumBin<Graphic,LimeGraphicsObject>(
+        graphicBin = new EnumBin<Graphic,GraphicsLimeObject>(
             function(g:Graphic)
             {
-                var obj = new LimeGraphicsObject(g);
+                var obj = new GraphicsLimeObject(g);
                 if(customRenderer != null && customRenderer.customRenderPreFunc != null)
                 {
                     obj.customRenderPreFunc = customRenderer.customRenderPreFunc;
@@ -127,8 +134,10 @@ class LimeGraphicsBackend implements IGraphicsBackend {
         program = GLUtils.createProgram (vertexSource, fragmentSource);
 
         GL.depthFunc(GL.NEVER);
+        GL.blendFunc (GL.SRC_ALPHA, GL.ONE_MINUS_SRC_ALPHA);
+        GL.enable(GL.BLEND);
 
-        LimeGraphicsObject.init(program);
+        GraphicsLimeObject.init(program);
 
 
         vertexSource = '';
@@ -214,8 +223,6 @@ class LimeGraphicsBackend implements IGraphicsBackend {
         GL.bindBuffer (GL.ARRAY_BUFFER, quadBuffer);
         GL.bufferData (GL.ARRAY_BUFFER, new Float32Array (data), GL.STATIC_DRAW);
         GL.bindBuffer (GL.ARRAY_BUFFER, null);
-
-
     }
 
     private function normalShader()
@@ -283,9 +290,9 @@ class LimeGraphicsBackend implements IGraphicsBackend {
         GL.uniformMatrix4fv (projectionMatrixUniform, false, matrix);
 
 
-        LimeGraphicsObject.bindGeneral();
+        GraphicsLimeObject.bindGeneral();
 
-        var currentGraphic:LimeGraphicsObject = null;
+        var currentGraphic:GraphicsLimeObject = null;
         for(obj in objectList)
         {
             if(graphicBin.get(obj.graphic) != currentGraphic)
@@ -303,7 +310,7 @@ class LimeGraphicsBackend implements IGraphicsBackend {
         {
             currentGraphic.unbind();
         }
-        LimeGraphicsObject.unbindGeneral();
+        GraphicsLimeObject.unbindGeneral();
 
 
         GL.viewport (0, 0, window.width, window.height);
@@ -355,19 +362,24 @@ class LimeGraphicsBackend implements IGraphicsBackend {
             var z = obj.z;
             if(z != objectMap.get(obj))
             {
-                var originalIndex:Int;
-                var index = originalIndex = objectList.indexOf(obj);
 
-                while(index > 0 && objectList[index - 1].z > z)
-                {
-                    index--;
-                }
-                while(index < objectList.length - 1 && objectList[index + 1].z <= z)
-                {
-                    index++;
-                }
-                objectList.insert(index,objectList.splice(originalIndex,1)[0]);
-                objectMap.set(obj,z);
+                // probably more efficient ways of doing this...
+                
+                objectList.sort(function(obj1,obj2)
+                    {
+                        objectMap.set(obj1,obj1.z);
+                        objectMap.set(obj2,obj2.z);
+                        if(obj1.z < obj2.z)
+                        {
+                            return -1;
+                        }
+                        else if(obj1.z != obj2.z)
+                        {
+                            return 1;
+                        }
+
+                        return 0;
+                    });
             }
         }
     }

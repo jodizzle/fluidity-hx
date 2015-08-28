@@ -1,6 +1,6 @@
-package fluidity2.backends;
+package fluidity.backends.lime;
 
-import fluidity2.GameObject;
+import fluidity.GameObject;
 import lime.graphics.opengl.GLBuffer;
 import lime.utils.Float32Array;
 import lime.graphics.opengl.GLUniformLocation;
@@ -8,7 +8,7 @@ import lime.graphics.opengl.GL;
 import lime.graphics.opengl.GLTexture;
 import lime.Assets;
 
-class LimeGraphicsObject { 
+class GraphicsLimeObject { 
 
     public static var initialized = false;
     public static var quadBuffer:GLBuffer;

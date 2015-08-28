@@ -1,6 +1,6 @@
-package fluidity2;
+package fluidity.backends;
 
-import fluidity2.GameObject;
+import fluidity.GameObject;
 
 interface IGraphicsBackend { 
 

@@ -1,5 +1,5 @@
 
-package fluidity2;
+package fluidity.utils;
 
 class Vec2 {
     public var x:Float = 0;
