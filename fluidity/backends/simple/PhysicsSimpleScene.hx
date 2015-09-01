@@ -2,7 +2,7 @@
 package fluidity.backends.simple;
 
 import fluidity.utils.Vec2;
-import fluidity.utils.TypeBin;
+import fluidity.utils.ObjectBin;
 
 class PhysicsSimpleScene{
 
@@ -10,13 +10,13 @@ class PhysicsSimpleScene{
     public var objects:Array<PhysicsSimpleObject> = [];
     public var objectsToRemove:Array<PhysicsSimpleObject> = [];
 
-    public var typeObjectBin:TypeBin<SimpleType,Array<PhysicsSimpleObject>>;
+    public var typeObjectBin:ObjectBin<SimpleType,Array<PhysicsSimpleObject>>;
 
     public var typesInScene:Array<SimpleType> = [];
 
     public function new()
     {
-        typeObjectBin = new TypeBin<SimpleType,Array<PhysicsSimpleObject>>(function(type:SimpleType)
+        typeObjectBin = new ObjectBin<SimpleType,Array<PhysicsSimpleObject>>(function(type:SimpleType)
             {
                 return new Array<PhysicsSimpleObject>();
             });

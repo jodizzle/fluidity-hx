@@ -131,19 +131,6 @@ class GraphicsLimeObject {
         GL.bindBuffer (GL.ARRAY_BUFFER, null);
     }
 
-    // public function renderList(objects:Array<GameObject>)
-    // {
-    //     GL.activeTexture (GL.TEXTURE0);
-    //     GL.bindTexture (GL.TEXTURE_2D, texture);
-          
-    //     for(obj in objects)
-    //     {
-    //         render(obj);
-    //     }    
-
-    //     GL.bindTexture(GL.TEXTURE_2D, null);
-    //     GL.bindBuffer (GL.ARRAY_BUFFER, null);
-    // }
 
     public function render(obj:GameObject)
     {

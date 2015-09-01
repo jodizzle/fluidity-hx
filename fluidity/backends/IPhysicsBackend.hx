@@ -9,7 +9,7 @@ interface IPhysicsBackend {
     public function sceneRemove(scene:GameScene,obj:GameObject):Void;
     public function sceneUpdate(scene:GameScene):Void;
     public function sceneStart(scene:GameScene):Void;
-    public function sceneStop(scene:GameScene):Void;
+    public function sceneReset(scene:GameScene):Void;
 
     public function typeAddInteractionStartEvent(type:ObjectType,eventName:String,otherType:ObjectType):Void;
     public function typeAddInteractionStopEvent(type:ObjectType,eventName:String,otherType:ObjectType):Void;

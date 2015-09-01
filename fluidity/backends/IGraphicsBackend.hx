@@ -10,7 +10,8 @@ interface IGraphicsBackend {
     public function sceneUpdate(scene:GameScene):Void;
     public function sceneRender(scene:GameScene):Void;
     public function sceneStart(scene:GameScene):Void;
-    public function sceneStop(scene:GameScene):Void;
+    public function sceneReset(scene:GameScene):Void;
+    // public function sceneLayerSet(scene:GameScene):Void;
 
     public function newObject(obj:GameObject):Void;
     public function objectSet(obj:GameObject,graphic:Graphic):Void;

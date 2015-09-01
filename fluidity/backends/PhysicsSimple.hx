@@ -53,7 +53,7 @@ class PhysicsSimple implements IPhysicsBackend{
 
     }
 
-    public function sceneStop(scene:GameScene)
+    public function sceneReset(scene:GameScene)
     {
 
     }

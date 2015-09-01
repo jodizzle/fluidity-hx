@@ -3,7 +3,7 @@ package fluidity.utils;
 
 import haxe.ds.ObjectMap;
 
-class TypeBin<K:{ },V> {
+class ObjectBin<K:{ },V> {
 
     public var binMap:ObjectMap<K,V> = new ObjectMap<K,V>();
 

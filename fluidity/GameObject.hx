@@ -34,7 +34,7 @@ class GameObject{
 
     public var flip:Bool = false;
 
-    // public var scene:Scene;
+    public var scene:GameScene;
 
     public function new()
     {

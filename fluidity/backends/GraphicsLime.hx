@@ -1,7 +1,7 @@
 package fluidity.backends;
 
 import fluidity.GameObject;
-import fluidity.utils.TypeBin;
+import fluidity.utils.ObjectBin;
 import fluidity.utils.EnumBin;
 import fluidity.backends.lime.*;
 
@@ -31,6 +31,8 @@ class GraphicsLime implements IGraphicsBackend {
     var rttFramebuffer:GLFramebuffer;
     var rttTexture:GLTexture;
     var quadBuffer:GLBuffer;
+
+    var sortNeeded = false;
 
     public function new(w)
     {
@@ -153,9 +155,10 @@ class GraphicsLime implements IGraphicsBackend {
             attribute vec4 aPosition;
             attribute vec2 aTexCoord;
             varying vec2 vTexCoord;
+            uniform mat4 uViewMatrix;
 
             void main(void) {
-              gl_Position = aPosition;
+              gl_Position = uViewMatrix*aPosition;
               vTexCoord = aTexCoord;
             }
             ";
@@ -213,10 +216,10 @@ class GraphicsLime implements IGraphicsBackend {
 
         var data = 
             [          
-                1, 1, 0,    1, 1,
-                1, -1, 0,    1, 0,
-                -1, 1, 0,    0, 1,
-                -1, -1, 0,    0, 0   
+                .5, .5, 0,    1, 1,
+                .5, -.5, 0,    1, 0,
+                -.5, .5, 0,    0, 1,
+                -.5, -.5, 0,    0, 0   
             ];
         
         quadBuffer = GL.createBuffer ();
@@ -250,7 +253,7 @@ class GraphicsLime implements IGraphicsBackend {
     {
         GL.useProgram (postProcessProgram);
 
-        var imageUniform = GL.getUniformLocation (program, "uImage0");
+        var imageUniform = GL.getUniformLocation (postProcessProgram, "uImage0");
         GL.uniform1i (imageUniform, 0);
 
         // glUniform1i(uniform_rttTexture, 0);
@@ -264,7 +267,7 @@ class GraphicsLime implements IGraphicsBackend {
     public function sceneRemove(scene:GameScene,obj:GameObject){};
     public function sceneUpdate(scene:GameScene){};
     public function sceneStart(scene:GameScene){};
-    public function sceneStop(scene:GameScene){};
+    public function sceneReset(scene:GameScene){};
 
     public function objectDispose(obj:GameObject)
     {
@@ -277,6 +280,11 @@ class GraphicsLime implements IGraphicsBackend {
 
     public function sceneRender(scene:GameScene)
     {
+        if(sortNeeded)
+        {
+            updatePosition();
+        }
+
         GL.viewport (0, 0, 400, 300);
         GL.clearColor (0,0,0,1);
 
@@ -316,15 +324,28 @@ class GraphicsLime implements IGraphicsBackend {
         GL.viewport (0, 0, window.width, window.height);
         postProcessShader();
 
-        var vertexAttribute = GL.getAttribLocation (program, "aPosition");
-        var textureAttribute = GL.getAttribLocation (program, "aTexCoord");
+        var vertexAttribute = GL.getAttribLocation (postProcessProgram, "aPosition");
+        var textureAttribute = GL.getAttribLocation (postProcessProgram, "aTexCoord");
+        var mvMatrixUniform = GL.getUniformLocation (postProcessProgram, "uViewMatrix");
+        var mvMatrix = new lime.math.Matrix4();
+        // trace(mvMatrix);
+
+        mvMatrix.appendScale(2,2,1);
+        // if(obj.angle != 0)
+        // {
+        //     mvMatrix.appendRotation(obj.angle,lime.math.Vector4.Z_AXIS);
+        // }
+        // mvMatrix.appendTranslation(.1,0,0);
+
+        GL.uniformMatrix4fv (mvMatrixUniform, false, mvMatrix);
+
         GL.bindBuffer (GL.ARRAY_BUFFER, quadBuffer);
         GL.vertexAttribPointer (vertexAttribute, 3, GL.FLOAT, false, 5 * Float32Array.BYTES_PER_ELEMENT, 0);
         GL.vertexAttribPointer (textureAttribute, 2, GL.FLOAT, false, 5 * Float32Array.BYTES_PER_ELEMENT, 3 * Float32Array.BYTES_PER_ELEMENT);
                 
         // GL.bindBuffer (GL.ARRAY_BUFFER, quadBuffer);
         // GL.vertexAttribPointer (vertexAttribute, 2, GL.FLOAT, false, 2 * Float32Array.BYTES_PER_ELEMENT, 0);
-        GL.activeTexture (GL.TEXTURE0);
+        // GL.activeTexture (GL.TEXTURE0);
         GL.bindTexture(GL.TEXTURE_2D, rttTexture);
 
         GL.drawArrays (GL.TRIANGLE_STRIP, 0, 4);
@@ -344,48 +365,87 @@ class GraphicsLime implements IGraphicsBackend {
         else
         {
 
-            var i = Math.floor(objectList.length/2);
+            // var i = Math.floor(objectList.length/2);
 
-            objectMap.set(obj,obj.z + 1);
-            objectList.push(obj);
-            updatePosition(obj);
+            objectMap.set(obj,obj.z);
+            // objectList.push(obj);
+            var added = false;
+            for(i in 0...objectList.length)
+            {
+                if(obj.z < objectList[0].z)
+                {
+                    added = true;
+                    objectList.insert(i,obj);
+                    break;
+                }
+            }
+            if(!added)
+            {
+                objectList.push(obj);
+            }
         }
         obj.graphic = graphic;
 
 
     }
 
-    public function updatePosition(obj:GameObject)
+    public function updatePosition()
+    // public function updatePosition(obj:GameObject)
     {
-        if(objectMap.exists(obj))
-        {
-            var z = obj.z;
-            if(z != objectMap.get(obj))
-            {
-
-                // probably more efficient ways of doing this...
-                
-                objectList.sort(function(obj1,obj2)
+        sortNeeded = false;
+        // if(objectMap.exists(obj))
+        // {
+            // var z = obj.z;
+            // if(z != objectMap.get(obj))
+            // {
+                for(i in 1...objectList.length)
+                {
+                    if(objectList[i].z < objectList[i - 1].z)
                     {
-                        objectMap.set(obj1,obj1.z);
-                        objectMap.set(obj2,obj2.z);
-                        if(obj1.z < obj2.z)
+                        var moved = false;
+                        for(j in 1...i)
                         {
-                            return -1;
+                            if(!moved && objectList[i].z > objectList[i - j].z)
+                            {
+                                objectList.insert(i - j + 1,objectList.splice(i,1)[0]);
+                                moved = true;
+                                break;
+                            }
                         }
-                        else if(obj1.z != obj2.z)
+                        if(!moved)
                         {
-                            return 1;
+                            objectList.insert(0,objectList.splice(i,1)[0]);
                         }
+                    }
+                }
+                // // probably more efficient ways of doing this...
+                // objectList.sort(function(obj1,obj2)
+                //     {
+                //         objectMap.set(obj1,obj1.z);
+                //         objectMap.set(obj2,obj2.z);
+                //         if(obj1.z < obj2.z)
+                //         {
+                //             return -1;
+                //         }
+                //         else if(obj1.z != obj2.z)
+                //         {
+                //             return 1;
+                //         }
 
-                        return 0;
-                    });
-            }
-        }
+                //         return 0;
+                //     });
+            // }
+        // }
     }
 
     public function objectUpdate(obj:GameObject)
     {
-        updatePosition(obj);
+        // updatePosition(obj);
+        if(obj.z != objectMap.get(obj))
+        {
+            objectMap.set(obj,obj.z);
+            sortNeeded = true;
+            // updatePosition();
+        }
     }
 }

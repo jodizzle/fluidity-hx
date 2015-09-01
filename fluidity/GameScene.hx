@@ -13,6 +13,8 @@ import fluidity.utils.Vec2;
 
 class GameScene{
 
+    public var layer:GameLayer;
+
     public var active(default,null):Bool = false;
     public var input:Input;
 
@@ -35,9 +37,17 @@ class GameScene{
             });
     }
 
+    // public function setLayer(l:GameLayer)
+    // {
+    //     layer = l;
+    //     Backend.graphics.sceneLayerSet(this);
+    //     return this;
+    // }
+
     public function add(obj:GameObject)
     {
         objects.push(obj);
+        obj.scene = this;
 
         Backend.graphics.sceneAdd(this,obj);
         Backend.physics.sceneAdd(this,obj);
@@ -46,6 +56,7 @@ class GameScene{
 
     public function remove(obj:GameObject)
     {
+        obj.scene = null;
         if(objects.remove(obj))
         {
             Backend.graphics.sceneRemove(this,obj);
@@ -56,13 +67,9 @@ class GameScene{
 
     public function delete(obj:GameObject)
     {
-        if(obj!= null)
+        if(obj != null)
         {
-            if(objects.remove(obj))
-            {
-                Backend.graphics.sceneRemove(this,obj);
-                Backend.physics.sceneRemove(this,obj);
-            }
+            remove(obj);
             Backend.graphics.objectDispose(obj);
             Backend.physics.objectDispose(obj);
         }
@@ -98,14 +105,21 @@ class GameScene{
         return this;
     }
 
-    public function stop()
+    public function reset()
     {
         // input.stop();
-        Backend.graphics.sceneStop(this);
-        Backend.physics.sceneStop(this);
-        onStop();
+        while(objects.length > 0)
+        {
+            delete(objects[objects.length - 1]);
+        }
+        Backend.graphics.sceneReset(this);
+        Backend.physics.sceneReset(this);
+        onReset();
 
         active = false;
+        camera = new Vec2();
+
+        cameraScale = 1;
 
         return this;
     }
@@ -120,7 +134,7 @@ class GameScene{
 
     }
 
-    public function onStop()
+    public function onReset()
     {
 
     }
