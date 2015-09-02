@@ -27,6 +27,7 @@ class LimeScene{
         {
             // updatePosition();
         }
+            trace(objectList.length);
     }
 
     public function add(obj:GameObject)
@@ -35,8 +36,8 @@ class LimeScene{
 
         if(obj.graphic != null)
         {
-            objectList.remove(obj);
-            objectList.push(obj);
+            // objectList.remove(obj);
+            // objectList.push(obj);
         }
         else
         {
@@ -67,32 +68,32 @@ class LimeScene{
     public function updatePosition()
     // public function updatePosition(obj:GameObject)
     {
-        sortNeeded = false;
-        // if(objectMap.exists(obj))
-        // {
-            // var z = obj.z;
-            // if(z != objectMap.get(obj))
-            // {
-                for(i in 1...objectList.length)
-                {
-                    if(objectList[i].z < objectList[i - 1].z)
-                    {
-                        var moved = false;
-                        for(j in 1...i)
-                        {
-                            if(!moved && objectList[i].z > objectList[i - j].z)
-                            {
-                                objectList.insert(i - j + 1,objectList.splice(i,1)[0]);
-                                moved = true;
-                                break;
-                            }
-                        }
-                        if(!moved)
-                        {
-                            objectList.insert(0,objectList.splice(i,1)[0]);
-                        }
-                    }
-                }
+        // sortNeeded = false;
+        // // if(objectMap.exists(obj))
+        // // {
+        //     // var z = obj.z;
+        //     // if(z != objectMap.get(obj))
+        //     // {
+        //         for(i in 1...objectList.length)
+        //         {
+        //             if(objectList[i].z < objectList[i - 1].z)
+        //             {
+        //                 var moved = false;
+        //                 for(j in 1...i)
+        //                 {
+        //                     if(!moved && objectList[i].z > objectList[i - j].z)
+        //                     {
+        //                         objectList.insert(i - j + 1,objectList.splice(i,1)[0]);
+        //                         moved = true;
+        //                         break;
+        //                     }
+        //                 }
+        //                 if(!moved)
+        //                 {
+        //                     objectList.insert(0,objectList.splice(i,1)[0]);
+        //                 }
+        //             }
+        //         }
                 // // probably more efficient ways of doing this...
                 // objectList.sort(function(obj1,obj2)
                 //     {
@@ -115,13 +116,13 @@ class LimeScene{
 
     public function objectUpdate(obj:GameObject)
     {
-        // updatePosition(obj);
-        if(obj.z != objectMap.get(obj))
-        {
-            objectMap.set(obj,obj.z);
-            sortNeeded = true;
-            // updatePosition();
-        }
+        // // updatePosition(obj);
+        // if(obj.z != objectMap.get(obj))
+        // {
+        //     objectMap.set(obj,obj.z);
+        //     sortNeeded = true;
+        //     // updatePosition();
+        // }
     }
 
     public function remove(obj:GameObject)

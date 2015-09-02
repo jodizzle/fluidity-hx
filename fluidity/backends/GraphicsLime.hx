@@ -137,10 +137,10 @@ class GraphicsLime implements IGraphicsBackend {
         
         program = GLUtils.createProgram (vertexSource, fragmentSource);
 
-        // GL.depthFunc(GL.NEVER);
+        GL.depthFunc(GL.NEVER);
         // GL.enable(GL.DEPTH_TEST);
-        // GL.blendFunc (GL.SRC_ALPHA, GL.ONE_MINUS_SRC_ALPHA);
-        // GL.enable(GL.BLEND);
+        GL.blendFunc (GL.SRC_ALPHA, GL.ONE_MINUS_SRC_ALPHA);
+        GL.enable(GL.BLEND);
 
         GraphicsLimeObject.init(program);
 
