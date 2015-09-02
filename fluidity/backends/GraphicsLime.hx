@@ -34,8 +34,6 @@ class GraphicsLime implements IGraphicsBackend {
     var quadBuffer:GLBuffer;
     var renderbuffer:GLRenderbuffer;
 
-    var sortNeeded = false;
-
     public function new(w)
     {
         window = w;
@@ -275,8 +273,8 @@ class GraphicsLime implements IGraphicsBackend {
         if(obj.graphic != null)
         {
             sceneMap.get(scene).add(obj);
+            objectSceneMap.set(obj,sceneMap.get(scene));
         }
-        objectSceneMap.set(obj,sceneMap.get(scene));
     };
     public function sceneRemove(scene:GameScene,obj:GameObject)
     {
@@ -389,9 +387,10 @@ class GraphicsLime implements IGraphicsBackend {
     public function newObject(obj:GameObject){};
     public function objectSet(obj:GameObject,graphic:Graphic)
     {
-        if(objectSceneMap.exists(obj))
+        if(obj.scene != null && !objectSceneMap.exists(obj))
         {
-            objectSceneMap.get(obj).add(obj);
+            sceneMap.get(obj.scene).add(obj);
+            objectSceneMap.set(obj,sceneMap.get(obj.scene));
         }
         obj.graphic = graphic;
     }
