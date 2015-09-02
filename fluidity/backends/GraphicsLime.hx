@@ -280,6 +280,7 @@ class GraphicsLime implements IGraphicsBackend {
 
     public function sceneRender(scene:GameScene)
     {
+        trace(objectList.length);
         if(sortNeeded)
         {
             updatePosition();
