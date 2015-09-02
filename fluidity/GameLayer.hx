@@ -62,7 +62,8 @@ class GameLayer{
                     fromScene.layer = null;
                     if(toScene.layer == null)
                     {
-                        toScene.layer = this;
+                        toScene.setLayer(this);
+                        // toScene.layer = this;
                     }
                     else
                     {
@@ -88,7 +89,7 @@ class GameLayer{
     public function start(stateName:String)
     {
         state = states.get(stateName);
-        scenes.get(stateName).start();
+        scenes.get(stateName).setLayer(this).start();
         activeLayers.push(this);
         return this;
     }

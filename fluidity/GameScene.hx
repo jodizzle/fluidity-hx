@@ -37,15 +37,19 @@ class GameScene{
             });
     }
 
-    // public function setLayer(l:GameLayer)
-    // {
-    //     layer = l;
-    //     Backend.graphics.sceneLayerSet(this);
-    //     return this;
-    // }
+    public function setLayer(l:GameLayer)
+    {
+        layer = l;
+        Backend.graphics.sceneLayerSet(this);
+        return this;
+    }
 
     public function add(obj:GameObject)
     {
+        if(obj.scene != null)
+        {
+            obj.scene.remove(obj);
+        }
         objects.push(obj);
         obj.scene = this;
 

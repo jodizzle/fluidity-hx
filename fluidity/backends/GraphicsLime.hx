@@ -13,9 +13,10 @@ import lime.utils.Float32Array;
 
 class GraphicsLime implements IGraphicsBackend { 
 
-    public var objectMap:Map<GameObject,Float> = new Map<GameObject,Float>();
-    public var objectList:Array<GameObject> = [];
     public var graphicBin:EnumBin<Graphic,GraphicsLimeObject>;
+
+    public var sceneMap:Map<GameScene,LimeScene> = new Map<GameScene,LimeScene>();
+    public var objectSceneMap:Map<GameObject,LimeScene> = new Map<GameObject,LimeScene>();
 
     public var program:GLProgram;
 
@@ -31,6 +32,7 @@ class GraphicsLime implements IGraphicsBackend {
     var rttFramebuffer:GLFramebuffer;
     var rttTexture:GLTexture;
     var quadBuffer:GLBuffer;
+    var renderbuffer:GLRenderbuffer;
 
     var sortNeeded = false;
 
@@ -135,9 +137,10 @@ class GraphicsLime implements IGraphicsBackend {
         
         program = GLUtils.createProgram (vertexSource, fragmentSource);
 
-        GL.depthFunc(GL.NEVER);
-        GL.blendFunc (GL.SRC_ALPHA, GL.ONE_MINUS_SRC_ALPHA);
-        GL.enable(GL.BLEND);
+        // GL.depthFunc(GL.NEVER);
+        // GL.enable(GL.DEPTH_TEST);
+        // GL.blendFunc (GL.SRC_ALPHA, GL.ONE_MINUS_SRC_ALPHA);
+        // GL.enable(GL.BLEND);
 
         GraphicsLimeObject.init(program);
 
@@ -197,10 +200,10 @@ class GraphicsLime implements IGraphicsBackend {
         GL.texImage2D(GL.TEXTURE_2D, 0, GL.RGBA, 400, 300, 0, GL.RGBA, GL.UNSIGNED_BYTE, null);
 
         /* Depth buffer */
-        // glGenRenderbuffers(1, &rbo_depth);
-        // glBindRenderbuffer(GL.RENDERBUFFER, rbo_depth);
-        // glRenderbufferStorage(GL.RENDERBUFFER, GL.DEPTH_COMPONENT16, 400, 600);
-        // glBindRenderbuffer(GL.RENDERBUFFER, 0);
+        renderbuffer = GL.createRenderbuffer();
+        GL.bindRenderbuffer(GL.RENDERBUFFER, renderbuffer);
+        GL.renderbufferStorage(GL.RENDERBUFFER, GL.DEPTH_COMPONENT16, 400, 300);
+
 
         /* Framebuffer to link everything together */
         rttFramebuffer = GL.createFramebuffer();
@@ -209,7 +212,7 @@ class GraphicsLime implements IGraphicsBackend {
         // rttFramebuffer.height = 600;
 
         GL.framebufferTexture2D(GL.FRAMEBUFFER, GL.COLOR_ATTACHMENT0, GL.TEXTURE_2D, rttTexture, 0);
-        // glFramebufferRenderbuffer(GL.FRAMEBUFFER, GL.DEPTH_ATTACHMENT, GL.RENDERBUFFER, rbo_depth);
+        // GL.framebufferRenderbuffer(GL.FRAMEBUFFER, GL.DEPTH_ATTACHMENT, GL.RENDERBUFFER, renderbuffer);
 
         GL.bindTexture(GL.TEXTURE_2D, null);
         GL.bindFramebuffer(GL.FRAMEBUFFER, null);
@@ -262,34 +265,63 @@ class GraphicsLime implements IGraphicsBackend {
         GL.bindFramebuffer(GL.FRAMEBUFFER, null);
     }
 
-    public function newScene(scene:GameScene){};
-    public function sceneAdd(scene:GameScene,obj:GameObject){};
-    public function sceneRemove(scene:GameScene,obj:GameObject){};
-    public function sceneUpdate(scene:GameScene){};
-    public function sceneStart(scene:GameScene){};
-    public function sceneReset(scene:GameScene){};
+    public function newScene(scene:GameScene)
+    {
+        sceneMap.set(scene,new LimeScene());
+    }
 
-    public function objectDispose(obj:GameObject)
+    public function sceneAdd(scene:GameScene,obj:GameObject)
     {
         if(obj.graphic != null)
         {
-            objectList.remove(obj);
-            objectMap.remove(obj);
+            sceneMap.get(scene).add(obj);
+        }
+        objectSceneMap.set(obj,sceneMap.get(scene));
+    };
+    public function sceneRemove(scene:GameScene,obj:GameObject)
+    {
+        if(objectSceneMap.exists(obj))
+        {
+            objectSceneMap.get(obj).remove(obj);
+            objectSceneMap.remove(obj);
+        }
+    };
+    public function sceneUpdate(scene:GameScene){};
+    public function sceneStart(scene:GameScene){};
+    public function sceneReset(scene:GameScene){};
+    public function sceneLayerSet(scene:GameScene){};
+
+    public function objectDispose(obj:GameObject)
+    {
+        // if(obj.graphic != null)
+        // {
+        //     objectList.remove(obj);
+        //     objectMap.remove(obj);
+        // }
+        // if(obj.scene != null)
+        // {
+        //     sceneMap.get(obj.scene).remove(obj);
+        // }
+        if(objectSceneMap.exists(obj))
+        {
+            objectSceneMap.get(obj).remove(obj);
+            objectSceneMap.remove(obj);
         }
     }
 
     public function sceneRender(scene:GameScene)
     {
-        if(sortNeeded)
-        {
-            updatePosition();
-        }
+        var limeScene = sceneMap.get(scene);
+
+        limeScene.render();
 
         GL.viewport (0, 0, 400, 300);
         GL.clearColor (0,0,0,1);
 
         normalShader();
-        GL.clear (GL.COLOR_BUFFER_BIT);
+        // GL.clear (GL.COLOR_BUFFER_BIT);
+        // GL.clear (GL.COLOR_BUFFER_BIT);
+        GL.clear(GL.COLOR_BUFFER_BIT | GL.DEPTH_BUFFER_BIT);
 
         var projectionMatrixUniform = GL.getUniformLocation (program, "uProjectionMatrix");
 
@@ -301,7 +333,7 @@ class GraphicsLime implements IGraphicsBackend {
         GraphicsLimeObject.bindGeneral();
 
         var currentGraphic:GraphicsLimeObject = null;
-        for(obj in objectList)
+        for(obj in limeScene.objectList)
         {
             if(graphicBin.get(obj.graphic) != currentGraphic)
             {
@@ -357,95 +389,18 @@ class GraphicsLime implements IGraphicsBackend {
     public function newObject(obj:GameObject){};
     public function objectSet(obj:GameObject,graphic:Graphic)
     {
-        if(obj.graphic != null)
+        if(objectSceneMap.exists(obj))
         {
-            objectList.remove(obj);
-            objectList.push(obj);
-        }
-        else
-        {
-
-            // var i = Math.floor(objectList.length/2);
-
-            objectMap.set(obj,obj.z);
-            // objectList.push(obj);
-            var added = false;
-            for(i in 0...objectList.length)
-            {
-                if(obj.z < objectList[0].z)
-                {
-                    added = true;
-                    objectList.insert(i,obj);
-                    break;
-                }
-            }
-            if(!added)
-            {
-                objectList.push(obj);
-            }
+            objectSceneMap.get(obj).add(obj);
         }
         obj.graphic = graphic;
-
-
-    }
-
-    public function updatePosition()
-    // public function updatePosition(obj:GameObject)
-    {
-        sortNeeded = false;
-        // if(objectMap.exists(obj))
-        // {
-            // var z = obj.z;
-            // if(z != objectMap.get(obj))
-            // {
-                for(i in 1...objectList.length)
-                {
-                    if(objectList[i].z < objectList[i - 1].z)
-                    {
-                        var moved = false;
-                        for(j in 1...i)
-                        {
-                            if(!moved && objectList[i].z > objectList[i - j].z)
-                            {
-                                objectList.insert(i - j + 1,objectList.splice(i,1)[0]);
-                                moved = true;
-                                break;
-                            }
-                        }
-                        if(!moved)
-                        {
-                            objectList.insert(0,objectList.splice(i,1)[0]);
-                        }
-                    }
-                }
-                // // probably more efficient ways of doing this...
-                // objectList.sort(function(obj1,obj2)
-                //     {
-                //         objectMap.set(obj1,obj1.z);
-                //         objectMap.set(obj2,obj2.z);
-                //         if(obj1.z < obj2.z)
-                //         {
-                //             return -1;
-                //         }
-                //         else if(obj1.z != obj2.z)
-                //         {
-                //             return 1;
-                //         }
-
-                //         return 0;
-                //     });
-            // }
-        // }
     }
 
     public function objectUpdate(obj:GameObject)
     {
-        // updatePosition(obj);
-        if(obj.z != objectMap.get(obj))
+        if(objectSceneMap.exists(obj))
         {
-            objectMap.set(obj,obj.z);
-            sortNeeded = true;
-            // updatePosition();
+            objectSceneMap.get(obj).objectUpdate(obj);
         }
     }
 }
