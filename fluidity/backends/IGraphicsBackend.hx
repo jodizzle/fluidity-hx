@@ -4,6 +4,13 @@ import fluidity.GameObject;
 
 interface IGraphicsBackend { 
 
+    public var width:Int;
+    public var height:Int;
+
+    public function newLayer(layer:GameLayer):Void;
+    public function layerDimensionsChanged(layer:GameLayer):Void;
+    public function layerPositionsChanged(layer:GameLayer):Void;
+
     public function newScene(scene:GameScene):Void;
     public function sceneAdd(scene:GameScene,obj:GameObject):Void;
     public function sceneRemove(scene:GameScene,obj:GameObject):Void;

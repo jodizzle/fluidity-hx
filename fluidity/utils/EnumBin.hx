@@ -14,7 +14,7 @@ class EnumBin<K:EnumValue,V> {
         instantiator = f;
     }
 
-    public function get(name:K) {
+    public inline function get(name:K) {
         if(binMap.exists(name))
         {
             return binMap.get(name);
@@ -27,7 +27,7 @@ class EnumBin<K:EnumValue,V> {
         }
     }
 
-    public function remove(key:K)
+    public inline function remove(key:K)
     {
         binMap.remove(key);
     }

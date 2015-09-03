@@ -23,14 +23,17 @@ class LimeScene{
 
     public function render()
     {
+        #if !depthbuffer
         if(sortNeeded)
         {
             updatePosition();
         }
+        #end
     }
 
     public function add(obj:GameObject)
     {
+        #if !depthbuffer
         objectMap.set(obj,obj.z);
         var added = false;
         for(i in 0...objectList.length)
@@ -46,6 +49,10 @@ class LimeScene{
         {
             objectList.push(obj);
         }
+        #else
+        objectList.push(obj);
+        #end
+
 
         objectMap.set(obj,obj.z);
     }
@@ -79,11 +86,13 @@ class LimeScene{
 
     public function objectUpdate(obj:GameObject)
     {
+        #if !depthbuffer
         if(obj.z != objectMap.get(obj))
         {
             objectMap.set(obj,obj.z);
             sortNeeded = true;
         }
+        #end
     }
 
     public function remove(obj:GameObject)

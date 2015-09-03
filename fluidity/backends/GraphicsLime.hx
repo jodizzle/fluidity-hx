@@ -18,19 +18,19 @@ class GraphicsLime implements IGraphicsBackend {
     public var sceneMap:Map<GameScene,LimeScene> = new Map<GameScene,LimeScene>();
     public var objectSceneMap:Map<GameObject,LimeScene> = new Map<GameObject,LimeScene>();
 
-    public var program:GLProgram;
+    public var layerBin:ObjectBin<GameLayer,LimeLayer>;
 
-    public var postProcessProgram:GLProgram;
+    public var defaultRenderer:CustomRenderer;
 
     public var window:Window;
-
-    public var customRenderer:CustomRenderer;
 
     public var width:Int = 0;
     public var height:Int = 0;
 
+    public var USE_DEPTH_BUFFER = false;
+
     var rttFramebuffer:GLFramebuffer;
-    var rttTexture:GLTexture;
+    
     var quadBuffer:GLBuffer;
     var renderbuffer:GLRenderbuffer;
 
@@ -38,183 +38,87 @@ class GraphicsLime implements IGraphicsBackend {
     {
         window = w;
 
+        width = window.width;
+        height = window.height;
+
         initBins();
         initGL();
     };
 
-    public function setCustom(custom:CustomRenderer)
+    public inline function setCustom(layer:GameLayer,custom:CustomRenderer)
     {
-        customRenderer = custom;
-        initGL();
+        layerBin.get(layer).setCustom(custom);
+        // initGL();
     }
 
-    private function initBins()
+    private inline function initBins()
     {
 
         graphicBin = new EnumBin<Graphic,GraphicsLimeObject>(
             function(g:Graphic)
             {
                 var obj = new GraphicsLimeObject(g);
-                if(customRenderer != null && customRenderer.customRenderPreFunc != null)
-                {
-                    obj.customRenderPreFunc = customRenderer.customRenderPreFunc;
-                }
-                if(customRenderer != null && customRenderer.customRenderPostFunc != null)
-                {
-                    obj.customRenderPostFunc = customRenderer.customRenderPostFunc;
-                }
+                // if(customRenderer != null && customRenderer.customRenderPreFunc != null)
+                // {
+                //     obj.customRenderPreFunc = customRenderer.customRenderPreFunc;
+                // }
+                // if(customRenderer != null && customRenderer.customRenderPostFunc != null)
+                // {
+                //     obj.customRenderPostFunc = customRenderer.customRenderPostFunc;
+                // }
                 return obj;
+            });
+
+        layerBin = new ObjectBin<GameLayer,LimeLayer>(
+            function(l:GameLayer)
+            {
+                return new LimeLayer(l).setCustom(defaultRenderer);
             });
     }
 
     private function initGL()
     {
-        var vertexSource = '';
-        if(customRenderer != null && customRenderer.vertexSource != null)
-        {
-            vertexSource = customRenderer.vertexSource;
-        }
-        else
-        {
-            vertexSource = 
-            
-            "attribute vec4 aPosition;
-            attribute vec2 aTexCoord;
-            varying vec2 vTexCoord;
-            
-            uniform mat4 uProjectionMatrix;
-            uniform mat4 uModelViewMatrix;
-            uniform vec2 uTexSize;
-            uniform vec2 uTexOffset;
+        defaultRenderer = new CustomRenderer();
+        defaultRenderer.init();
 
-            uniform vec2 uScale;
-            // uniform float uRotation;
-            
-            void main(void) {
-                
-                vTexCoord = uTexOffset + aTexCoord * uTexSize;
-                // mat4 rot = rotationMatrix(uRotation);
-                vec4 scale = aPosition * vec4(uScale,1,1);
-                gl_Position = uProjectionMatrix * uModelViewMatrix * scale;
-                
-            }
-            // mat4 rotationMatrix(float angle)
-            // {
-            //     float s = sin(angle);
-            //     float c = cos(angle);
-            //     float oc = 1.0 - c;
-                
-            //     return mat4(c,       - 1.0 * s, 0.0,                0.0,
-            //                 1.0 * s, c,         0.0,                0.0,
-            //                 0.0,     0.0,       oc * 1.0 * 1.0 + c, 0.0,
-            //                 0.0,     0.0,       0.0,                1.0);
-            // }
-            ";
-        }
-        
-        var fragmentSource = '';
-        if(customRenderer != null && customRenderer.fragmentSource != null)
-        {
-            fragmentSource = customRenderer.fragmentSource;
-        }
-        else
-        {
-            fragmentSource = 
-            
-            #if !desktop
-            "precision mediump float;" +
-            #end
-            "varying vec2 vTexCoord;
-            uniform sampler2D uImage0;
-            
-            void main(void)
-            {
-                gl_FragColor = texture2D (uImage0, vTexCoord);
-            }";
-        }
-        
-        program = GLUtils.createProgram (vertexSource, fragmentSource);
+        // GL.depthFunc(GL.NEVER);
+        #if depthbuffer
+        GL.enable(GL.DEPTH_TEST);
+        GL.depthFunc( GL.LEQUAL );
+        GL.depthMask( true );
+        #end
 
-        GL.depthFunc(GL.NEVER);
-        // GL.enable(GL.DEPTH_TEST);
         GL.blendFunc (GL.SRC_ALPHA, GL.ONE_MINUS_SRC_ALPHA);
         GL.enable(GL.BLEND);
 
-        GraphicsLimeObject.init(program);
-
-
-        vertexSource = '';
-        if(false && customRenderer != null && customRenderer.vertexSource != null)
-        {
-            vertexSource = customRenderer.vertexSource;
-        }
-        else
-        {
-            vertexSource = 
-            
-            "
-            attribute vec4 aPosition;
-            attribute vec2 aTexCoord;
-            varying vec2 vTexCoord;
-            uniform mat4 uViewMatrix;
-
-            void main(void) {
-              gl_Position = uViewMatrix*aPosition;
-              vTexCoord = aTexCoord;
-            }
-            ";
-        }
-        
-        fragmentSource = '';
-        if(false && customRenderer != null && customRenderer.fragmentSource != null)
-        {
-            fragmentSource = customRenderer.fragmentSource;
-        }
-        else
-        {
-            fragmentSource = 
-            
-            #if !desktop
-            "precision mediump float;" +
-            #end
-            "varying vec2 vTexCoord;
-            uniform sampler2D uImage0;
-            
-            void main(void)
-            {
-                gl_FragColor = texture2D (uImage0, vTexCoord);
-            }";
-        }
-
-        postProcessProgram = GLUtils.createProgram (vertexSource, fragmentSource);
-
-        GL.activeTexture(GL.TEXTURE0);
-        rttTexture = GL.createTexture();
-        GL.bindTexture(GL.TEXTURE_2D, rttTexture);
-        GL.texParameteri (GL.TEXTURE_2D, GL.TEXTURE_MAG_FILTER, GL.NEAREST);
-        GL.texParameteri (GL.TEXTURE_2D, GL.TEXTURE_MIN_FILTER, GL.NEAREST);
-        GL.texParameteri (GL.TEXTURE_2D, GL.TEXTURE_WRAP_S, GL.CLAMP_TO_EDGE);
-        GL.texParameteri (GL.TEXTURE_2D, GL.TEXTURE_WRAP_T, GL.CLAMP_TO_EDGE);
-        GL.texImage2D(GL.TEXTURE_2D, 0, GL.RGBA, 400, 300, 0, GL.RGBA, GL.UNSIGNED_BYTE, null);
+        GraphicsLimeObject.init(defaultRenderer.program);
 
         /* Depth buffer */
+        #if depthbuffer
         renderbuffer = GL.createRenderbuffer();
         GL.bindRenderbuffer(GL.RENDERBUFFER, renderbuffer);
         GL.renderbufferStorage(GL.RENDERBUFFER, GL.DEPTH_COMPONENT16, 400, 300);
+        #end
 
 
         /* Framebuffer to link everything together */
         rttFramebuffer = GL.createFramebuffer();
+        
+        #if depthbuffer
         GL.bindFramebuffer(GL.FRAMEBUFFER, rttFramebuffer);
-        // rttFramebuffer.width = 400;
-        // rttFramebuffer.height = 600;
-
-        GL.framebufferTexture2D(GL.FRAMEBUFFER, GL.COLOR_ATTACHMENT0, GL.TEXTURE_2D, rttTexture, 0);
-        // GL.framebufferRenderbuffer(GL.FRAMEBUFFER, GL.DEPTH_ATTACHMENT, GL.RENDERBUFFER, renderbuffer);
-
-        GL.bindTexture(GL.TEXTURE_2D, null);
+        GL.framebufferRenderbuffer(GL.FRAMEBUFFER, GL.DEPTH_ATTACHMENT, GL.RENDERBUFFER, renderbuffer);
         GL.bindFramebuffer(GL.FRAMEBUFFER, null);
+        #end
+        
+        GL.bindTexture(GL.TEXTURE_2D, null);
 
+        // var data = 
+        //     [          
+        //         1, 1, 0,    1, 1,
+        //         1, 0, 0,    1, 0,
+        //         0, 1, 0,    0, 1,
+        //         0, 0, 0,    0, 0   
+        //     ];
         var data = 
             [          
                 .5, .5, 0,    1, 1,
@@ -229,7 +133,7 @@ class GraphicsLime implements IGraphicsBackend {
         GL.bindBuffer (GL.ARRAY_BUFFER, null);
     }
 
-    private function normalShader()
+    private inline function normalShader(program:GLProgram)
     {
         GL.useProgram (program);
 
@@ -244,13 +148,13 @@ class GraphicsLime implements IGraphicsBackend {
 
         GL.bindFramebuffer(GL.FRAMEBUFFER, rttFramebuffer);
 
-        if(customRenderer != null && customRenderer.customInitFunc != null)
-        {
-            customRenderer.customInitFunc(program);
-        }
+        // if(customRenderer != null && customRenderer.customInitFunc != null)
+        // {
+        //     customRenderer.customInitFunc(program);
+        // }
     }
 
-    private function postProcessShader()
+    private inline function postProcessShader(postProcessProgram:GLProgram)
     {
         GL.useProgram (postProcessProgram);
 
@@ -263,12 +167,22 @@ class GraphicsLime implements IGraphicsBackend {
         GL.bindFramebuffer(GL.FRAMEBUFFER, null);
     }
 
-    public function newScene(scene:GameScene)
+    public function newLayer(layer:GameLayer):Void {}
+    public inline function layerDimensionsChanged(layer:GameLayer):Void
+    {
+        layerBin.get(layer).readLayer();
+    }
+    public inline function layerPositionsChanged(layer:GameLayer):Void
+    {
+        layerBin.get(layer).readLayer();
+    }
+
+    public inline function newScene(scene:GameScene)
     {
         sceneMap.set(scene,new LimeScene());
     }
 
-    public function sceneAdd(scene:GameScene,obj:GameObject)
+    public inline function sceneAdd(scene:GameScene,obj:GameObject)
     {
         if(obj.graphic != null)
         {
@@ -276,7 +190,7 @@ class GraphicsLime implements IGraphicsBackend {
             objectSceneMap.set(obj,sceneMap.get(scene));
         }
     };
-    public function sceneRemove(scene:GameScene,obj:GameObject)
+    public inline function sceneRemove(scene:GameScene,obj:GameObject)
     {
         if(objectSceneMap.exists(obj))
         {
@@ -287,9 +201,13 @@ class GraphicsLime implements IGraphicsBackend {
     public function sceneUpdate(scene:GameScene){};
     public function sceneStart(scene:GameScene){};
     public function sceneReset(scene:GameScene){};
-    public function sceneLayerSet(scene:GameScene){};
 
-    public function objectDispose(obj:GameObject)
+    public inline function sceneLayerSet(scene:GameScene)
+    {
+        layerBin.get(scene.layer);
+    }
+
+    public inline function objectDispose(obj:GameObject)
     {
         // if(obj.graphic != null)
         // {
@@ -309,22 +227,32 @@ class GraphicsLime implements IGraphicsBackend {
 
     public function sceneRender(scene:GameScene)
     {
+        width = window.width;
+        height = window.height;
+
         var limeScene = sceneMap.get(scene);
+        var limeLayer = layerBin.get(scene.layer);
 
         limeScene.render();
 
-        GL.viewport (0, 0, 400, 300);
         GL.clearColor (0,0,0,1);
 
-        normalShader();
-        // GL.clear (GL.COLOR_BUFFER_BIT);
-        // GL.clear (GL.COLOR_BUFFER_BIT);
-        GL.clear(GL.COLOR_BUFFER_BIT | GL.DEPTH_BUFFER_BIT);
+        normalShader(limeLayer.customRenderer.program);
+        limeLayer.bind();
 
-        var projectionMatrixUniform = GL.getUniformLocation (program, "uProjectionMatrix");
+        limeLayer.customRenderer.initFunc(limeLayer.customRenderer.program);
+
+        // GL.clear (GL.COLOR_BUFFER_BIT);
+        #if !depthbuffer
+        GL.clear (GL.COLOR_BUFFER_BIT);
+        #else
+        GL.clear(GL.COLOR_BUFFER_BIT | GL.DEPTH_BUFFER_BIT);
+        #end
+
+        var projectionMatrixUniform = GL.getUniformLocation (limeLayer.customRenderer.program, "uProjectionMatrix");
 
         // var matrix = lime.math.Matrix4.createOrtho (-window.width/2, window.width/2, window.height/2, -window.height/2, -2000, 2000);
-        var matrix = lime.math.Matrix4.createOrtho (-400/2/scene.cameraScale + scene.camera.x, 400/2/scene.cameraScale + scene.camera.x, 300/2/scene.cameraScale + scene.camera.y, -300/2/scene.cameraScale + scene.camera.y, -2000, 2000);
+        var matrix = lime.math.Matrix4.createOrtho (-limeLayer.vWidth/2/scene.cameraScale + scene.camera.x + limeLayer.sceneOffset.x, limeLayer.vWidth/2/scene.cameraScale + scene.camera.x + limeLayer.sceneOffset.x, -limeLayer.vHeight/2/scene.cameraScale + scene.camera.y + limeLayer.sceneOffset.y, limeLayer.vHeight/2/scene.cameraScale + scene.camera.y + limeLayer.sceneOffset.y, -2000, 2000);
         GL.uniformMatrix4fv (projectionMatrixUniform, false, matrix);
 
 
@@ -342,7 +270,7 @@ class GraphicsLime implements IGraphicsBackend {
                 currentGraphic = graphicBin.get(obj.graphic);
                 currentGraphic.bind();
             }
-            currentGraphic.render(obj);
+            currentGraphic.render(obj,limeLayer.customRenderer.program,limeLayer.customRenderer.renderPreFunc,limeLayer.customRenderer.renderPostFunc);
         }
         if(currentGraphic != null)
         {
@@ -352,15 +280,28 @@ class GraphicsLime implements IGraphicsBackend {
 
 
         GL.viewport (0, 0, window.width, window.height);
-        postProcessShader();
+        postProcessShader(limeLayer.customRenderer.postProcessProgram);
+        #if !depthbuffer
+        GL.clear (GL.COLOR_BUFFER_BIT);
+        #else
+        GL.clear(GL.COLOR_BUFFER_BIT | GL.DEPTH_BUFFER_BIT);
+        #end
 
-        var vertexAttribute = GL.getAttribLocation (postProcessProgram, "aPosition");
-        var textureAttribute = GL.getAttribLocation (postProcessProgram, "aTexCoord");
-        var mvMatrixUniform = GL.getUniformLocation (postProcessProgram, "uViewMatrix");
+        var vertexAttribute = GL.getAttribLocation (limeLayer.customRenderer.postProcessProgram, "aPosition");
+        var textureAttribute = GL.getAttribLocation (limeLayer.customRenderer.postProcessProgram, "aTexCoord");
+        var mvMatrixUniform = GL.getUniformLocation (limeLayer.customRenderer.postProcessProgram, "uViewMatrix");
+        projectionMatrixUniform = GL.getUniformLocation (limeLayer.customRenderer.postProcessProgram, "uProjectionMatrix");
+
+        var projectionMatrix = lime.math.Matrix4.createOrtho (-window.width/2, window.width/2, window.height/2, -window.height/2, -2000, 2000);
+        // var projectionMatrix = lime.math.Matrix4.createOrtho (0, window.width, window.height, 0, -2000, 2000);
+        GL.uniformMatrix4fv (projectionMatrixUniform, false, projectionMatrix);
+
         var mvMatrix = new lime.math.Matrix4();
+        // mvMatrix.appendScale(1,-1,1);
         // trace(mvMatrix);
 
-        mvMatrix.appendScale(2,2,1);
+        mvMatrix.appendScale(limeLayer.width,limeLayer.height,1);
+        mvMatrix.appendTranslation(limeLayer.position.x,limeLayer.position.y,0);
         // if(obj.angle != 0)
         // {
         //     mvMatrix.appendRotation(obj.angle,lime.math.Vector4.Z_AXIS);
@@ -376,7 +317,7 @@ class GraphicsLime implements IGraphicsBackend {
         // GL.bindBuffer (GL.ARRAY_BUFFER, quadBuffer);
         // GL.vertexAttribPointer (vertexAttribute, 2, GL.FLOAT, false, 2 * Float32Array.BYTES_PER_ELEMENT, 0);
         // GL.activeTexture (GL.TEXTURE0);
-        GL.bindTexture(GL.TEXTURE_2D, rttTexture);
+        layerBin.get(scene.layer).bindTexture();
 
         GL.drawArrays (GL.TRIANGLE_STRIP, 0, 4);
 
@@ -384,8 +325,8 @@ class GraphicsLime implements IGraphicsBackend {
         GL.bindTexture(GL.TEXTURE_2D, null);
     }
 
-    public function newObject(obj:GameObject){};
-    public function objectSet(obj:GameObject,graphic:Graphic)
+    public inline function newObject(obj:GameObject){};
+    public inline function objectSet(obj:GameObject,graphic:Graphic)
     {
         if(obj.scene != null && !objectSceneMap.exists(obj))
         {
@@ -395,7 +336,7 @@ class GraphicsLime implements IGraphicsBackend {
         obj.graphic = graphic;
     }
 
-    public function objectUpdate(obj:GameObject)
+    public inline function objectUpdate(obj:GameObject)
     {
         if(objectSceneMap.exists(obj))
         {

@@ -12,7 +12,7 @@ class StringBin<V> {
         instantiator = f;
     }
 
-    public function get(name:String) {
+    public inline function get(name:String) {
         if(binMap.exists(name))
         {
             return binMap.get(name);
@@ -25,7 +25,7 @@ class StringBin<V> {
         }
     }
 
-    public function remove(key:String)
+    public inline function remove(key:String)
     {
         binMap.remove(key);
     }
