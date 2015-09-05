@@ -10,6 +10,7 @@ interface IGraphicsBackend {
     public function newLayer(layer:GameLayer):Void;
     public function layerDimensionsChanged(layer:GameLayer):Void;
     public function layerPositionsChanged(layer:GameLayer):Void;
+    public function layerRender(layer:GameLayer):Void;
 
     public function newScene(scene:GameScene):Void;
     public function sceneAdd(scene:GameScene,obj:GameObject):Void;
@@ -26,4 +27,9 @@ interface IGraphicsBackend {
     // public function objectAddChild(obj:GameObject,child:GameObject):Void;
     // public function objectRemoveChild(obj:GameObject,child:GameObject):Void;
     public function objectUpdate(obj:GameObject):Void;
+
+    public function preUpdate():Void;
+    public function postUpdate():Void;
+    public function preRender():Void;
+    public function postRender():Void;
 }

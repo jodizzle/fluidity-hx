@@ -9,6 +9,7 @@ import lime.utils.Float32Array;
 import fluidity.GameObject;
 import fluidity.GameScene;
 import fluidity.utils.Vec2;
+import fluidity.utils.EnumBin;
 
 class LimeLayer{
 
@@ -96,6 +97,94 @@ class LimeLayer{
             customRenderer.init();
         }
         return this;
+    }
+
+    public function render(window:lime.ui.Window,limeScene:LimeScene,graphicBin:EnumBin<Graphic,GraphicsLimeObject>)
+    {
+        bind();
+
+        var scene = layer.getScene();
+
+        customRenderer.initFunc(customRenderer.program);
+
+        // GL.clear (GL.COLOR_BUFFER_BIT);
+        #if !depthbuffer
+        GL.clear (GL.COLOR_BUFFER_BIT);
+        #else
+        GL.clear(GL.COLOR_BUFFER_BIT | GL.DEPTH_BUFFER_BIT);
+        #end
+
+        var projectionMatrixUniform = GL.getUniformLocation (customRenderer.program, "uProjectionMatrix");
+
+        // var matrix = lime.math.Matrix4.createOrtho (-window.width/2, window.width/2, window.height/2, -window.height/2, -2000, 2000);
+        var matrix = lime.math.Matrix4.createOrtho (-vWidth/2/scene.cameraScale + scene.camera.x + sceneOffset.x, vWidth/2/scene.cameraScale + scene.camera.x + sceneOffset.x, -vHeight/2/scene.cameraScale + scene.camera.y + sceneOffset.y, vHeight/2/scene.cameraScale + scene.camera.y + sceneOffset.y, -2000, 2000);
+        GL.uniformMatrix4fv (projectionMatrixUniform, false, matrix);
+
+
+        GraphicsLimeObject.bindGeneral();
+
+        var currentGraphic:GraphicsLimeObject = null;
+        for(obj in limeScene.objectList)
+        {
+            if(graphicBin.get(obj.graphic) != currentGraphic)
+            {
+                if(currentGraphic != null)
+                {
+                    currentGraphic.unbind();
+                }
+                currentGraphic = graphicBin.get(obj.graphic);
+                currentGraphic.bind();
+            }
+            currentGraphic.render(obj,customRenderer.program,customRenderer.renderPreFunc,customRenderer.renderPostFunc);
+        }
+        if(currentGraphic != null)
+        {
+            currentGraphic.unbind();
+        }
+        GraphicsLimeObject.unbindGeneral();
+    }
+
+    public function postProcessRender(window:lime.ui.Window,quadBuffer:GLBuffer)
+    {
+        #if !depthbuffer
+        GL.clear (GL.COLOR_BUFFER_BIT);
+        #else
+        GL.clear(GL.COLOR_BUFFER_BIT | GL.DEPTH_BUFFER_BIT);
+        #end
+
+        var vertexAttribute = GL.getAttribLocation (customRenderer.postProcessProgram, "aPosition");
+        var textureAttribute = GL.getAttribLocation (customRenderer.postProcessProgram, "aTexCoord");
+        var mvMatrixUniform = GL.getUniformLocation (customRenderer.postProcessProgram, "uViewMatrix");
+        var projectionMatrixUniform = GL.getUniformLocation (customRenderer.postProcessProgram, "uProjectionMatrix");
+
+        var projectionMatrix = lime.math.Matrix4.createOrtho (-window.width/2, window.width/2, window.height/2, -window.height/2, -2000, 2000);
+        // var projectionMatrix = lime.math.Matrix4.createOrtho (0, window.width, window.height, 0, -2000, 2000);
+        GL.uniformMatrix4fv (projectionMatrixUniform, false, projectionMatrix);
+
+        var mvMatrix = new lime.math.Matrix4();
+        // mvMatrix.appendScale(1,-1,1);
+        // trace(mvMatrix);
+
+        mvMatrix.appendScale(width,height,1);
+        mvMatrix.appendTranslation(position.x,position.y,0);
+        // if(obj.angle != 0)
+        // {
+        //     mvMatrix.appendRotation(obj.angle,lime.math.Vector4.Z_AXIS);
+        // }
+        // mvMatrix.appendTranslation(.1,0,0);
+
+        GL.uniformMatrix4fv (mvMatrixUniform, false, mvMatrix);
+
+        GL.bindBuffer (GL.ARRAY_BUFFER, quadBuffer);
+        GL.vertexAttribPointer (vertexAttribute, 3, GL.FLOAT, false, 5 * Float32Array.BYTES_PER_ELEMENT, 0);
+        GL.vertexAttribPointer (textureAttribute, 2, GL.FLOAT, false, 5 * Float32Array.BYTES_PER_ELEMENT, 3 * Float32Array.BYTES_PER_ELEMENT);
+                
+        // GL.bindBuffer (GL.ARRAY_BUFFER, quadBuffer);
+        // GL.vertexAttribPointer (vertexAttribute, 2, GL.FLOAT, false, 2 * Float32Array.BYTES_PER_ELEMENT, 0);
+        // GL.activeTexture (GL.TEXTURE0);
+        bindTexture();
+
+        GL.drawArrays (GL.TRIANGLE_STRIP, 0, 4);
     }
 
 }

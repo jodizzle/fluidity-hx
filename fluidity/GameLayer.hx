@@ -196,4 +196,9 @@ class GameLayer{
             layer.processEvent(event);
         }
     }
+
+    public function getScene():GameScene
+    {
+        return scenes.get(state.name);
+    }
 }

@@ -25,4 +25,7 @@ interface IPhysicsBackend {
     // public function objectRemoveChild(obj:GameObject,child:GameObject):Void;
     public function objectChanged(obj:GameObject):Void;
     public function objectUpdate(obj:GameObject):Void;
+
+    public function preUpdate():Void;
+    public function postUpdate():Void;
 }
