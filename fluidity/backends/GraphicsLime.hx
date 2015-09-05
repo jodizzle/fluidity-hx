@@ -233,7 +233,7 @@ class GraphicsLime implements IGraphicsBackend {
 
         limeScene.render();
 
-        GL.clearColor (0,0,0,1);
+        GL.clearColor (0,0,0,0);
 
         normalShader(limeLayer.customRenderer.program);
 
@@ -271,6 +271,13 @@ class GraphicsLime implements IGraphicsBackend {
 
     public function postRender():Void
     {
+        GL.bindFramebuffer(GL.FRAMEBUFFER,null);
+        #if !depthbuffer
+        GL.clear (GL.COLOR_BUFFER_BIT);
+        #else
+        GL.clear(GL.COLOR_BUFFER_BIT | GL.DEPTH_BUFFER_BIT);
+        #end
+
         for(limeLayer in renderedLayers)
         {
             GL.viewport (0, 0, window.width, window.height);

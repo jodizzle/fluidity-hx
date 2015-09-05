@@ -146,11 +146,6 @@ class LimeLayer{
 
     public function postProcessRender(window:lime.ui.Window,quadBuffer:GLBuffer)
     {
-        #if !depthbuffer
-        GL.clear (GL.COLOR_BUFFER_BIT);
-        #else
-        GL.clear(GL.COLOR_BUFFER_BIT | GL.DEPTH_BUFFER_BIT);
-        #end
 
         var vertexAttribute = GL.getAttribLocation (customRenderer.postProcessProgram, "aPosition");
         var textureAttribute = GL.getAttribLocation (customRenderer.postProcessProgram, "aTexCoord");
