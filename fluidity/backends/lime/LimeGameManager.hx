@@ -43,6 +43,7 @@ class LimeGameManager extends Application{
         Backend.physics = new PhysicsSimple();
         Backend.input = limeInput;
         gameManager.init();
+        window.onResize.add(_onResize);
         onInit();
     }
 
@@ -77,6 +78,38 @@ class LimeGameManager extends Application{
         // {
         //  gameScene.finished = true;
         // }
+    }
+
+    public override function onTouchEnd(touch)
+    {
+
+    }
+
+    public override function onTouchMove(touch)
+    {
+
+    }
+
+    public override function onMouseMove(window,x:Float, y:Float)
+    {
+        
+    }
+
+    public override function onMouseDown(window,x:Float, y:Float, button:Int)
+    {
+
+    }
+
+    public function _onResize(width:Int,height:Int)
+    {
+        lgb.width = width;
+        lgb.height = height;
+        onResize();
+        gameManager.onResize();
+    }
+
+    public function onResize()
+    {
     }
 
 }

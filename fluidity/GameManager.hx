@@ -61,6 +61,11 @@ class GameManager{
 
     public function onRender()
     {
+
+    }
+
+    public function onResize()
+    {
         
     }
 
