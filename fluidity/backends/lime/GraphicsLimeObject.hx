@@ -3,9 +3,7 @@ package fluidity.backends.lime;
 import fluidity.GameObject;
 import lime.graphics.opengl.GLBuffer;
 import lime.utils.Float32Array;
-import lime.graphics.opengl.GLUniformLocation;
-import lime.graphics.opengl.GL;
-import lime.graphics.opengl.GLTexture;
+import lime.graphics.opengl.*;
 import lime.Assets;
 
 class GraphicsLimeObject { 
@@ -26,9 +24,6 @@ class GraphicsLimeObject {
     public var texture:GLTexture;
     public var width:Int = 0;
     public var height:Int = 0;
-
-    public var customRenderPreFunc:GameObject->Void = function(g){};
-    public var customRenderPostFunc:GameObject->Void = function(g){};
 
 
     public var graphic:Graphic;
@@ -132,8 +127,15 @@ class GraphicsLimeObject {
     }
 
 
-    public function render(obj:GameObject)
+    public function render(obj:GameObject,program:GLProgram,customRenderPreFunc:GameObject->Void,customRenderPostFunc:GameObject->Void)
     {
+        vertexAttribute = GL.getAttribLocation (program, "aPosition");
+        textureAttribute = GL.getAttribLocation (program, "aTexCoord");
+
+        mvMatrixUniformLocation = GL.getUniformLocation(program,"uModelViewMatrix");
+        texSizeUniformLocation = GL.getUniformLocation(program,"uTexSize");
+        texOffsetUniformLocation = GL.getUniformLocation(program,"uTexOffset");
+        scaleUniformLocation = GL.getUniformLocation(program,"uScale");
 
         var offsetX:Float = 0;
         var drawWidth:Float = 1;

@@ -24,11 +24,11 @@ class GameLayer{
     public var position:Vec2 = new Vec2();
     public var sceneOffset:Vec2 = new Vec2();
 
-    public var width:Float = 1;
-    public var height:Float = 1;
+    public var width:Int = 1;
+    public var height:Int = 1;
 
-    public var vWidth:Float = 1;
-    public var vHeight:Float = 1;
+    public var vWidth:Int = 1;
+    public var vHeight:Int = 1;
 
     // public var lockAspectRatio:Bool = false;
 
@@ -40,7 +40,84 @@ class GameLayer{
 
     public function new()
     {
+        width = vWidth = Backend.graphics.width;
+        height = vHeight = Backend.graphics.height;
+    }
 
+    public function setX(x:Int):GameLayer
+    {
+        position.x = x;
+        Backend.graphics.layerPositionsChanged(this);
+        return this;
+    }
+    public function setY(y:Int):GameLayer
+    {
+        position.y = y;
+        Backend.graphics.layerPositionsChanged(this);
+        return this;
+    }
+    public function setPosition(pos:Vec2):GameLayer
+    {
+        position.set(pos);
+        Backend.graphics.layerPositionsChanged(this);
+        return this;
+    }
+    public function setSceneX(x:Int):GameLayer
+    {
+        sceneOffset.x = x;
+        Backend.graphics.layerPositionsChanged(this);
+        return this;
+    }
+    public function setSceneY(y:Int):GameLayer
+    {
+        sceneOffset.y = y;
+        Backend.graphics.layerPositionsChanged(this);
+        return this;
+    }
+    public function setScenePosition(pos:Vec2):GameLayer
+    {
+        sceneOffset.set(pos);
+        Backend.graphics.layerPositionsChanged(this);
+        return this;
+    }
+
+    public function setWidth(w:Int):GameLayer
+    {
+        width = w;
+        Backend.graphics.layerDimensionsChanged(this);
+        return this;
+    }
+    public function setHeight(h:Int):GameLayer
+    {
+        height = h;
+        Backend.graphics.layerDimensionsChanged(this);
+        return this;
+    }
+    public function setDimensions(w:Int,h:Int):GameLayer
+    {
+        width = w;
+        height = h;
+        Backend.graphics.layerDimensionsChanged(this);
+        return this;
+    }
+    public function setVWidth(vw:Int):GameLayer
+    {
+        vWidth = vw;
+        Backend.graphics.layerDimensionsChanged(this);
+        return this;
+    }
+    public function setVHeight(vh:Int):GameLayer
+    {
+        vHeight = vh;
+        Backend.graphics.layerDimensionsChanged(this);
+        return this;
+    }
+    public function setVDimensions(vw:Int,vh:Int):GameLayer
+    {
+        vWidth = vw;
+        vHeight = vh;
+        Backend.graphics.layerDimensionsChanged(this);
+        return this;
     }
 
     public function addScene(stateName:String,scene:GameScene)
@@ -62,7 +139,8 @@ class GameLayer{
                     fromScene.layer = null;
                     if(toScene.layer == null)
                     {
-                        toScene.layer = this;
+                        toScene.setLayer(this);
+                        // toScene.layer = this;
                     }
                     else
                     {
@@ -88,7 +166,7 @@ class GameLayer{
     public function start(stateName:String)
     {
         state = states.get(stateName);
-        scenes.get(stateName).start();
+        scenes.get(stateName).setLayer(this).start();
         activeLayers.push(this);
         return this;
     }
@@ -117,5 +195,10 @@ class GameLayer{
         {
             layer.processEvent(event);
         }
+    }
+
+    public function getScene():GameScene
+    {
+        return scenes.get(state.name);
     }
 }

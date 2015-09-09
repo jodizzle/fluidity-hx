@@ -123,4 +123,7 @@ class PhysicsSimple implements IPhysicsBackend{
         }
         return simpleTypes.get(type);
     }
+    
+    public function preUpdate():Void{}
+    public function postUpdate():Void{}
 }
