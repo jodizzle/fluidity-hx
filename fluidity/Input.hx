@@ -37,24 +37,28 @@ class Input
     {
         for(scene in scenes)
         {
-            for(ev in scene.input.keyDownEvents)
+            var keyName = scene.input.keyMap.get(key);
+            if(keyName != null)
             {
-                var keyName = scene.input.keyMap.get(key);
-                if(keyName != null)
+                if(!scene.input.inputStates.get(keyName))
                 {
-                    switch(ev)
+                    for(ev in scene.input.keyDownEvents)
                     {
-                        case Object(inputName,object,event):
-                            if(inputName == keyName)
-                            {
-                                object.processEvent(new GameEvent(event));
-                            }
-                        case Function(inputName, func):
-                            if(inputName == keyName)
-                            {
-                                func();
-                            }
+                        switch(ev)
+                        {
+                            case Object(inputName,object,event):
+                                if(inputName == keyName)
+                                {
+                                    object.processEvent(new GameEvent(event));
+                                }
+                            case Function(inputName, func):
+                                if(inputName == keyName)
+                                {
+                                    func();
+                                }
+                        }
                     }
+                    scene.input.inputStates.set(keyName,true);
                 }
             }
             if(scene.input.positiveKeyAxisMap.exists(key))
@@ -74,24 +78,28 @@ class Input
     {
         for(scene in scenes)
         {
-            for(ev in scene.input.keyUpEvents)
+            var keyName = scene.input.keyMap.get(key);
+            if(keyName != null)
             {
-                var keyName = scene.input.keyMap.get(key);
-                if(keyName != null)
+                if(scene.input.inputStates.get(keyName))
                 {
-                    switch(ev)
+                    for(ev in scene.input.keyUpEvents)
                     {
-                        case Object(inputName,object,event):
-                            if(inputName == keyName)
-                            {
-                                object.processEvent(new GameEvent(event));
-                            }
-                        case Function(inputName, func):
-                            if(inputName == keyName)
-                            {
-                                func();
-                            }
+                        switch(ev)
+                        {
+                            case Object(inputName,object,event):
+                                if(inputName == keyName)
+                                {
+                                    object.processEvent(new GameEvent(event));
+                                }
+                            case Function(inputName, func):
+                                if(inputName == keyName)
+                                {
+                                    func();
+                                }
+                        }
                     }
+                    scene.input.inputStates.set(keyName,false);
                 }
             }
              

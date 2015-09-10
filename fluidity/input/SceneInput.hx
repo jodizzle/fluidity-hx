@@ -9,6 +9,7 @@ class SceneInput {
     }
 
     public var keyMap:Map<Key,String> = new Map<Key,String>();
+    public var inputStates:Map<String,Bool> = new Map<String,Bool>();
 
     public var axisMap:Map<String,Axis> = new Map<String,Axis>();
     public var negativeKeyAxisMap:Map<Key,Axis> = new Map<Key,Axis>();
@@ -46,8 +47,11 @@ class SceneInput {
         {
             switch (events[i])
             {
-                case Object(obj,_):
-                    toRemove.push(i);
+                case Object(_,object,_):
+                    if(object == obj)
+                    {
+                        toRemove.push(i);
+                    }
                 default:
             }
         }
@@ -60,6 +64,33 @@ class SceneInput {
     public function registerInput(key:Key,inputName:String)
     {
         keyMap.set(key,inputName);
+        if(!inputStates.exists(inputName))
+        {
+            inputStates.set(inputName,false);
+        }
+        return this;
+    }
+
+    public function getInput(inputName:String)
+    {
+        return inputStates.get(inputName);
+    }
+
+    public function registerObjectOnKeyDown(inputName:String,obj:GameObject,eventName:String)
+    {
+        keyDownEvents.push(Object(inputName,obj,eventName));
+        return this;
+    }
+
+    public function registerObjectOnKeyUp(inputName:String,obj:GameObject,eventName:String)
+    {
+        keyUpEvents.push(Object(inputName,obj,eventName));
+        return this;
+    }
+
+    public function registerObjectOnKeyHeld(inputName:String,obj:GameObject,eventName:String)
+    {
+        keyHeldEvents.push(Object(inputName,obj,eventName));
         return this;
     }
 
