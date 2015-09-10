@@ -1,5 +1,5 @@
 
-package fluidity.utils;
+package fluidity.input;
 
 
 class Key {
@@ -16,4 +16,5 @@ class Key {
     public var char:String;
     public var output:String;
     public var shiftOutput:String;
+
 }

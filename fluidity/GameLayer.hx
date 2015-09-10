@@ -5,7 +5,6 @@ import haxe.ds.StringMap;
 
 import evsm.FState;
 
-import fluidity.backends.Input;
 import fluidity.backends.Backend;
 
 import fluidity.utils.StringBin;
@@ -137,9 +136,11 @@ class GameLayer{
             .onEvent(eventID,function(l:GameLayer)
                 {
                     fromScene.layer = null;
+                    Backend.input.removeScene(fromScene);
                     if(toScene.layer == null)
                     {
                         toScene.setLayer(this);
+                        Backend.input.addScene(toScene);
                         // toScene.layer = this;
                     }
                     else
@@ -167,6 +168,7 @@ class GameLayer{
     {
         state = states.get(stateName);
         scenes.get(stateName).setLayer(this).start();
+        Backend.input.addScene(scenes.get(stateName));
         activeLayers.push(this);
         return this;
     }
@@ -200,5 +202,28 @@ class GameLayer{
     public function getScene():GameScene
     {
         return scenes.get(state.name);
+    }
+
+    public function worldPointToLocal(point:Vec2)
+    {
+        var xScale = vWidth/width;
+        var yScale = vHeight/height;
+        var x = point.x * xScale;
+        var y = point.y * yScale;
+        var camera = getScene().camera;
+
+        return new Vec2(x - position.x*xScale - sceneOffset.x + camera.x, y - position.y*yScale - sceneOffset.y + camera.y);
+    }
+
+    public function localPointToWorld(point:Vec2)
+    {
+        var xScale = width/vWidth;
+        var yScale = height/vHeight;
+        var camera = getScene().camera;
+        var x = point.x - camera.x + sceneOffset.x + position.x/xScale;
+        var y = point.y - camera.y + sceneOffset.y + position.y/yScale;
+
+        return new Vec2(x*xScale, y*yScale);
+    
     }
 }

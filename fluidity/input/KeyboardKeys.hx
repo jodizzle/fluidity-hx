@@ -1,5 +1,5 @@
 
-package fluidity.utils;
+package fluidity.input;
 
 /**
  * The Keyboard class is used to build an interface that can be controlled by

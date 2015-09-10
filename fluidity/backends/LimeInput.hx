@@ -1,8 +1,8 @@
 
 package fluidity.backends;
 
-import fluidity.utils.Key;
-import fluidity.utils.KeyboardKeys;
+import fluidity.input.Key;
+import fluidity.input.KeyboardKeys;
 
 import lime.ui.KeyCode;
 

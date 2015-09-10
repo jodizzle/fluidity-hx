@@ -5,7 +5,6 @@ import haxe.ds.StringMap;
 
 import evsm.FState;
 
-import fluidity.backends.Input;
 import fluidity.backends.Backend;
 
 import fluidity.utils.StringBin;
@@ -14,6 +13,7 @@ import fluidity.utils.Vec2;
 import lime.app.Application;
 import lime.ui.KeyCode;
 import lime.ui.KeyModifier;
+import lime.ui.Window;
 
 class LimeGameManager extends Application{
 
@@ -95,9 +95,15 @@ class LimeGameManager extends Application{
         
     }
 
-    public override function onMouseDown(window,x:Float, y:Float, button:Int)
+    public override function onMouseDown(window:Window,x:Float, y:Float, button:Int)
     {
-
+        for(layer in layers.binMap)
+        {
+            var kek = layer.worldPointToLocal(new Vec2(-window.width/2 + x,-window.height/2 + y));
+            var kek2 = layer.localPointToWorld(kek);
+            trace('' + (x - window.width/2) + ', ' + kek2.x);
+            layer.getScene().generate('name').setPosition(new Vec2(kek.x,kek.y));
+        }
     }
 
     public function _onResize(width:Int,height:Int)

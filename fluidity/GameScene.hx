@@ -5,7 +5,7 @@ import haxe.ds.StringMap;
 
 import evsm.FState;
 
-import fluidity.backends.Input;
+import fluidity.input.SceneInput;
 import fluidity.backends.Backend;
 
 import fluidity.utils.StringBin;
@@ -16,7 +16,7 @@ class GameScene{
     public var layer:GameLayer;
 
     public var active(default,null):Bool = false;
-    public var input:Input;
+    public var input:SceneInput;
 
     public var camera:Vec2 = new Vec2();
 
@@ -26,8 +26,8 @@ class GameScene{
 
     public function new(?gravity:Vec2)
     {
-        input = Backend.input;
-        input.reset();
+        input = new SceneInput();
+        // input.reset();
         Backend.physics.newScene(this);
         Backend.graphics.newScene(this);
 
@@ -73,6 +73,7 @@ class GameScene{
     {
         if(obj != null)
         {
+            input.delete(obj);
             remove(obj);
             Backend.graphics.objectDispose(obj);
             Backend.physics.objectDispose(obj);
@@ -82,6 +83,7 @@ class GameScene{
 
     public function update()
     {
+        input.update();
         onUpdate();
         for(obj in objects)
         {
@@ -118,6 +120,7 @@ class GameScene{
         }
         Backend.graphics.sceneReset(this);
         Backend.physics.sceneReset(this);
+        input = new SceneInput();
         onReset();
 
         active = false;

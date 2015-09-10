@@ -5,7 +5,6 @@ import haxe.ds.StringMap;
 
 import evsm.FState;
 
-import fluidity.backends.Input;
 import fluidity.backends.Backend;
 
 import fluidity.utils.StringBin;
