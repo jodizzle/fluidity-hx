@@ -15,6 +15,10 @@ class ObjectBin<K:{ },V> {
     }
 
     public inline function get(name:K) {
+        if(name == null)
+        {
+            trace(binMap);
+        }
         if(binMap.exists(name))
         {
             return binMap.get(name);

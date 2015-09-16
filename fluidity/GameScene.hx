@@ -27,7 +27,7 @@ class GameScene{
     public function new(?gravity:Vec2)
     {
         input = new SceneInput();
-        // input.reset();
+
         Backend.physics.newScene(this);
         Backend.graphics.newScene(this);
 
@@ -104,7 +104,7 @@ class GameScene{
         active = true;
         
         onStart();
-        // input.start();
+
         Backend.graphics.sceneStart(this);
         Backend.physics.sceneStart(this);
 
@@ -113,7 +113,6 @@ class GameScene{
 
     public function reset()
     {
-        // input.stop();
         while(objects.length > 0)
         {
             delete(objects[objects.length - 1]);
@@ -175,7 +174,7 @@ class GameScene{
         {
             generatorMap.set(name,generatorWithArgs);
         }
-        typeMap.set(name,new ObjectType());
+        // typeMap.set(name,new ObjectType());
         return this;
     }
 
@@ -200,7 +199,6 @@ class GameScene{
         {
             var obj = generatorMap.get(name)(args);
             add(obj);
-            typeMap.get(name).addObject(obj);
             return obj;
         }
         else
@@ -215,23 +213,19 @@ class GameScene{
     //     state = s;
     // }
 
-    public function type(name:String):ObjectType
-    {
-        if(typeMap.exists(name))
-        {
-            return typeMap.get(name);
-        }
-        var t = new ObjectType();
-        typeMap.set(name,t);
-        return t;
-    }
+    // public function type(name:String):ObjectType
+    // {
+    //     if(typeMap.exists(name))
+    //     {
+    //         return typeMap.get(name);
+    //     }
+    //     var t = new ObjectType();
+    //     typeMap.set(name,t);
+    //     return t;
+    // }
 
-    private var typeMap:StringMap<ObjectType> = new StringMap<ObjectType>();
 
     private var objects:Array<GameObject> = [];
-
-    // private var graphics:IGraphics;
-    // private var physics:IPhysics;
 
     private var generatorMap:StringMap<Array<Dynamic>->GameObject> = new StringMap<Array<Dynamic>->GameObject>();
 

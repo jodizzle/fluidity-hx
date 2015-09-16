@@ -131,7 +131,10 @@ class LimeLayer{
             }
             lastObj = graphicObj;
         }
-        lastObj.unbind();
+        if(lastObj != null)
+        {
+            lastObj.unbind();
+        }
         GraphicsLimeObject.unbindGeneral();
     }
 

@@ -219,7 +219,10 @@ class GameObject{
 
     public function update()
     {
-        state.update(this);
+        if(state != null)
+        {
+            state.update(this);
+        }
 
         Backend.physics.objectUpdate(this);
         Backend.graphics.objectUpdate(this);

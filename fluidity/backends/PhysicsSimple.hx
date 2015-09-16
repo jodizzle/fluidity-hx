@@ -35,7 +35,10 @@ class PhysicsSimple implements IPhysicsBackend{
 
     public function sceneAdd(scene:GameScene,obj:GameObject)
     {
-        scenes.get(scene).add(objects.get(obj));
+        if(obj.type != null)
+        {
+            scenes.get(scene).add(objects.get(obj));
+        }
     }
 
     public function sceneRemove(scene:GameScene,obj:GameObject)
@@ -93,6 +96,10 @@ class PhysicsSimple implements IPhysicsBackend{
 
         objects.get(obj).type = spType;
         spType.objects.push(objects.get(obj));
+        if(obj.scene != null)
+        {
+            scenes.get(obj.scene).add(objects.get(obj));
+        }
     }
 
     // public function objectRemoveType(obj:GameObject,type:ObjectType)
