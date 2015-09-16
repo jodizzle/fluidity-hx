@@ -4,11 +4,16 @@ package fluidity;
 import fluidity.input.Key;
 import haxe.ds.ObjectMap;
 import haxe.ds.StringMap;
+import fluidity.input.Touch;
+import fluidity.input.Pointer;
 
 class Input
 {
 
     public var scenes:Array<GameScene> = [];
+
+    public var pointers:Array<Pointer> = [];
+    public var touches:Array<Touch> = [];
 
     public function new()
     {
@@ -31,6 +36,55 @@ class Input
     public function reset()
     {
         scenes = [];
+    }
+
+    public function onMouseMove(x:Float,y:Float,relX:Float = 0,relY:Float = 0)
+    {
+        Pointer.mousePosition.x = x;
+        Pointer.mousePosition.y = y;
+        Pointer.mouseMovement.x = relX;
+        Pointer.mouseMovement.y = relY;
+
+        for(scene in scenes)
+        {
+            for(ev in scene.input.pointerMoveEvents)
+            {
+                switch (ev) {
+                    case Object(obj,eventName):
+                        var event = new GameEvent(eventName);
+                        event.pointer = new Pointer();
+                        obj.processEvent(event);
+                    case Function(func):
+                        func(new Pointer());
+                    default:
+                }
+            }
+        }
+    }
+
+    public function onMouseDown(button:Int)
+    {
+
+    }
+
+    public function onMouseUp(button:Int)
+    {
+
+    }
+
+    public function onTouchBegin(touch:Touch)
+    {
+
+    }
+
+    public function onTouchMove(touch:Touch)
+    {
+        
+    }
+
+    public function onTouchEnd(touch:Touch)
+    {
+
     }
 
     public function onKeyDown(key:Key)

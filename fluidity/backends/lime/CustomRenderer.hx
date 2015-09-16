@@ -84,8 +84,8 @@ class CustomRenderer
             void main(void)
             {
                 vec4 texel = texture2D(uImage0, vTexCoord);
-                // if (texel.a < 0.1)
-                //     discard; 
+                if (texel.a < 0.1)
+                    discard; 
                 gl_FragColor = texel;
             }";
         }
@@ -124,8 +124,8 @@ class CustomRenderer
             void main(void)
             {
                 vec4 texel = texture2D(uImage0, vTexCoord);
-                // if (texel.a < 0.1)
-                //     discard; 
+                if (texel.a < 0.1)
+                    discard; 
                 gl_FragColor = texel;
             }";
         }

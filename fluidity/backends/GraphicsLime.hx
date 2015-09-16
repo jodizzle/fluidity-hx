@@ -13,8 +13,6 @@ import lime.utils.Float32Array;
 
 class GraphicsLime implements IGraphicsBackend { 
 
-    public var graphicBin:EnumBin<Graphic,GraphicsLimeObject>;
-
     public var sceneMap:Map<GameScene,LimeScene> = new Map<GameScene,LimeScene>();
     public var objectSceneMap:Map<GameObject,LimeScene> = new Map<GameObject,LimeScene>();
 
@@ -50,17 +48,10 @@ class GraphicsLime implements IGraphicsBackend {
     public inline function setCustom(layer:GameLayer,custom:CustomRenderer)
     {
         layerBin.get(layer).setCustom(custom);
-        // initGL();
     }
 
     private inline function initBins()
     {
-
-        graphicBin = new EnumBin<Graphic,GraphicsLimeObject>(
-            function(g:Graphic)
-            {
-                return new GraphicsLimeObject(g);
-            });
 
         layerBin = new ObjectBin<GameLayer,LimeLayer>(
             function(l:GameLayer)
@@ -74,44 +65,30 @@ class GraphicsLime implements IGraphicsBackend {
         defaultRenderer = new CustomRenderer();
         defaultRenderer.init();
 
-        // GL.depthFunc(GL.NEVER);
-        #if depthbuffer
         GL.enable(GL.DEPTH_TEST);
         GL.depthFunc( GL.LEQUAL );
         GL.depthMask( true );
-        #end
 
-        GL.blendFunc (GL.SRC_ALPHA, GL.ONE_MINUS_SRC_ALPHA);
-        GL.enable(GL.BLEND);
+        // GL.blendFunc (GL.SRC_ALPHA, GL.ONE_MINUS_SRC_ALPHA);
+        // GL.enable(GL.BLEND);
 
         GraphicsLimeObject.init(defaultRenderer.program);
 
         /* Depth buffer */
-        #if depthbuffer
         renderbuffer = GL.createRenderbuffer();
         GL.bindRenderbuffer(GL.RENDERBUFFER, renderbuffer);
         GL.renderbufferStorage(GL.RENDERBUFFER, GL.DEPTH_COMPONENT16, 400, 300);
-        #end
 
 
         /* Framebuffer to link everything together */
         rttFramebuffer = GL.createFramebuffer();
         
-        #if depthbuffer
         GL.bindFramebuffer(GL.FRAMEBUFFER, rttFramebuffer);
         GL.framebufferRenderbuffer(GL.FRAMEBUFFER, GL.DEPTH_ATTACHMENT, GL.RENDERBUFFER, renderbuffer);
         GL.bindFramebuffer(GL.FRAMEBUFFER, null);
-        #end
         
         GL.bindTexture(GL.TEXTURE_2D, null);
 
-        // var data = 
-        //     [          
-        //         1, 1, 0,    1, 1,
-        //         1, 0, 0,    1, 0,
-        //         0, 1, 0,    0, 1,
-        //         0, 0, 0,    0, 0   
-        //     ];
         var data = 
             [          
                 .5, .5, 0,    1, 1,
@@ -141,10 +118,6 @@ class GraphicsLime implements IGraphicsBackend {
 
         GL.bindFramebuffer(GL.FRAMEBUFFER, rttFramebuffer);
 
-        // if(customRenderer != null && customRenderer.customInitFunc != null)
-        // {
-        //     customRenderer.customInitFunc(program);
-        // }
     }
 
     private inline function postProcessShader(postProcessProgram:GLProgram)
@@ -153,9 +126,6 @@ class GraphicsLime implements IGraphicsBackend {
 
         var imageUniform = GL.getUniformLocation (postProcessProgram, "uImage0");
         GL.uniform1i (imageUniform, 0);
-
-        // glUniform1i(uniform_rttTexture, 0);
-        // glEnableVertexAttribArray(attribute_v_coord_postproc);
 
         GL.bindFramebuffer(GL.FRAMEBUFFER, null);
     }
@@ -202,15 +172,6 @@ class GraphicsLime implements IGraphicsBackend {
 
     public inline function objectDispose(obj:GameObject)
     {
-        // if(obj.graphic != null)
-        // {
-        //     objectList.remove(obj);
-        //     objectMap.remove(obj);
-        // }
-        // if(obj.scene != null)
-        // {
-        //     sceneMap.get(obj.scene).remove(obj);
-        // }
         if(objectSceneMap.exists(obj))
         {
             objectSceneMap.get(obj).remove(obj);
@@ -237,7 +198,7 @@ class GraphicsLime implements IGraphicsBackend {
 
         normalShader(limeLayer.customRenderer.program);
 
-        limeLayer.render(window,limeScene,graphicBin);
+        limeLayer.render(window,limeScene);
 
         renderedLayers.push(limeLayer);
     }
@@ -245,12 +206,25 @@ class GraphicsLime implements IGraphicsBackend {
     public inline function newObject(obj:GameObject){};
     public inline function objectSet(obj:GameObject,graphic:Graphic)
     {
-        if(obj.scene != null && !objectSceneMap.exists(obj))
+        if(obj.scene != null)
         {
-            sceneMap.get(obj.scene).add(obj);
-            objectSceneMap.set(obj,sceneMap.get(obj.scene));
+            if(!objectSceneMap.exists(obj))
+            {
+                obj.graphic = graphic;
+                sceneMap.get(obj.scene).add(obj);
+                objectSceneMap.set(obj,sceneMap.get(obj.scene));
+            }
+            else
+            {
+                sceneMap.get(obj.scene).remove(obj);
+                obj.graphic = graphic;
+                sceneMap.get(obj.scene).add(obj);
+            }
         }
-        obj.graphic = graphic;
+        else
+        {
+            obj.graphic = graphic;
+        }
     }
 
     public inline function objectUpdate(obj:GameObject)
@@ -272,11 +246,7 @@ class GraphicsLime implements IGraphicsBackend {
     public function postRender():Void
     {
         GL.bindFramebuffer(GL.FRAMEBUFFER,null);
-        #if !depthbuffer
-        GL.clear (GL.COLOR_BUFFER_BIT);
-        #else
         GL.clear(GL.COLOR_BUFFER_BIT | GL.DEPTH_BUFFER_BIT);
-        #end
 
         for(limeLayer in renderedLayers)
         {

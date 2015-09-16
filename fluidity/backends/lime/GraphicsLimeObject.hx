@@ -26,13 +26,14 @@ class GraphicsLimeObject {
     public var height:Int = 0;
 
 
-    public var graphic:Graphic;
+    // public var graphic:Graphic;
+    public var graphicName:String;
+
+    public var objects:Array<GameObject> = [];
 
     // public var frame:Int = 0;
     private var imageWidth:Float;
     private var imageFrames:Int;
-
-    public var objectFrames:Map<GameObject,Int>;
 
     public static function init(program)
     {
@@ -61,28 +62,28 @@ class GraphicsLimeObject {
         initialized = true;
     }
 
-    public function new(g:Graphic)
+    public function new(filename:String)
     {
-        graphic = g;
+        // graphic = g;
 
-        var filename:String = switch (graphic) {
-                case Image(f): f;
-                case SpriteSheet(f,_,_,_,_,_): f;
-            };
+        // var filename:String = switch (graphic) {
+        //         case Image(f): f;
+        //         case SpriteSheet(f,_,_,_,_,_): f;
+        //     };
 
         var image = Assets.getImage (filename);
 
-        switch(graphic)
-        {
-            case Image(_):
+        // switch(graphic)
+        // {
+        //     case Image(_):
                 width = image.width;
                 height = image.height;
-            case SpriteSheet(_,w,h,_,_,_):
-                width = w;
-                height = h;
-                imageWidth = image.width;
-                imageFrames = Math.floor(image.width/w);
-        };
+        //     case SpriteSheet(_,w,h,_,_,_):
+        //         width = w;
+        //         height = h;
+        //         imageWidth = image.width;
+        //         imageFrames = Math.floor(image.width/w);
+        // };
 
         texture = GL.createTexture ();
         GL.bindTexture (GL.TEXTURE_2D, texture);
@@ -126,6 +127,21 @@ class GraphicsLimeObject {
         GL.bindBuffer (GL.ARRAY_BUFFER, null);
     }
 
+    public static function compareGraphic(obj1:GameObject,obj2:GameObject)
+    {
+        var filename:String = switch (obj1.graphic) {
+                case Image(f): f;
+                case SpriteSheet(f,_,_,_,_,_): f;
+            };
+
+
+        var filename2:String = switch (obj2.graphic) {
+                case Image(f): f;
+                case SpriteSheet(f,_,_,_,_,_): f;
+            };
+
+        return filename == filename2;
+    }
 
     public function render(obj:GameObject,program:GLProgram,customRenderPreFunc:GameObject->Void,customRenderPostFunc:GameObject->Void)
     {
@@ -138,10 +154,13 @@ class GraphicsLimeObject {
         scaleUniformLocation = GL.getUniformLocation(program,"uScale");
 
         var offsetX:Float = 0;
-        var drawWidth:Float = 1;
 
-        switch (graphic) {
-            case SpriteSheet(_,_,_,frames,frameLength,loop):
+        var texWidth:Float = 1;
+        var drawWidth = width;
+        var drawHeight = height;
+
+        switch (obj.graphic) {
+            case SpriteSheet(_,w,h,frames,frameLength,loop):
                 if(Math.floor(obj.currentAnimationTime/frameLength) == frames.length)
                 {
                     //send animend event
@@ -152,8 +171,11 @@ class GraphicsLimeObject {
                 }
                 var frame:Int = Math.floor(Math.min(frames.length,Math.floor(obj.currentAnimationTime/frameLength)));
 
-                offsetX = frames[frame]/imageFrames;
-                drawWidth = width/imageWidth;
+                offsetX = frames[frame]/(width/w);
+                texWidth = w/width;
+
+                drawWidth = w;
+                drawHeight = h;
                 // offsetY = Math.floor(frames[frame] / imageWidth);
             default:
                 GL.uniform2f(texOffsetUniformLocation,0,0);
@@ -161,14 +183,14 @@ class GraphicsLimeObject {
         }
 
         GL.uniform2f(texOffsetUniformLocation,offsetX,0);
-        GL.uniform2f(texSizeUniformLocation,drawWidth,1);
+        GL.uniform2f(texSizeUniformLocation,texWidth,1);
 
         var flip = 1;
         if(obj.flip)
         {
             flip = -1;
         }
-        GL.uniform2f(scaleUniformLocation,flip*obj.scale * width,obj.scale * height);
+        GL.uniform2f(scaleUniformLocation,flip*obj.scale * drawWidth,obj.scale * drawHeight);
         // GL.uniform1f(rotationUniformLocation,obj.angle);
 
         customRenderPreFunc(obj);
@@ -187,5 +209,13 @@ class GraphicsLimeObject {
         customRenderPostFunc(obj);
     }
 
-    // public function add(obj:GameObject);
+    public function add(obj:GameObject)
+    {
+        objects.push(obj);
+    }
+
+    public function remove(obj:GameObject)
+    {
+        objects.remove(obj);
+    }
 }

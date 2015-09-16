@@ -14,8 +14,6 @@ import fluidity.utils.EnumBin;
 class LimeLayer{
 
     public var customRenderer:CustomRenderer;
-    // public var program:GLProgram;
-    // public var postProcessProgram:GLProgram;
 
     var rttTexture:GLTexture;
 
@@ -99,7 +97,7 @@ class LimeLayer{
         return this;
     }
 
-    public function render(window:lime.ui.Window,limeScene:LimeScene,graphicBin:EnumBin<Graphic,GraphicsLimeObject>)
+    public function render(window:lime.ui.Window,limeScene:LimeScene)
     {
         bind();
 
@@ -107,40 +105,26 @@ class LimeLayer{
 
         customRenderer.initFunc(customRenderer.program);
 
-        // GL.clear (GL.COLOR_BUFFER_BIT);
-        #if !depthbuffer
-        GL.clear (GL.COLOR_BUFFER_BIT);
-        #else
         GL.clear(GL.COLOR_BUFFER_BIT | GL.DEPTH_BUFFER_BIT);
-        #end
 
         var projectionMatrixUniform = GL.getUniformLocation (customRenderer.program, "uProjectionMatrix");
 
-        // var matrix = lime.math.Matrix4.createOrtho (-window.width/2, window.width/2, window.height/2, -window.height/2, -2000, 2000);
         var matrix = lime.math.Matrix4.createOrtho (-vWidth/2/scene.cameraScale + scene.camera.x + sceneOffset.x, vWidth/2/scene.cameraScale + scene.camera.x + sceneOffset.x, -vHeight/2/scene.cameraScale + scene.camera.y + sceneOffset.y, vHeight/2/scene.cameraScale + scene.camera.y + sceneOffset.y, -2000, 2000);
         GL.uniformMatrix4fv (projectionMatrixUniform, false, matrix);
 
 
         GraphicsLimeObject.bindGeneral();
-
-        var currentGraphic:GraphicsLimeObject = null;
-        for(obj in limeScene.objectList)
+        var lastObj:GraphicsLimeObject;
+        for(graphicObj in limeScene.graphicIdMap)
         {
-            if(graphicBin.get(obj.graphic) != currentGraphic)
+            graphicObj.bind();
+            for(obj in graphicObj.objects)
             {
-                if(currentGraphic != null)
-                {
-                    currentGraphic.unbind();
-                }
-                currentGraphic = graphicBin.get(obj.graphic);
-                currentGraphic.bind();
+                graphicObj.render(obj,customRenderer.program,customRenderer.renderPreFunc,customRenderer.renderPostFunc);
             }
-            currentGraphic.render(obj,customRenderer.program,customRenderer.renderPreFunc,customRenderer.renderPostFunc);
+            lastObj = graphicObj;
         }
-        if(currentGraphic != null)
-        {
-            currentGraphic.unbind();
-        }
+        lastObj.unbind();
         GraphicsLimeObject.unbindGeneral();
     }
 
@@ -153,13 +137,11 @@ class LimeLayer{
         var projectionMatrixUniform = GL.getUniformLocation (customRenderer.postProcessProgram, "uProjectionMatrix");
 
         var projectionMatrix = lime.math.Matrix4.createOrtho (-window.width/2, window.width/2, window.height/2, -window.height/2, -2000, 2000);
-        // var projectionMatrix = lime.math.Matrix4.createOrtho (0, window.width, window.height, 0, -2000, 2000);
+       
         GL.uniformMatrix4fv (projectionMatrixUniform, false, projectionMatrix);
 
         var mvMatrix = new lime.math.Matrix4();
-        // mvMatrix.appendScale(1,-1,1);
-        // trace(mvMatrix);
-
+        
         mvMatrix.appendScale(width,height,1);
         mvMatrix.appendTranslation(position.x,position.y,0);
         // if(obj.angle != 0)
@@ -174,9 +156,6 @@ class LimeLayer{
         GL.vertexAttribPointer (vertexAttribute, 3, GL.FLOAT, false, 5 * Float32Array.BYTES_PER_ELEMENT, 0);
         GL.vertexAttribPointer (textureAttribute, 2, GL.FLOAT, false, 5 * Float32Array.BYTES_PER_ELEMENT, 3 * Float32Array.BYTES_PER_ELEMENT);
                 
-        // GL.bindBuffer (GL.ARRAY_BUFFER, quadBuffer);
-        // GL.vertexAttribPointer (vertexAttribute, 2, GL.FLOAT, false, 2 * Float32Array.BYTES_PER_ELEMENT, 0);
-        // GL.activeTexture (GL.TEXTURE0);
         bindTexture();
 
         GL.drawArrays (GL.TRIANGLE_STRIP, 0, 4);

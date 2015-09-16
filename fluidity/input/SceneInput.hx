@@ -19,6 +19,13 @@ class SceneInput {
     public var keyUpEvents:Array<KeyHandler> = [];
     public var keyHeldEvents:Array<KeyHandler> = [];
 
+    public var pointerClickEvents:Array<PointerEventType> = [];
+    public var pointerMoveEvents:Array<PointerEventType> = [];
+    public var pointerReleaseEvents:Array<PointerEventType> = [];
+    public var touchClickEvents:Array<TouchEventType> = [];
+    public var touchMoveEvents:Array<TouchEventType> = [];
+    public var touchReleaseEvents:Array<TouchEventType> = [];
+
     public function registerAxis(negativeKey:Key,positiveKey:Key,axisName:String)
     {
         var axis:Axis =axisMap.get(axisName);
@@ -115,6 +122,54 @@ class SceneInput {
     public function getAxis(axisName:String)
     {
         return axisMap.get(axisName).value;
+    }
+
+    public function registerFunctionOnPointerClick(button:Int,func:Pointer->Void)
+    {
+        pointerClickEvents.push(ButtonFunction(button,func));
+        return this;
+    }
+
+    public function registerFunctionOnPointerMove(func:Pointer->Void)
+    {
+        pointerMoveEvents.push(Function(func));
+        return this;
+    }
+
+    public function registerFunctionOnPointerRelease(button:Int,func:Pointer->Void)
+    {
+        pointerReleaseEvents.push(ButtonFunction(button,func));
+        return this;
+    }
+
+    public function registerObjectOnPointerClick(obj:GameObject,button:Int,eventName:String)
+    {
+        pointerClickEvents.push(ButtonObject(button,obj,eventName));
+        return this;
+    }
+
+    public function registerFunctionOnTouchClick(func:Touch->Void)
+    {
+        touchClickEvents.push(Function(func));
+        return this;
+    }
+
+    public function registerFunctionOnTouchMove(func:Touch->Void)
+    {
+        touchMoveEvents.push(Function(func));
+        return this;
+    }
+
+    public function registerFunctionOnTouchRelease(func:Touch->Void)
+    {
+        touchReleaseEvents.push(Function(func));
+        return this;
+    }
+
+    public function registerObjectOnTouchClick(obj:GameObject,eventName:String)
+    {
+        touchClickEvents.push(Object(obj,eventName));
+        return this;
     }
 
     public function update()
