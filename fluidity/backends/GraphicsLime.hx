@@ -30,7 +30,7 @@ class GraphicsLime implements IGraphicsBackend {
     var rttFramebuffer:GLFramebuffer;
     
     var quadBuffer:GLBuffer;
-    var renderbuffer:GLRenderbuffer;
+    // var renderbuffer:GLRenderbuffer;
 
     public var renderedLayers:Array<LimeLayer> = [];
 
@@ -75,17 +75,17 @@ class GraphicsLime implements IGraphicsBackend {
         GraphicsLimeObject.init(defaultRenderer.program);
 
         /* Depth buffer */
-        renderbuffer = GL.createRenderbuffer();
-        GL.bindRenderbuffer(GL.RENDERBUFFER, renderbuffer);
-        GL.renderbufferStorage(GL.RENDERBUFFER, GL.DEPTH_COMPONENT16, 400, 300);
+        // renderbuffer = GL.createRenderbuffer();
+        // GL.bindRenderbuffer(GL.RENDERBUFFER, renderbuffer);
+        // GL.renderbufferStorage(GL.RENDERBUFFER, GL.DEPTH_COMPONENT16, 400, 300);
 
 
         /* Framebuffer to link everything together */
         rttFramebuffer = GL.createFramebuffer();
         
-        GL.bindFramebuffer(GL.FRAMEBUFFER, rttFramebuffer);
-        GL.framebufferRenderbuffer(GL.FRAMEBUFFER, GL.DEPTH_ATTACHMENT, GL.RENDERBUFFER, renderbuffer);
-        GL.bindFramebuffer(GL.FRAMEBUFFER, null);
+        // GL.bindFramebuffer(GL.FRAMEBUFFER, rttFramebuffer);
+        // GL.framebufferRenderbuffer(GL.FRAMEBUFFER, GL.DEPTH_ATTACHMENT, GL.RENDERBUFFER, renderbuffer);
+        // GL.bindFramebuffer(GL.FRAMEBUFFER, null);
         
         GL.bindTexture(GL.TEXTURE_2D, null);
 

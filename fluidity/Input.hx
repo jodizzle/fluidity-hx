@@ -43,8 +43,6 @@ class Input
         Pointer.mousePosition.x = x;
         Pointer.mousePosition.y = y;
 
-        trace(x);
-
         for(scene in scenes)
         {
             for(ev in scene.input.pointerMoveEvents)
@@ -66,16 +64,56 @@ class Input
     {
         Pointer.mousePosition.x = x;
         Pointer.mousePosition.y = y;
-
-
+        
+        for(scene in scenes)
+        {
+            for(ev in scene.input.pointerClickEvents)
+            {
+                switch (ev) {
+                    case ButtonObject(but,obj,eventName):
+                        if(button == but)
+                        {
+                            var event = new GameEvent(eventName);
+                            event.pointer = new Pointer();
+                            obj.processEvent(event);
+                        }
+                    case ButtonFunction(but,func):
+                        if(button == but)
+                        {
+                            func(new Pointer());
+                        }
+                    default:
+                }
+            }
+        }
     }
 
     public function onMouseUp(x:Float,y:Float,button:Int)
     {
         Pointer.mousePosition.x = x;
         Pointer.mousePosition.y = y;
-
-
+        
+        for(scene in scenes)
+        {
+            for(ev in scene.input.pointerReleaseEvents)
+            {
+                switch (ev) {
+                    case ButtonObject(but,obj,eventName):
+                        if(button == but)
+                        {
+                            var event = new GameEvent(eventName);
+                            event.pointer = new Pointer();
+                            obj.processEvent(event);
+                        }
+                    case ButtonFunction(but,func):
+                        if(button == but)
+                        {
+                            func(new Pointer());
+                        }
+                    default:
+                }
+            }
+        }
     }
 
     public function onTouchBegin(touch:Touch)
