@@ -17,7 +17,6 @@ class SceneInput {
     
     public var keyDownEvents:Array<KeyHandler> = [];
     public var keyUpEvents:Array<KeyHandler> = [];
-    public var keyHeldEvents:Array<KeyHandler> = [];
 
     public var pointerClickEvents:Array<PointerEventType> = [];
     public var pointerMoveEvents:Array<PointerEventType> = [];
@@ -44,7 +43,6 @@ class SceneInput {
     {
         removeObjectFromList(keyDownEvents,obj);
         removeObjectFromList(keyUpEvents,obj);
-        removeObjectFromList(keyHeldEvents,obj);
     }
 
     private function removeObjectFromList(events:Array<KeyHandler>,obj:GameObject)
@@ -95,12 +93,6 @@ class SceneInput {
         return this;
     }
 
-    public function registerObjectOnKeyHeld(inputName:String,obj:GameObject,eventName:String)
-    {
-        keyHeldEvents.push(Object(inputName,obj,eventName));
-        return this;
-    }
-
     public function registerFunctionOnKeyDown(inputName:String,func:Void->Void)
     {
         keyDownEvents.push(Function(inputName,func));
@@ -110,12 +102,6 @@ class SceneInput {
     public function registerFunctionOnKeyUp(inputName:String,func:Void->Void)
     {
         keyUpEvents.push(Function(inputName,func));
-        return this;
-    }
-
-    public function registerFunctionOnKeyHeld(inputName:String,func:Void->Void)
-    {
-        keyHeldEvents.push(Function(inputName,func));
         return this;
     }
 

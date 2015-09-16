@@ -1,5 +1,5 @@
 
-package fluidity.backends;
+package fluidity.backends.lime;
 
 import fluidity.input.Key;
 import fluidity.input.KeyboardKeys;
@@ -23,6 +23,11 @@ class LimeInput extends Input
     {
         onKeyUp(getKeyFromCode(keyCode));
     }
+
+    // public function limeOnMouseMove(x:Float,y:Float)
+    // {
+    //     onMouseMove(x,y);
+    // }
 
     public function getKeyFromCode(keyCode:KeyCode)
     {

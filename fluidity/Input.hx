@@ -38,12 +38,12 @@ class Input
         scenes = [];
     }
 
-    public function onMouseMove(x:Float,y:Float,relX:Float = 0,relY:Float = 0)
+    public function onMouseMove(x:Float,y:Float)
     {
         Pointer.mousePosition.x = x;
         Pointer.mousePosition.y = y;
-        Pointer.mouseMovement.x = relX;
-        Pointer.mouseMovement.y = relY;
+
+        trace(x);
 
         for(scene in scenes)
         {
@@ -62,13 +62,19 @@ class Input
         }
     }
 
-    public function onMouseDown(button:Int)
+    public function onMouseDown(x:Float,y:Float,button:Int)
     {
+        Pointer.mousePosition.x = x;
+        Pointer.mousePosition.y = y;
+
 
     }
 
-    public function onMouseUp(button:Int)
+    public function onMouseUp(x:Float,y:Float,button:Int)
     {
+        Pointer.mousePosition.x = x;
+        Pointer.mousePosition.y = y;
+
 
     }
 

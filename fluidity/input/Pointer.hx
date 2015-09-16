@@ -13,8 +13,8 @@ class Pointer {
     public var position(get,never):Vec2;
     public var movement(get,never):Vec2;
 
-    public static var mousePosition:Vec2;
-    public static var mouseMovement:Vec2;
+    public static var mousePosition:Vec2 = new Vec2();
+    public static var mouseMovement:Vec2 = new Vec2();
 
     public var onMoveEvents:Array<PointerEventType> = [];
     public var onReleaseEvents:Array<PointerEventType> = [];

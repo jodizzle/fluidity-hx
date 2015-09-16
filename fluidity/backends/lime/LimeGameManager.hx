@@ -92,18 +92,17 @@ class LimeGameManager extends Application{
 
     public override function onMouseMove(window,x:Float, y:Float)
     {
-        
+        limeInput.onMouseMove(x,y);
     }
 
     public override function onMouseDown(window:Window,x:Float, y:Float, button:Int)
     {
-        for(layer in layers.binMap)
-        {
-            var kek = layer.worldPointToLocal(new Vec2(-window.width/2 + x,-window.height/2 + y));
-            var kek2 = layer.localPointToWorld(kek);
-            trace('' + (x - window.width/2) + ', ' + kek2.x);
-            layer.getScene().generate('name').setPosition(new Vec2(kek.x,kek.y));
-        }
+        limeInput.onMouseDown(x,y,button);
+    }
+
+    public override function onMouseUp(window:Window,x:Float, y:Float, button:Int)
+    {
+        limeInput.onMouseUp(x,y,button);
     }
 
     public function _onResize(width:Int,height:Int)
