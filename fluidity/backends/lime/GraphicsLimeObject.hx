@@ -190,18 +190,18 @@ class GraphicsLimeObject {
         {
             flip = -1;
         }
-        GL.uniform2f(scaleUniformLocation,flip*obj.scale * drawWidth,obj.scale * drawHeight);
-        // GL.uniform1f(rotationUniformLocation,obj.angle);
+        GL.uniform2f(scaleUniformLocation,flip*obj.worldScale * drawWidth,obj.worldScale * drawHeight);
+        // GL.uniform1f(rotationUniformLocation,obj.worldAngle);
 
         customRenderPreFunc(obj);
         var mvMatrix = new lime.math.Matrix4();
 
-        // mvMatrix.appendScale(width*obj.scale,height*obj.scale,1);
-        if(obj.angle != 0)
+        // mvMatrix.appendScale(width*obj.worldScale,height*obj.worldScale,1);
+        if(obj.worldAngle != 0)
         {
-            mvMatrix.appendRotation(obj.angle,lime.math.Vector4.Z_AXIS);
+            mvMatrix.appendRotation(obj.worldAngle/Math.PI*180,lime.math.Vector4.Z_AXIS);
         }
-        mvMatrix.appendTranslation(obj.position.x,obj.position.y,obj.z);
+        mvMatrix.appendTranslation(obj.worldPosition.x,obj.worldPosition.y,obj.z);
 
         GL.uniformMatrix4fv (mvMatrixUniformLocation, false, mvMatrix);
         

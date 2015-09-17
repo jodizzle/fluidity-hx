@@ -194,18 +194,24 @@ class GameScene{
         {
             args = [];
         }
-
-        if(active)
+        if(generatorMap.exists(name))
         {
-            var obj = generatorMap.get(name)(args);
-            add(obj);
-            return obj;
+            if(active)
+            {
+                var obj = generatorMap.get(name)(args);
+                add(obj);
+                return obj;
+            }
+            else
+            {
+                trace('Cannot generate objects before this scene has started. Override onStart() and generate objects there. Obj name: ' + name);
+            }
         }
         else
         {
-            trace('Cannot generate objects before this scene has started. Override onStart() and generate objects there. Obj name: ' + name);
-            return null;
+            trace('Generator with name ' + name + ' does not exist');
         }
+        return null;
     }
 
     // public function setState(s:FState<GameObject,GameEvent>)

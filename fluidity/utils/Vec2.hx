@@ -88,7 +88,12 @@ class Vec2 {
 
     public inline function rotate(radians:Float):Vec2
     {
-        trace('unimplemented');
+
+        var s = Math.sin(radians);
+        var c = Math.cos(radians);
+        var newX = x * c - y *s;
+        var newY = x * s + y *c;
+        setxy(newX,newY);
         return this;
     }
 

@@ -157,15 +157,15 @@ class PhysicsSimpleScene{
         {
             case Circle(x1,y1,r1):
 
-                var p1 = new Vec2(obj1.gameObject.position.x + x1,obj1.gameObject.position.y + y1);
-                r1 = r1*obj1.gameObject.scale;
+                var p1 = new Vec2(obj1.gameObject.worldPosition.x + x1,obj1.gameObject.worldPosition.y + y1);
+                r1 = r1*obj1.gameObject.worldScale;
 
                 switch (obj2.collider)
                 {
                     case Circle(x2,y2,r2):
 
-                        var p2 = new Vec2(obj2.gameObject.position.x + x2,obj2.gameObject.position.y + y2);
-                        r2 = r2*obj2.gameObject.scale;
+                        var p2 = new Vec2(obj2.gameObject.worldPosition.x + x2,obj2.gameObject.worldPosition.y + y2);
+                        r2 = r2*obj2.gameObject.worldScale;
 
                         var difference = p1.sub(p2);
                         if(difference.length == 0)
@@ -182,10 +182,10 @@ class PhysicsSimpleScene{
 
                     case Rectangle(x2,y2,w,h):
 
-                        w = w*obj2.gameObject.scale;
-                        h = h*obj2.gameObject.scale;
+                        w = w*obj2.gameObject.worldScale;
+                        h = h*obj2.gameObject.worldScale;
 
-                        var p2 = new Vec2(obj2.gameObject.position.x + x2,obj2.gameObject.position.y + y2);
+                        var p2 = new Vec2(obj2.gameObject.worldPosition.x + x2,obj2.gameObject.worldPosition.y + y2);
 
                         var result = rectangleCircleCollision(p2,w,h,p1,r1);
                         result.set(new Vec2(-result.x,-result.y));
@@ -198,35 +198,35 @@ class PhysicsSimpleScene{
 
             case Rectangle(x1,y1,w1,h1):
 
-                w1 = w1*obj1.gameObject.scale;
-                h1 = h1*obj1.gameObject.scale;
+                w1 = w1*obj1.gameObject.worldScale;
+                h1 = h1*obj1.gameObject.worldScale;
 
                 switch (obj2.collider)
                 {
                     case Circle(x2,y2,r):
 
-                        r = r*obj2.gameObject.scale;
+                        r = r*obj2.gameObject.worldScale;
 
-                        var p1 = new Vec2(obj1.gameObject.position.x + x1,obj1.gameObject.position.y + y1);
-                        var p2 = new Vec2(obj2.gameObject.position.x + x2,obj2.gameObject.position.y + y2);
+                        var p1 = new Vec2(obj1.gameObject.worldPosition.x + x1,obj1.gameObject.worldPosition.y + y1);
+                        var p2 = new Vec2(obj2.gameObject.worldPosition.x + x2,obj2.gameObject.worldPosition.y + y2);
 
                         return rectangleCircleCollision(p1,w1,h1,p2,r);
 
                     case Rectangle(x2,y2,w2,h2):
 
-                        w2 = w2*obj2.gameObject.scale;
-                        h2 = h2*obj2.gameObject.scale;
+                        w2 = w2*obj2.gameObject.worldScale;
+                        h2 = h2*obj2.gameObject.worldScale;
 
                         var msv = new Vec2(w1 + w2,0);
 
-                        var l1 = obj1.gameObject.position.x + x1 - w1/2;
-                        var l2 = obj2.gameObject.position.x + x2 - w2/2;
-                        var r1 = obj1.gameObject.position.x + x1 + w1/2;
-                        var r2 = obj2.gameObject.position.x + x2 + w2/2;
-                        var b1 = obj1.gameObject.position.y + y1 - h1/2;
-                        var b2 = obj2.gameObject.position.y + y2 - h2/2;
-                        var t1 = obj1.gameObject.position.y + y1 + h1/2;
-                        var t2 = obj2.gameObject.position.y + y2 + h2/2;
+                        var l1 = obj1.gameObject.worldPosition.x + x1 - w1/2;
+                        var l2 = obj2.gameObject.worldPosition.x + x2 - w2/2;
+                        var r1 = obj1.gameObject.worldPosition.x + x1 + w1/2;
+                        var r2 = obj2.gameObject.worldPosition.x + x2 + w2/2;
+                        var b1 = obj1.gameObject.worldPosition.y + y1 - h1/2;
+                        var b2 = obj2.gameObject.worldPosition.y + y2 - h2/2;
+                        var t1 = obj1.gameObject.worldPosition.y + y1 + h1/2;
+                        var t2 = obj2.gameObject.worldPosition.y + y2 + h2/2;
 
                         if(l1 >= r2)
                         {

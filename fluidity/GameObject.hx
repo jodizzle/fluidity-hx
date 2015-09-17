@@ -15,6 +15,11 @@ class GameObject{
     public var position:Vec2 = new Vec2(0,0);
     public var velocity:Vec2 = new Vec2(0,0);
 
+    public var worldAngle(get,never):Float;
+    public var worldScale(get,never):Float;
+    public var worldPosition(get,never):Vec2;
+    // public var worldPosition(get,never):Vec2;
+
     public var angle:Float = 0;
     public var angularVelocity:Float = 0;
 
@@ -43,7 +48,10 @@ class GameObject{
 
     public function processEvent(e:GameEvent)
     {
-        state.processEvent(this,e);
+        if(state != null)
+        {
+            state.processEvent(this,e);
+        }
         return this;
     }
 
@@ -184,15 +192,15 @@ class GameObject{
         return (type == t);
     }
 
-    // public function addChild(obj:GameObject)
-    // {
-    //     obj.parent = this;
+    public function setParent(obj:GameObject)
+    {
+        parent = obj;
+        return this;
+        // children.push(obj);
 
-    //     children.push(obj);
-
-    //     Backend.graphics.objectAddChild(this,obj);
-    //     Backend.physics.objectAddChild(this,obj);
-    // }
+        // Backend.graphics.objectAddChild(this,obj);
+        // Backend.physics.objectAddChild(this,obj);
+    }
 
     // public function removeChild(obj:GameObject)
     // {
@@ -206,6 +214,43 @@ class GameObject{
     //         Backend.physics.objectRemoveChild(this,obj);
     //     }
     // }
+
+    public function get_worldAngle()
+    {
+        if(parent == null)
+        {
+            return angle;
+        }
+        else
+        {
+            return parent.worldAngle + angle;
+        }
+    }
+
+    public function get_worldScale()
+    {
+        if(parent == null)
+        {
+            return scale;
+        }
+        else
+        {
+            return parent.worldScale * scale;
+        }
+    }
+
+    public function get_worldPosition()
+    {
+        if(parent == null)
+        {
+            return position;
+        }
+        else
+        {
+            var worldPos = position.copy();
+            return worldPos.rotate(parent.worldAngle).muleq(parent.worldScale).addeq(parent.worldPosition);
+        }
+    }
 
     public function setState(s:FState<GameObject,GameEvent>)
     {
