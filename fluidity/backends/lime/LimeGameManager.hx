@@ -33,6 +33,7 @@ class LimeGameManager extends Application{
             {
                 return gameManager.layers.get(name);
             });
+        
     }
 
     public function _init()
@@ -44,12 +45,12 @@ class LimeGameManager extends Application{
         Backend.input = limeInput;
         gameManager.init();
         window.onResize.add(_onResize);
+        onUpdate.add(function (i){gameManager.update();});
         onInit();
     }
 
     public function onInit()
     {
-
     }
 
     public override function render (renderer):Void
@@ -59,7 +60,7 @@ class LimeGameManager extends Application{
             started = true;
             _init();
         }
-        gameManager.update();
+        // gameManager.update();
         gameManager.render();
     }
     

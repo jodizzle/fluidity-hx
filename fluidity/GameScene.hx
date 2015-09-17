@@ -24,6 +24,12 @@ class GameScene{
 
     public var states:StringBin<FState<GameObject,GameEvent>>;
 
+    public var updating:Bool = false;
+
+    public var toAdd:Array<GameObject> = [];
+    public var toRemove:Array<GameObject> = [];
+    public var toDelete:Array<GameObject> = [];
+
     public function new(?gravity:Vec2)
     {
         input = new SceneInput();
@@ -44,7 +50,7 @@ class GameScene{
         return this;
     }
 
-    public function add(obj:GameObject)
+    private function _add(obj:GameObject)
     {
         if(obj.scene != null)
         {
@@ -58,7 +64,12 @@ class GameScene{
         return this;
     }
 
-    public function remove(obj:GameObject)
+    public function add(obj:GameObject)
+    {
+        toAdd.push(obj);
+    }
+
+    private function _remove(obj:GameObject)
     {
         obj.scene = null;
         if(objects.remove(obj))
@@ -69,15 +80,25 @@ class GameScene{
         return this;
     }
 
-    public function delete(obj:GameObject)
+    public function remove(obj:GameObject)
+    {
+        toRemove.push(obj);
+    }
+
+    private function _delete(obj:GameObject)
     {
         if(obj != null)
         {
             input.delete(obj);
-            remove(obj);
+            _remove(obj);
             Backend.graphics.objectDispose(obj);
             Backend.physics.objectDispose(obj);
         }
+    }
+
+    public function delete(obj:GameObject)
+    {
+        toDelete.push(obj);
         return this;
     }
 
@@ -91,6 +112,24 @@ class GameScene{
         }
         Backend.physics.sceneUpdate(this);
         Backend.graphics.sceneUpdate(this);
+
+        for(obj in toAdd)
+        {
+            _add(obj);
+        }
+        toAdd = [];
+
+        for(obj in toRemove)
+        {
+            _remove(obj);
+        }
+        toRemove = [];
+
+        for(obj in toDelete)
+        {
+            _delete(obj);
+        }
+        toDelete = [];
         return this;
     }
 
