@@ -191,13 +191,6 @@ class GameObject{
         return this;
     }
 
-    // public function removeType(type:ObjectType):GameObject
-    // {
-    //     type.removeObject(this);
-    //     Backend.physics.objectRemoveType(this,type);
-    //     return this;
-    // }
-
     public function isType(t:ObjectType):Bool
     {
         return (type == t);

@@ -6,20 +6,11 @@ import fluidity.utils.ObjectBin;
 
 class PhysicsSimpleScene{
 
-    // public var objectMap:Map<PhysicsSimpleObject,Bool> = new Map<PhysicsSimpleObject,Bool>();
-    public var objects:Array<PhysicsSimpleObject> = [];
-    public var objectsToRemove:Array<PhysicsSimpleObject> = [];
-
-    // public var typeObjectBin:ObjectBin<SimpleType,Array<PhysicsSimpleObject>>;
-
     public var typesInScene:Array<ObjectType> = [];
 
     public function new()
     {
-        // typeObjectBin = new ObjectBin<SimpleType,Array<PhysicsSimpleObject>>(function(type:SimpleType)
-        //     {
-        //         return new Array<PhysicsSimpleObject>();
-        //     });
+
     };
 
     public function add(obj:GameObject)
@@ -28,50 +19,15 @@ class PhysicsSimpleScene{
         {
             typesInScene.push(obj.type);
         }
-        // obj.objectstype).push(obj);
-        // objects.push(obj);
     }
 
     public function remove(obj:GameObject)
     {
-        // objectsToRemove.push(obj);
-    }
 
-    // private function removeObjects()
-    // {
-    //     for(obj in objectsToRemove)
-    //     {
-    //         if(objects.remove(obj))
-    //         {
-    //             obj.objectstype).remove(obj);
-    //             if(obj.objectstype).length == 0)
-    //             {
-    //                 typesInScene.remove(obj.type);
-    //             }
-    //         }
-    //     }
-    //     objectsToRemove = [];
-    // }
+    }
 
     public function update()
     {
-        // removeObjects();
-        // var len = objects.length;
-        // for(i in 0...(len - 1))
-        // {
-        //     var obj1 = objects[i];
-        //     for(j in (i+1)...len)
-        //     {
-        //         var obj2 = objects[j];
-        //         if (checkInteracts(obj1,obj2)) {
-        //             var msv = minimumSeparationVector(obj1,obj2);
-        //             handleInteracts(obj1,obj2,msv);
-        //         }
-        //     }
-        // }
-
-
-                // var processedMSVs = new Map<GameObject,Vec2>();
         var toRemove = [];
         for(type in typesInScene)
         {
@@ -109,7 +65,6 @@ class PhysicsSimpleScene{
         {
             typesInScene.remove(type);
         }
-        // removeObjects();
     }
 
     private function handleCollisions(obj1:GameObject,obj2:GameObject,msv:Vec2)
@@ -131,7 +86,6 @@ class PhysicsSimpleScene{
         if(msv.length > 0)
         {
             handleInteractionCollision(obj1,obj2);
-            // handleInteractionCollision(obj2,obj1);
         }
     }
 
@@ -153,11 +107,6 @@ class PhysicsSimpleScene{
     {
         return obj1.type.collisionTypes.indexOf(obj2.type) >= 0;
     }
-
-    // public function colliding(obl1:PhysicsSimpleObject,obj2:PhysicsSimpleObject)
-    // {
-    //     return minimumSeparationVector(obj1,obj2).length == 0;
-    // }
 
     public function minimumSeparationVector(obj1:GameObject,obj2:GameObject)
     {
