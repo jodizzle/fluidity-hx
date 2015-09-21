@@ -18,7 +18,7 @@ interface IPhysicsBackend {
 
     public function newObject(obj:GameObject):Void;
     public function objectSet(obj:GameObject,collider:Collider):Void;
-    public function objectAddType(obj:GameObject,type:ObjectType):Void;
+    public function objectSetType(obj:GameObject,type:ObjectType):Void;
     public function objectDispose(obj:GameObject):Void;
     // public function objectRemoveType(obj:GameObject,type:ObjectType):Void;
     // public function objectAddChild(obj:GameObject,child:GameObject):Void;

@@ -36,6 +36,7 @@ class GameObject{
     public var type:ObjectType;
 
     public var graphic:Graphic;
+    public var collider:Collider;
 
     public var flip:Bool = false;
 
@@ -164,19 +165,29 @@ class GameObject{
     public function setGraphic(g:Graphic):GameObject
     {
         Backend.graphics.objectSet(this,g);
+        graphic = g;
         return this;
     }
 
-    public function setCollider(collider:Collider):GameObject
+    public function setCollider(c:Collider):GameObject
     {
-        Backend.physics.objectSet(this,collider);
+        Backend.physics.objectSet(this,c);
+        collider = c;
         return this;
     }
 
-    public function addType(type:ObjectType):GameObject
+    public function setType(t:ObjectType):GameObject
     {
-        type.addObject(this);
-        Backend.physics.objectAddType(this,type);
+        if(type != null)
+        {
+            type.removeObject(this);
+        }
+        if(t != null)
+        {
+            t.addObject(this);
+        }
+        type = t;
+        Backend.physics.objectSetType(this,t);
         return this;
     }
 

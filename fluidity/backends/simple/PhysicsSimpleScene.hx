@@ -10,52 +10,52 @@ class PhysicsSimpleScene{
     public var objects:Array<PhysicsSimpleObject> = [];
     public var objectsToRemove:Array<PhysicsSimpleObject> = [];
 
-    public var typeObjectBin:ObjectBin<SimpleType,Array<PhysicsSimpleObject>>;
+    // public var typeObjectBin:ObjectBin<SimpleType,Array<PhysicsSimpleObject>>;
 
-    public var typesInScene:Array<SimpleType> = [];
+    public var typesInScene:Array<ObjectType> = [];
 
     public function new()
     {
-        typeObjectBin = new ObjectBin<SimpleType,Array<PhysicsSimpleObject>>(function(type:SimpleType)
-            {
-                return new Array<PhysicsSimpleObject>();
-            });
+        // typeObjectBin = new ObjectBin<SimpleType,Array<PhysicsSimpleObject>>(function(type:SimpleType)
+        //     {
+        //         return new Array<PhysicsSimpleObject>();
+        //     });
     };
 
-    public function add(obj:PhysicsSimpleObject)
+    public function add(obj:GameObject)
     {
-        if(typeObjectBin.get(obj.type).length == 0)
+        if(typesInScene.indexOf(obj.type) < 0)
         {
             typesInScene.push(obj.type);
         }
-        typeObjectBin.get(obj.type).push(obj);
-        objects.push(obj);
+        // obj.objectstype).push(obj);
+        // objects.push(obj);
     }
 
-    public function remove(obj:PhysicsSimpleObject)
+    public function remove(obj:GameObject)
     {
-        objectsToRemove.push(obj);
+        // objectsToRemove.push(obj);
     }
 
-    private function removeObjects()
-    {
-        for(obj in objectsToRemove)
-        {
-            if(objects.remove(obj))
-            {
-                typeObjectBin.get(obj.type).remove(obj);
-                if(typeObjectBin.get(obj.type).length == 0)
-                {
-                    typesInScene.remove(obj.type);
-                }
-            }
-        }
-        objectsToRemove = [];
-    }
+    // private function removeObjects()
+    // {
+    //     for(obj in objectsToRemove)
+    //     {
+    //         if(objects.remove(obj))
+    //         {
+    //             obj.objectstype).remove(obj);
+    //             if(obj.objectstype).length == 0)
+    //             {
+    //                 typesInScene.remove(obj.type);
+    //             }
+    //         }
+    //     }
+    //     objectsToRemove = [];
+    // }
 
     public function update()
     {
-        removeObjects();
+        // removeObjects();
         // var len = objects.length;
         // for(i in 0...(len - 1))
         // {
@@ -72,25 +72,29 @@ class PhysicsSimpleScene{
 
 
                 // var processedMSVs = new Map<GameObject,Vec2>();
+        var toRemove = [];
         for(type in typesInScene)
         {
-            for(obj1 in typeObjectBin.get(type))
+            if(type.objects.length == 0)
+            {
+                toRemove.push(type);
+            }
+            for(obj1 in type.objects)
             {
                 for(otherType in type.sensorTypes.keys())
                 {
-                    for(obj2 in typeObjectBin.get(otherType))
+                    for(obj2 in otherType.objects)
                     {
                         if(obj1 != obj2)
                         {
                             var msv = minimumSeparationVector(obj1,obj2);
-                            // trace(msv.length);
                             handleInteracts(obj1,obj2,msv);
                         }
                     }
                 }
                 for(otherType in type.collisionTypes)
                 {
-                    for(obj2 in typeObjectBin.get(otherType))
+                    for(obj2 in otherType.objects)
                     {
                         if(obj1 != obj2)
                         {
@@ -101,10 +105,14 @@ class PhysicsSimpleScene{
                 }
             }
         }
-        removeObjects();
+        for(type in toRemove)
+        {
+            typesInScene.remove(type);
+        }
+        // removeObjects();
     }
 
-    private function handleCollisions(obj1:PhysicsSimpleObject,obj2:PhysicsSimpleObject,msv:Vec2)
+    private function handleCollisions(obj1:GameObject,obj2:GameObject,msv:Vec2)
     {
         var collides1 = hasCollisions(obj1,obj2);
         var collides2 = hasCollisions(obj2,obj1);
@@ -113,12 +121,12 @@ class PhysicsSimpleScene{
             var hmsv = msv.copy();
             hmsv.length /= 2;
 
-            obj1.gameObject.translate(hmsv);
-            obj2.gameObject.translate(new Vec2(-hmsv.x,-hmsv.y));
+            obj1.translate(hmsv);
+            obj2.translate(new Vec2(-hmsv.x,-hmsv.y));
         }
     }
 
-    private function handleInteracts(obj1:PhysicsSimpleObject,obj2:PhysicsSimpleObject,msv:Vec2)
+    private function handleInteracts(obj1:GameObject,obj2:GameObject,msv:Vec2)
     {
         if(msv.length > 0)
         {
@@ -127,21 +135,21 @@ class PhysicsSimpleScene{
         }
     }
 
-    private function handleInteractionCollision(obj1:PhysicsSimpleObject,obj2:PhysicsSimpleObject)
+    private function handleInteractionCollision(obj1:GameObject,obj2:GameObject)
     {
         var interaction = obj1.type.sensorTypes.get(obj2.type);
         if(interaction != null)
         {
-            obj1.gameObject.processEvent(new GameEvent(interaction,new Collision(obj1.gameObject,obj2.gameObject)));
+            obj1.processEvent(new GameEvent(interaction,new Collision(obj1,obj2)));
         }
     }
 
-    private function checkInteracts(obj1:PhysicsSimpleObject,obj2:PhysicsSimpleObject)
+    private function checkInteracts(obj1:GameObject,obj2:GameObject)
     {
         return (obj1.type.sensorTypes.exists(obj2.type) || hasCollisions(obj1,obj2));
     }
 
-    private function hasCollisions(obj1:PhysicsSimpleObject,obj2:PhysicsSimpleObject)
+    private function hasCollisions(obj1:GameObject,obj2:GameObject)
     {
         return obj1.type.collisionTypes.indexOf(obj2.type) >= 0;
     }
@@ -151,21 +159,21 @@ class PhysicsSimpleScene{
     //     return minimumSeparationVector(obj1,obj2).length == 0;
     // }
 
-    public function minimumSeparationVector(obj1:PhysicsSimpleObject,obj2:PhysicsSimpleObject)
+    public function minimumSeparationVector(obj1:GameObject,obj2:GameObject)
     {
         switch (obj1.collider)
         {
             case Circle(x1,y1,r1):
 
-                var p1 = new Vec2(obj1.gameObject.worldPosition.x + x1,obj1.gameObject.worldPosition.y + y1);
-                r1 = r1*obj1.gameObject.worldScale;
+                var p1 = new Vec2(obj1.worldPosition.x + x1,obj1.worldPosition.y + y1);
+                r1 = r1*obj1.worldScale;
 
                 switch (obj2.collider)
                 {
                     case Circle(x2,y2,r2):
 
-                        var p2 = new Vec2(obj2.gameObject.worldPosition.x + x2,obj2.gameObject.worldPosition.y + y2);
-                        r2 = r2*obj2.gameObject.worldScale;
+                        var p2 = new Vec2(obj2.worldPosition.x + x2,obj2.worldPosition.y + y2);
+                        r2 = r2*obj2.worldScale;
 
                         var difference = p1.sub(p2);
                         if(difference.length == 0)
@@ -182,10 +190,10 @@ class PhysicsSimpleScene{
 
                     case Rectangle(x2,y2,w,h):
 
-                        w = w*obj2.gameObject.worldScale;
-                        h = h*obj2.gameObject.worldScale;
+                        w = w*obj2.worldScale;
+                        h = h*obj2.worldScale;
 
-                        var p2 = new Vec2(obj2.gameObject.worldPosition.x + x2,obj2.gameObject.worldPosition.y + y2);
+                        var p2 = new Vec2(obj2.worldPosition.x + x2,obj2.worldPosition.y + y2);
 
                         var result = rectangleCircleCollision(p2,w,h,p1,r1);
                         result.set(new Vec2(-result.x,-result.y));
@@ -198,35 +206,35 @@ class PhysicsSimpleScene{
 
             case Rectangle(x1,y1,w1,h1):
 
-                w1 = w1*obj1.gameObject.worldScale;
-                h1 = h1*obj1.gameObject.worldScale;
+                w1 = w1*obj1.worldScale;
+                h1 = h1*obj1.worldScale;
 
                 switch (obj2.collider)
                 {
                     case Circle(x2,y2,r):
 
-                        r = r*obj2.gameObject.worldScale;
+                        r = r*obj2.worldScale;
 
-                        var p1 = new Vec2(obj1.gameObject.worldPosition.x + x1,obj1.gameObject.worldPosition.y + y1);
-                        var p2 = new Vec2(obj2.gameObject.worldPosition.x + x2,obj2.gameObject.worldPosition.y + y2);
+                        var p1 = new Vec2(obj1.worldPosition.x + x1,obj1.worldPosition.y + y1);
+                        var p2 = new Vec2(obj2.worldPosition.x + x2,obj2.worldPosition.y + y2);
 
                         return rectangleCircleCollision(p1,w1,h1,p2,r);
 
                     case Rectangle(x2,y2,w2,h2):
 
-                        w2 = w2*obj2.gameObject.worldScale;
-                        h2 = h2*obj2.gameObject.worldScale;
+                        w2 = w2*obj2.worldScale;
+                        h2 = h2*obj2.worldScale;
 
                         var msv = new Vec2(w1 + w2,0);
 
-                        var l1 = obj1.gameObject.worldPosition.x + x1 - w1/2;
-                        var l2 = obj2.gameObject.worldPosition.x + x2 - w2/2;
-                        var r1 = obj1.gameObject.worldPosition.x + x1 + w1/2;
-                        var r2 = obj2.gameObject.worldPosition.x + x2 + w2/2;
-                        var b1 = obj1.gameObject.worldPosition.y + y1 - h1/2;
-                        var b2 = obj2.gameObject.worldPosition.y + y2 - h2/2;
-                        var t1 = obj1.gameObject.worldPosition.y + y1 + h1/2;
-                        var t2 = obj2.gameObject.worldPosition.y + y2 + h2/2;
+                        var l1 = obj1.worldPosition.x + x1 - w1/2;
+                        var l2 = obj2.worldPosition.x + x2 - w2/2;
+                        var r1 = obj1.worldPosition.x + x1 + w1/2;
+                        var r2 = obj2.worldPosition.x + x2 + w2/2;
+                        var b1 = obj1.worldPosition.y + y1 - h1/2;
+                        var b2 = obj2.worldPosition.y + y2 - h2/2;
+                        var t1 = obj1.worldPosition.y + y1 + h1/2;
+                        var t2 = obj2.worldPosition.y + y2 + h2/2;
 
                         if(l1 >= r2)
                         {

@@ -50,7 +50,7 @@ class GameScene{
         return this;
     }
 
-    private function _add(obj:GameObject)
+    private function __add(obj:GameObject)
     {
         if(obj.scene != null)
         {
@@ -69,7 +69,7 @@ class GameScene{
         toAdd.push(obj);
     }
 
-    private function _remove(obj:GameObject)
+    private function __remove(obj:GameObject)
     {
         obj.scene = null;
         if(objects.remove(obj))
@@ -85,12 +85,16 @@ class GameScene{
         toRemove.push(obj);
     }
 
-    private function _delete(obj:GameObject)
+    private function __delete(obj:GameObject)
     {
         if(obj != null)
         {
+            if(obj.type != null)
+            {
+                obj.type.removeObject(obj);
+            }
             input.delete(obj);
-            _remove(obj);
+            __remove(obj);
             Backend.graphics.objectDispose(obj);
             Backend.physics.objectDispose(obj);
         }
@@ -115,19 +119,19 @@ class GameScene{
 
         for(obj in toAdd)
         {
-            _add(obj);
+            __add(obj);
         }
         toAdd = [];
 
         for(obj in toRemove)
         {
-            _remove(obj);
+            __remove(obj);
         }
         toRemove = [];
 
         for(obj in toDelete)
         {
-            _delete(obj);
+            __delete(obj);
         }
         toDelete = [];
         return this;
@@ -220,6 +224,7 @@ class GameScene{
     public function addInteractionStartListener(name:String, type1:ObjectType, type2:ObjectType)
     {
         Backend.physics.typeAddInteractionStartEvent(type1,name,type2);
+        type1.sensorTypes.set(type2,name);
     }
 
     public function addInteractionStopListener(name:String, type1:ObjectType, type2:ObjectType)

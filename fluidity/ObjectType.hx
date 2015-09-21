@@ -4,6 +4,8 @@ package fluidity;
 class ObjectType{
 
     public var objects:Array<GameObject> = new Array<GameObject>();
+    public var sensorTypes:Map<ObjectType,String> = new Map<ObjectType,String>();
+    public var collisionTypes:Array<ObjectType> = [];
 
     public function new() {};
 
