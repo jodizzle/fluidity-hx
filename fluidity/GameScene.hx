@@ -217,19 +217,7 @@ class GameScene{
         {
             generatorMap.set(name,generatorWithArgs);
         }
-        // typeMap.set(name,new ObjectType());
         return this;
-    }
-
-    public function addInteractionStartListener(name:String, type1:ObjectType, type2:ObjectType)
-    {
-        Backend.physics.typeAddInteractionStartEvent(type1,name,type2);
-        type1.sensorTypes.set(type2,name);
-    }
-
-    public function addInteractionStopListener(name:String, type1:ObjectType, type2:ObjectType)
-    {
-        Backend.physics.typeAddInteractionStopEvent(type1,name,type2);
     }
 
     public function generate(name:String, ?args:Array<Dynamic>)
@@ -257,22 +245,6 @@ class GameScene{
         }
         return null;
     }
-
-    // public function setState(s:FState<GameObject,GameEvent>)
-    // {
-    //     state = s;
-    // }
-
-    // public function type(name:String):ObjectType
-    // {
-    //     if(typeMap.exists(name))
-    //     {
-    //         return typeMap.get(name);
-    //     }
-    //     var t = new ObjectType();
-    //     typeMap.set(name,t);
-    //     return t;
-    // }
 
 
     private var objects:Array<GameObject> = [];

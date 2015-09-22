@@ -11,10 +11,10 @@ interface IPhysicsBackend {
     public function sceneStart(scene:GameScene):Void;
     public function sceneReset(scene:GameScene):Void;
 
+    public function typeAddCollision(type:ObjectType,otherType:ObjectType):Void;
+
     public function typeAddInteractionStartEvent(type:ObjectType,eventName:String,otherType:ObjectType):Void;
     public function typeAddInteractionStopEvent(type:ObjectType,eventName:String,otherType:ObjectType):Void;
-    // public function sceneAddCollision(scene:GameScene,type:ObjectType,otherType:ObjectType,?verifier:Collision->Bool):Void;
-    // public function sceneRemoveCollision(scene:GameScene,type:ObjectType,otherType:ObjectType):Void;
 
     public function newObject(obj:GameObject):Void;
     public function objectSet(obj:GameObject,collider:Collider):Void;

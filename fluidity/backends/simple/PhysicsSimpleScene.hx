@@ -37,17 +37,7 @@ class PhysicsSimpleScene{
             }
             for(obj1 in type.objects)
             {
-                for(otherType in type.sensorTypes.keys())
-                {
-                    for(obj2 in otherType.objects)
-                    {
-                        if(obj1 != obj2)
-                        {
-                            var msv = minimumSeparationVector(obj1,obj2);
-                            handleInteracts(obj1,obj2,msv);
-                        }
-                    }
-                }
+                var collisions = [];
                 for(otherType in type.collisionTypes)
                 {
                     for(obj2 in otherType.objects)
@@ -55,57 +45,58 @@ class PhysicsSimpleScene{
                         if(obj1 != obj2)
                         {
                             var msv = minimumSeparationVector(obj1,obj2);
-                            handleInteracts(obj1,obj2,msv);
+                            if(msv.length > 0)
+                            {
+                                collisions.push(new Collision(obj2,msv));
+                            }
                         }
                     }
                 }
+
+                var newCollisions = Lambda.filter(collisions,function(c:Collision)
+                    {
+                        return Lambda.count(obj1.collisions, function(c2:Collision)
+                            {
+                                return c.obj == c2.obj; 
+                            }) == 0;
+                    });
+
+                for(c in newCollisions)
+                {
+                    var interaction = obj1.type.stopInteractionEvents.get(c.obj.type);
+                    if(interaction != null)
+                    {
+                        obj1.processEvent(new GameEvent(interaction,new Collision(c.obj,c.normal)));
+                    }
+                }
+
+                var endCollisions = Lambda.filter(obj1.collisions,function(c:Collision)
+                    {
+                        return Lambda.count(collisions, function(c2:Collision)
+                            {
+                                return c.obj == c2.obj; 
+                            }) == 0;
+                    });
+
+                for(c in endCollisions)
+                {
+                    if(c.obj.type != null)
+                    {
+                        var interaction = obj1.type.startInteractionEvents.get(c.obj.type);
+                        if(interaction != null)
+                        {
+                            obj1.processEvent(new GameEvent(interaction,new Collision(c.obj,c.normal)));
+                        }
+                    }
+                }
+
+                obj1.collisions = collisions;
             }
         }
         for(type in toRemove)
         {
             typesInScene.remove(type);
         }
-    }
-
-    private function handleCollisions(obj1:GameObject,obj2:GameObject,msv:Vec2)
-    {
-        var collides1 = hasCollisions(obj1,obj2);
-        var collides2 = hasCollisions(obj2,obj1);
-        if(collides1 && collides2)
-        {
-            var hmsv = msv.copy();
-            hmsv.length /= 2;
-
-            obj1.translate(hmsv);
-            obj2.translate(new Vec2(-hmsv.x,-hmsv.y));
-        }
-    }
-
-    private function handleInteracts(obj1:GameObject,obj2:GameObject,msv:Vec2)
-    {
-        if(msv.length > 0)
-        {
-            handleInteractionCollision(obj1,obj2);
-        }
-    }
-
-    private function handleInteractionCollision(obj1:GameObject,obj2:GameObject)
-    {
-        var interaction = obj1.type.sensorTypes.get(obj2.type);
-        if(interaction != null)
-        {
-            obj1.processEvent(new GameEvent(interaction,new Collision(obj1,obj2)));
-        }
-    }
-
-    private function checkInteracts(obj1:GameObject,obj2:GameObject)
-    {
-        return (obj1.type.sensorTypes.exists(obj2.type) || hasCollisions(obj1,obj2));
-    }
-
-    private function hasCollisions(obj1:GameObject,obj2:GameObject)
-    {
-        return obj1.type.collisionTypes.indexOf(obj2.type) >= 0;
     }
 
     public function minimumSeparationVector(obj1:GameObject,obj2:GameObject)

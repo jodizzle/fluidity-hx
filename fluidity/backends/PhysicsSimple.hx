@@ -58,6 +58,11 @@ class PhysicsSimple implements IPhysicsBackend{
 
     }
 
+    public function typeAddCollision(type:ObjectType, otherType:ObjectType)
+    {
+
+    }
+
     public function typeAddInteractionStartEvent(type:ObjectType, eventName:String,otherType:ObjectType)
     { 
 
@@ -67,10 +72,6 @@ class PhysicsSimple implements IPhysicsBackend{
     {
 
     }
-
-    // public function sceneAddCollision(scene:GameScene,?eventName:String,type:ObjectType,otherType:ObjectType,?verifier:Collision->Bool);
-    
-    // public function sceneRemoveCollision(type:ObjectType,otherType:ObjectType);
 
     public function newObject(obj:GameObject)
     {

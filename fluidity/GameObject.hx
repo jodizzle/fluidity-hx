@@ -18,7 +18,6 @@ class GameObject{
     public var worldAngle(get,never):Float;
     public var worldScale(get,never):Float;
     public var worldPosition(get,never):Vec2;
-    // public var worldPosition(get,never):Vec2;
 
     public var angle:Float = 0;
     public var angularVelocity:Float = 0;
@@ -41,6 +40,10 @@ class GameObject{
     public var flip:Bool = false;
 
     public var scene:GameScene;
+
+    public var collisions:Array<Collision> = [];
+
+    public var interactions:Array<GameObject> = [];
 
     public function new()
     {
@@ -200,24 +203,7 @@ class GameObject{
     {
         parent = obj;
         return this;
-        // children.push(obj);
-
-        // Backend.graphics.objectAddChild(this,obj);
-        // Backend.physics.objectAddChild(this,obj);
     }
-
-    // public function removeChild(obj:GameObject)
-    // {
-    //     if(children.contains(obj))
-    //     {
-    //         obj.parent = null;
-            
-    //         children.remove(obj);
-
-    //         Backend.graphics.objectRemoveChild(this,obj);
-    //         Backend.physics.objectRemoveChild(this,obj);
-    //     }
-    // }
 
     public function get_worldAngle()
     {
@@ -279,12 +265,6 @@ class GameObject{
         currentAnimationTime += 1;
     }
 
-    // public function dispose()
-    // {
-    //     Backend.physics.objectDispose(this);
-    //     Backend.graphics.objectDispose(this);
-    // }
-
     public function addEventTrigger(eventName:String,func:GameObject->Bool)
     {
         eventTriggers.push({eventName: eventName, func: func});
@@ -292,6 +272,5 @@ class GameObject{
 
     private var attributes:StringMap<Dynamic> = new StringMap<Dynamic>();
     private var eventTriggers:Array<{eventName:String,func:GameObject->Bool}> = [];
-    // private var children:Array<GameObject> = [];
 
 }
