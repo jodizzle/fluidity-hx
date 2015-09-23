@@ -68,6 +68,11 @@ class PhysicsSimple implements IPhysicsBackend{
 
     }
 
+    public function typeAddInteractionContinueEvent(type:ObjectType, eventName:String,otherType:ObjectType)
+    { 
+
+    }
+
     public function typeAddInteractionStopEvent(type:ObjectType, eventName:String,otherType:ObjectType)
     {
 

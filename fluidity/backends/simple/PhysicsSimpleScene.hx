@@ -44,7 +44,7 @@ class PhysicsSimpleScene{
                     {
                         if(obj1 != obj2)
                         {
-                            var msv = minimumSeparationVector(obj1,obj2);
+                            var msv = minimumSeparationVector(obj1,obj2).mul(-1);
                             if(msv.length > 0)
                             {
                                 collisions.push(new Collision(obj2,msv));
@@ -63,7 +63,24 @@ class PhysicsSimpleScene{
 
                 for(c in newCollisions)
                 {
-                    var interaction = obj1.type.stopInteractionEvents.get(c.obj.type);
+                    var interaction = obj1.type.startInteractionEvents.get(c.obj.type);
+                    if(interaction != null)
+                    {
+                        obj1.processEvent(new GameEvent(interaction,new Collision(c.obj,c.normal)));
+                    }
+                }
+
+                var continueCollisions = Lambda.filter(collisions,function(c:Collision)
+                    {
+                        return Lambda.count(obj1.collisions, function(c2:Collision)
+                            {
+                                return c.obj == c2.obj; 
+                            }) > 0;
+                    });
+
+                for(c in continueCollisions)
+                {
+                    var interaction = obj1.type.continueInteractionEvents.get(c.obj.type);
                     if(interaction != null)
                     {
                         obj1.processEvent(new GameEvent(interaction,new Collision(c.obj,c.normal)));
@@ -82,7 +99,7 @@ class PhysicsSimpleScene{
                 {
                     if(c.obj.type != null)
                     {
-                        var interaction = obj1.type.startInteractionEvents.get(c.obj.type);
+                        var interaction = obj1.type.stopInteractionEvents.get(c.obj.type);
                         if(interaction != null)
                         {
                             obj1.processEvent(new GameEvent(interaction,new Collision(c.obj,c.normal)));

@@ -96,7 +96,7 @@ class GameObject{
 
     public function translate(v:Vec2):GameObject
     {
-        position.add(v);
+        position.addeq(v);
         Backend.physics.objectChanged(this);
         return this;
     }
@@ -254,13 +254,13 @@ class GameObject{
 
     public function update()
     {
+
+        Backend.physics.objectUpdate(this);
+        Backend.graphics.objectUpdate(this);
         if(state != null)
         {
             state.update(this);
         }
-
-        Backend.physics.objectUpdate(this);
-        Backend.graphics.objectUpdate(this);
 
         currentAnimationTime += 1;
     }
