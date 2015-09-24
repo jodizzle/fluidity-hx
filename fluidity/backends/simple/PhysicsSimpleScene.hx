@@ -208,7 +208,7 @@ class PhysicsSimpleScene{
                         }
                         else
                         {
-                            msv = compareMSV(msv,new Vec2(r1 - l2,0));
+                            msv = compareMSV(msv,new Vec2(r2 - l1,0));
                         }
 
                         if(t1 <= b2)
@@ -217,7 +217,7 @@ class PhysicsSimpleScene{
                         }
                         else
                         {
-                            msv = compareMSV(msv,new Vec2(0,t1 - b2));
+                            msv = compareMSV(msv,new Vec2(0,t2 - b1));
                         }
 
                         if(b1 >= t2)
@@ -226,7 +226,7 @@ class PhysicsSimpleScene{
                         }
                         else
                         {
-                            msv = compareMSV(msv,new Vec2(0,b1 - t2));
+                            msv = compareMSV(msv,new Vec2(0,b2 - t1));
                         }
 
                         return msv;
@@ -249,41 +249,64 @@ class PhysicsSimpleScene{
         return v2;
     }
 
-    private function rectangleCircleCollision(p1:Vec2, w:Float, h:Float, p2:Vec2, r:Float):Vec2
+    private function rectangleCircleCollision(p1:Vec2, w:Float, h:Float, p2:Vec2, radius:Float):Vec2
     {
-        //calculate closest point on the rectangle to the center of the circle
-        var rp = p2.copy();
 
-        var l = p1.x - w/2;
-        var r = p1.x + w/2;
-        var b = p1.y - h/2;
-        var t = p1.y + h/2;
+        var l = -w/2;
+        var r = w/2;
+        var t = -h/2;
+        var b = h/2;
 
-        if(p2.x  < l)
+        var hAxis = new Vec2(1,0);
+        var vAxis = new Vec2(0,1);
+
+        var hProj = hAxis.dot(p2.sub(p1));
+        var p2l = hProj - radius;
+        var p2r = hProj + radius;
+        var vProj = vAxis.dot(p2.sub(p1));
+        var p2t = vProj - radius;
+        var p2b = vProj + radius;
+        var msv = new Vec2(w + h + radius*2, 0);
+
+        if(l >= p2r)
         {
-            rp.x = l;
+            return new Vec2(0,0);
         }
-        else if(p2.x > r)
+        else
         {
-            rp.x = r;
-        }
-
-        if(p2.y  < b)
-        {
-            rp.y = b;
-        }
-        else if(p2.y > t)
-        {
-            rp.y = t;
-        }
-
-        var sv = p2.sub(rp);
-
-        if(sv.length < r)
-        {
-            return sv;
+            msv = compareMSV(msv,new Vec2(p2r - l,0));
         }
 
-        return new Vec2(0,0);
+        if(r <= p2l)
+        {
+            return new Vec2(0,0);
+        }
+        else
+        {
+            msv = compareMSV(msv,new Vec2(p2l - r,0));
+        }
+
+        trace(t,p2b);
+
+        if(t >= p2b)
+        {
+            return new Vec2(0,0);
+        }
+        else
+        {
+            msv = compareMSV(msv,new Vec2(0,p2b - t));
+        }
+
+        if(b <= p2t)
+        {
+            return new Vec2(0,0);
+        }
+        else
+        {
+            msv = compareMSV(msv,new Vec2(0,p2t - b));
+        }
+
+        msv.muleq(-1);
+        return msv;
     }
 }

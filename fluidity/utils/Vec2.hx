@@ -58,8 +58,7 @@ class Vec2 {
 
     public inline function dot(vec:Vec2):Float
     {
-        trace('unimplemented');
-        return 1;
+        return x*vec.x + y*vec.y;
     }
 
     public inline function lsq():Float
