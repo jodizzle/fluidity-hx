@@ -11,9 +11,6 @@ import fluidity.GameScene;
 
 class LimeScene{
 
-    public var objectList:Array<GameObject> = new Array<GameObject>();
-    public var objectMap:Map<GameObject,Float> = new Map<GameObject,Float>();
-
     // public var graphicList
 
     public var graphicIdMap:Map<String,GraphicsLimeObject> = new Map<String,GraphicsLimeObject>();
