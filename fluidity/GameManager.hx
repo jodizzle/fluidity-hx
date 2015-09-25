@@ -12,14 +12,14 @@ import fluidity.utils.Vec2;
 
 class GameManager{
 
-    public var layers:StringBin<GameLayer>;
+    public var layers:Array<GameLayer> = [];
 
     public function new()
     {
-        layers = new StringBin<GameLayer>(function (name:String)
-            {
-                return new GameLayer();
-            });
+        // layers = new StringBin<GameLayer>(function (name:String)
+        //     {
+        //         return new GameLayer();
+        //     });
     }
 
     public function init()
@@ -29,43 +29,43 @@ class GameManager{
 
     public function update()
     {
-        Backend.physics.preUpdate();
-        Backend.graphics.preUpdate();
-        onUpdate();
+        // Backend.physics.preUpdate();
+        // Backend.graphics.preUpdate();
+        // onUpdate();
         for(layer in layers.binMap)
         {
             layer.update();
         }
-        Backend.physics.postUpdate();
-        Backend.graphics.postUpdate();
+        // Backend.physics.postUpdate();
+        // Backend.graphics.postUpdate();
         return this;
     }
 
     public function render()
     {
-        Backend.graphics.preRender();
-        onRender();
+        // Backend.graphics.preRender();
+        // onRender();
         for(layer in layers.binMap)
         {
             layer.render();
         }
-        Backend.graphics.postRender();
+        // Backend.graphics.postRender();
         return this;
     }
 
-    public function onUpdate()
-    {
+    // public function onUpdate()
+    // {
 
-    }
+    // }
 
-    public function onRender()
-    {
+    // public function onRender()
+    // {
 
-    }
+    // }
 
-    public function onResize()
-    {
+    // public function onResize()
+    // {
         
-    }
+    // }
 
 }

@@ -10,11 +10,6 @@ class GameEvent {
     public var id:String;
     private var attributes:StringMap<Dynamic> = new StringMap<Dynamic>();
 
-    public var touch:Touch;
-    public var pointer:Pointer;
-    public var button:Int;
-    public var collision:Collision;
-
     public function new(id:String,?col:Collision)
     {
         this.id = id;

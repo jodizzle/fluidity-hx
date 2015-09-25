@@ -16,13 +16,6 @@ class GameScene{
     public var layer:GameLayer;
 
     public var active(default,null):Bool = false;
-    public var input:SceneInput;
-
-    public var camera:Vec2 = new Vec2();
-
-    public var cameraScale:Float = 1;
-
-    public var states:StringBin<FState<GameObject,GameEvent>>;
 
     public var updating:Bool = false;
 
@@ -30,23 +23,15 @@ class GameScene{
     public var toRemove:Array<GameObject> = [];
     public var toDelete:Array<GameObject> = [];
 
-    public function new(?gravity:Vec2)
+    public function new()
     {
-        input = new SceneInput();
 
-        Backend.physics.newScene(this);
-        Backend.graphics.newScene(this);
-
-        states = new StringBin<FState<GameObject,GameEvent>>(function(name:String)
-            {
-                return new FState<GameObject,GameEvent>(name);
-            });
     }
 
     public function setLayer(l:GameLayer)
     {
         layer = l;
-        Backend.graphics.sceneLayerSet(this);
+        // Backend.graphics.sceneLayerSet(this);
         return this;
     }
 
@@ -59,8 +44,8 @@ class GameScene{
         objects.push(obj);
         obj.scene = this;
 
-        Backend.graphics.sceneAdd(this,obj);
-        Backend.physics.sceneAdd(this,obj);
+        // Backend.graphics.sceneAdd(this,obj);
+        // Backend.physics.sceneAdd(this,obj);
         return this;
     }
 
@@ -74,8 +59,8 @@ class GameScene{
         obj.scene = null;
         if(objects.remove(obj))
         {
-            Backend.graphics.sceneRemove(this,obj);
-            Backend.physics.sceneRemove(this,obj);
+            // Backend.graphics.sceneRemove(this,obj);
+            // Backend.physics.sceneRemove(this,obj);
         }
         return this;
     }
@@ -95,8 +80,9 @@ class GameScene{
             }
             input.delete(obj);
             __remove(obj);
-            Backend.graphics.objectDispose(obj);
-            Backend.physics.objectDispose(obj);
+
+            // Backend.graphics.objectDispose(obj);
+            // Backend.physics.objectDispose(obj);
         }
     }
 
@@ -114,8 +100,9 @@ class GameScene{
         {
             obj.update();
         }
-        Backend.physics.sceneUpdate(this);
-        Backend.graphics.sceneUpdate(this);
+
+        // Backend.physics.sceneUpdate(this);
+        // Backend.graphics.sceneUpdate(this);
 
         for(obj in toAdd)
         {
@@ -137,19 +124,14 @@ class GameScene{
         return this;
     }
 
-    public function render()
-    {
-        Backend.graphics.sceneRender(this);
-    }
-
     public function start()
     {
         active = true;
         
         onStart();
 
-        Backend.graphics.sceneStart(this);
-        Backend.physics.sceneStart(this);
+        // Backend.graphics.sceneStart(this);
+        // Backend.physics.sceneStart(this);
 
         return this;
     }
@@ -160,8 +142,10 @@ class GameScene{
         {
             delete(objects[objects.length - 1]);
         }
-        Backend.graphics.sceneReset(this);
-        Backend.physics.sceneReset(this);
+
+        // Backend.graphics.sceneReset(this);
+        // Backend.physics.sceneReset(this);
+        
         input = new SceneInput();
         onReset();
 
