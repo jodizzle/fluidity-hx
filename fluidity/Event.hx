@@ -2,26 +2,18 @@
 package fluidity;
 
 import haxe.ds.StringMap;
-import fluidity.input.Touch;
-import fluidity.input.Pointer;
 
-class GameEvent {
+class Event {
 
     public var id:String;
     private var attributes:StringMap<Dynamic> = new StringMap<Dynamic>();
 
-    public var touch:Touch;
-    public var pointer:Pointer;
-    public var button:Int;
-    public var collision:Collision;
-
-    public function new(id:String,?col:Collision)
+    public function new(id:String)
     {
         this.id = id;
-        collision = col;
     }
 
-    public function setAttribute(attrib:String, value:Dynamic):GameEvent
+    public function setAttribute(attrib:String, value:Dynamic):Event
     {
         attributes.set(attrib,value);
         return this;
