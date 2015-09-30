@@ -5,9 +5,9 @@ import ash.tools.ListIteratingSystem;
 
 class ObjectSystem<TNode> extends ListIteratingSystem<TNode>
 {
-    public function new()
+    public function new(objClass:Class<TNode>)
     {
-        super(TNode, updateNode);
+        super(objClass, updateNode);
     }
 
     private function updateNode(node:TNode, time:Float):Void

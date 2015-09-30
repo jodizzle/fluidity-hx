@@ -3,19 +3,19 @@ package fluidity.ash.systems;
 
 import ash.tools.ListIteratingSystem;
 
-typedef StateNode = {
-  public var object:Object;
-}
+// typedef StateNode = {
+//   public var object:Object;
+// }
 
-class StateSystem<TNode:(StateNode)> extends ObjectSystem<TNode>
+class StateSystem<TNode:(Object<Dynamic>)> extends ObjectSystem<TNode>
 {
-    public function new()
+    public function new(objClass:Class<TNode>)
     {
         super(TNode, updateNode);
     }
 
-    private function updateNode(node:TNode, time:Float):Void
-    {
-        node.object.update();
-    }
+    // private function updateNode(node:TNode, time:Float):Void
+    // {
+    //     node.update();
+    // }
 }

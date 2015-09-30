@@ -7,12 +7,12 @@ import ash.core.Entity;
 import fluidity.ash.systems.*;
 import fluidity.*;
 
-typedef Constructible = {
-  public function new():Void;
-}
+// typedef Constructible = {
+//   public function new():Void;
+// }
 
 @:generic
-class AshEngine<TObj:Constructible>
+class AshEngine<TObj:Object<Dynamic>>
 {
     private var engine:Engine;
 
@@ -25,6 +25,7 @@ class AshEngine<TObj:Constructible>
         engine = new Engine();
 
         generator = g;
+        engine.addSystem(new StateSystem<TObj>());
     }
 
     public function addSystem()
