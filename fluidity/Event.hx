@@ -3,7 +3,7 @@ package fluidity;
 
 import haxe.ds.StringMap;
 
-class Event {
+class Event<TEvent:Event<TEvent>> {
 
     public var id:String;
     private var attributes:StringMap<Dynamic> = new StringMap<Dynamic>();
@@ -13,7 +13,7 @@ class Event {
         this.id = id;
     }
 
-    public function setAttribute(attrib:String, value:Dynamic):Event
+    public function setAttribute(attrib:String, value:Dynamic):TEvent
     {
         attributes.set(attrib,value);
         return this;

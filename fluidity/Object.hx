@@ -5,26 +5,33 @@ import evsm.FState;
 
 import haxe.ds.StringMap;
 
-class Object<TObject:(Object<Dynamic>)>{
+@:autoBuild(fluidity.macro.Macro.build())
+class Object<TObject:(Object<TObject,TEvent>),TEvent:(Event<TEvent>)>{
 
-    public var state:FState<TObject,Event>;
-
-    // public var type:ObjectType;
-
-    public var scene:Scene<TObject>;
+    public var state:FState<TObject,TEvent>;
 
     public function new()
     {
-        // Backend.physics.newObject(this);
+
     }
 
-    public function processEvent(e:Event)
+    public function processEvent(e:TEvent)
     {
         if(state != null)
         {
             state.processEvent(cast this,e);
         }
         return this;
+    }
+
+    public function setState(s:FState<TObject,TEvent>):TObject
+    {
+        if(state == null)
+        {
+            state = new FState<TObject,TEvent>();
+        }
+        state.switchTo(cast this,s,new TEvent(""));
+        return cast this;
     }
 
     public function setAttribute(attrib:String, value:Dynamic):TObject
@@ -38,53 +45,6 @@ class Object<TObject:(Object<Dynamic>)>{
         return attributes.get(attrib);
     }
 
-    // public function setType(t:ObjectType):Object
-    // {
-    //     if(type != null)
-    //     {
-    //         type.removeObject(this);
-    //     }
-    //     if(t != null)
-    //     {
-    //         t.addObject(this);
-    //     }
-    //     type = t;
-    //     // Backend.physics.objectSetType(this,t);
-    //     return this;
-    // }
-
-    // public function isType(t:ObjectType):Bool
-    // {
-    //     return (type == t);
-    // }
-
-    public function setState(s:FState<TObject,Event>):TObject
-    {
-        if(state == null)
-        {
-            state = new FState<TObject,Event>();
-        }
-        state.switchTo(cast this,s,new Event(""));
-        return cast this;
-    }
-
-    public function update()
-    {
-        // Backend.physics.objectUpdate(this);
-        // Backend.graphics.objectUpdate(this);
-
-        if(state != null)
-        {
-            state.update(cast this);
-        }
-    }
-
-    // public function addEventTrigger(eventName:String,func:Object->Bool)
-    // {
-    //     eventTriggers.push({eventName: eventName, func: func});
-    // }   
-
     private var attributes:StringMap<Dynamic> = new StringMap<Dynamic>();
-    // private var eventTriggers:Array<{eventName:String,func:Object->Bool}> = [];
 
 }
