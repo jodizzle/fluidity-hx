@@ -1,8 +1,10 @@
 
+package fluidity.macro;
+
 import haxe.macro.Context;
 import haxe.macro.Expr;
 
-class TestMacro {
+class Macro {
 
     static var componentTypes:Map<String,String>;
 

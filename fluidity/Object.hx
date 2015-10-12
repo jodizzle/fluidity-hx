@@ -24,13 +24,13 @@ class Object<TObject:(Object<TObject,TEvent>),TEvent:(Event<TEvent>)>{
         return this;
     }
 
-    public function setState(s:FState<TObject,TEvent>):TObject
+    public function setState(s:FState<TObject,TEvent>,event:TEvent):TObject
     {
         if(state == null)
         {
             state = new FState<TObject,TEvent>();
         }
-        state.switchTo(cast this,s,new TEvent(""));
+        state.switchTo(cast this,s,event);
         return cast this;
     }
 

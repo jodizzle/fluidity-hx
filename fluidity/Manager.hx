@@ -4,64 +4,112 @@ package fluidity;
 import haxe.ds.StringMap;
 
 import evsm.FState;
-import fluidity.ash.AshEngine;
+// import fluidity.ash.AshEngine;
+
+
+typedef System<TObject,TEvent> = 
+    {
+        public function update(objects:Array<TObject>):Void;
+        public function onAddObject(object:TObject):Void;
+        public function onRemoveObject(object:TObject):Void;
+        public var priority:Float;
+    }
+
+class ManagerSystem<TObject:(Object<TObject,TEvent>),TEvent:(Event<TEvent>)> {
+    public function new(p:Float)
+    {
+        priority = p;
+    }
+    public function update(objects:Array<TObject>)
+    {
+        for(obj in objects)
+        {
+            if(obj.state != null)
+            {
+                obj.state.update(obj);
+            }
+        }
+    }
+    public function onAddObject(object:TObject){}
+    public function onRemoveObject(object:TObject){}
+    public var priority:Float = 0;
+}
 
 class Manager<TObject:(Object<TObject,TEvent>),TEvent:(Event<TEvent>)>{
 
     public var objects:Array<TObject> = [];
+    private var toAdd:Array<TObject> = [];
     private var toRemove:Array<TObject> = [];
 
-    private var systems:Array<{f:Array<TObject>->Void,p:Int}> = [];
+    private var systems:Array<System<TObject,TEvent>> = [];
 
-    public function new(evPriority:Int = 0)
+    public function new(evPriority:Float = 0)
     {
-        addSystem(function(objs:Array<TObject>)
-            {
-                for(obj in objs)
-                {
-                    if(obj.state != null)
-                    {
-                        obj.state.update();
-                    }
-                }
-            }, evPriority);
+        addSystem(new ManagerSystem<TObject,TEvent>(evPriority));
     }
 
-    public function addSystem(func:Array<TObject> -> Void, priority:Float)
+    public function newState(?name:String)
+    {
+        return new FState<TObject,TEvent>(name);
+    }
+
+    public function addSystem(system:System<TObject,TEvent>)
     {
         var inserted = false;
         for(i in 0...(systems.length))
         {
-            if(priority <= systems[i].p)
+            if(system.priority <= systems[i].priority)
             {
-                systems.insert(i,{f:func,p:priority});
+                systems.insert(i,system);
                 inserted = true;
                 break;
             }
         }
         if(!inserted)
         {
-            system.push({f:func,p:priority});
+            systems.push(system);
         }
+        return this;
     }
 
     public function addObject(obj:TObject)
     {
-        objects.push(obj);
+        for(system in systems)
+        {
+            system.onAddObject(obj);
+        }
+        toAdd.push(obj);
     }
 
     public function removeObject(obj:TObject)
     {
+        for(system in systems)
+        {
+            system.onRemoveObject(obj);
+        }
         toRemove.push(obj);
     }
 
     public function update()
     {
+        applyObjectListChanges();
         for(system in systems)
         {
-            system(objects);
+            system.update(objects);
         }
+        applyObjectListChanges();
         return this;
+    }
+
+    private function applyObjectListChanges()
+    {
+        for(obj in toRemove)
+        {
+            objects.remove(obj);
+        }
+        toRemove = [];
+        objects = objects.concat(toAdd);
+        toAdd = [];
     }
 
 }

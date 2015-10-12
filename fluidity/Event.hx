@@ -13,10 +13,10 @@ class Event<TEvent:Event<TEvent>> {
         this.id = id;
     }
 
-    public function setAttribute(attrib:String, value:Dynamic):TEvent
+    public function setAttribute(attrib:String, value:Dynamic)
     {
         attributes.set(attrib,value);
-        return this;
+        // return this;
     }
 
     public function getAttribute(attrib:String):Dynamic
