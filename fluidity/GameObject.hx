@@ -32,18 +32,16 @@ class GameObject{
 
     public var currentAnimationTime = 0;
 
-    public var type:ObjectType;
 
     public var graphic:Graphic;
+    
     public var collider:Collider;
+    public var type:ObjectType;
+    public var solid:Bool = true;
 
     public var flip:Bool = false;
 
     public var scene:GameScene;
-
-    public var collisions:Array<Collision> = [];
-
-    public var interactions:Array<GameObject> = [];
 
     public function new()
     {

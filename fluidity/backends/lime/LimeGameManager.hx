@@ -41,7 +41,8 @@ class LimeGameManager extends Application{
         lgb = new GraphicsLime(window);
         limeInput = new LimeInput();
         Backend.graphics = lgb;
-        Backend.physics = new PhysicsSimple();
+        Backend.physics = new PhysicsNape();
+        // Backend.physics = new PhysicsSimple();
         Backend.input = limeInput;
         gameManager.init();
         window.onResize.add(_onResize);

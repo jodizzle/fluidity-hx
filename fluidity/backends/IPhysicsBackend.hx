@@ -14,7 +14,7 @@ interface IPhysicsBackend {
     public function typeAddCollision(type:ObjectType,otherType:ObjectType):Void;
 
     public function typeAddInteractionStartEvent(type:ObjectType,eventName:String,otherType:ObjectType):Void;
-    public function typeAddInteractionContinueEvent(type:ObjectType,eventName:String,otherType:ObjectType):Void;
+    // public function typeAddInteractionContinueEvent(type:ObjectType,eventName:String,otherType:ObjectType):Void;
     public function typeAddInteractionStopEvent(type:ObjectType,eventName:String,otherType:ObjectType):Void;
 
     public function newObject(obj:GameObject):Void;

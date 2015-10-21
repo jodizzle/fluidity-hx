@@ -6,6 +6,7 @@
     <haxedef name="kongregate" if="kongregate"/>
 
     <haxelib name="samcodes-admob" if="android"/>
+    <haxelib name="nape"/>
     <haxelib name="evsm" />
     
 </project>

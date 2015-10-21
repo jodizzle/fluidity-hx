@@ -46,16 +46,16 @@ class ObjectType{
         return this;
     }
 
-    public function addCollisionContinueEvent(eventName:String,other:ObjectType)
-    {
-        continueInteractionEvents.set(other,eventName);
-        if(collisionTypes.indexOf(other) < 0)
-        {
-            collisionTypes.push(other);
-        }
-        Backend.physics.typeAddInteractionContinueEvent(this,eventName,other);
-        return this;
-    }
+    // public function addCollisionContinueEvent(eventName:String,other:ObjectType)
+    // {
+    //     continueInteractionEvents.set(other,eventName);
+    //     if(collisionTypes.indexOf(other) < 0)
+    //     {
+    //         collisionTypes.push(other);
+    //     }
+    //     Backend.physics.typeAddInteractionContinueEvent(this,eventName,other);
+    //     return this;
+    // }
 
     public function addCollisionStopEvent(eventName:String,other:ObjectType)
     {
