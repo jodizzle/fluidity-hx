@@ -5,7 +5,7 @@ import evsm.FState;
 
 import haxe.ds.StringMap;
  
-import fluidity.utils.Vec2;
+import nape.geom.Vec2;
 import fluidity.backends.Backend;
 
 class GameObject{
@@ -34,6 +34,8 @@ class GameObject{
 
 
     public var graphic:Graphic;
+
+    public var collisions:Array<Collision> = [];
     
     public var collider:Collider;
     public var type:ObjectType;

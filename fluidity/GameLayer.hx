@@ -8,7 +8,7 @@ import evsm.FState;
 import fluidity.backends.Backend;
 
 import fluidity.utils.StringBin;
-import fluidity.utils.Vec2;
+import nape.geom.Vec2;
 
 class GameLayer{
 

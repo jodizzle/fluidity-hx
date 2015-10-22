@@ -8,7 +8,7 @@ import lime.utils.Float32Array;
 
 import fluidity.GameObject;
 import fluidity.GameScene;
-import fluidity.utils.Vec2;
+import nape.geom.Vec2;
 import fluidity.utils.EnumBin;
 
 class LimeLayer{

@@ -5,7 +5,7 @@ import fluidity.backends.simple.*;
 
 import fluidity.GameObject;
 import fluidity.Collider;
-import fluidity.utils.Vec2;
+import nape.geom.Vec2;
 
 
 class PhysicsSimple implements IPhysicsBackend{ 

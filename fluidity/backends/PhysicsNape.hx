@@ -6,7 +6,7 @@ import fluidity.backends.simple.*;
 
 import fluidity.GameObject;
 import fluidity.Collider;
-// import fluidity.utils.Vec2;
+// import nape.geom.Vec2;
 
 import nape.space.Space;
 import nape.geom.Vec2;
@@ -75,6 +75,10 @@ class PhysicsNape implements IPhysicsBackend{
     public function sceneUpdate(scene:GameScene)
     {
         scenes.get(scene).step(1/60);
+        for(obj in objects)
+        {
+            obj.update();
+        }
     }
 
     public function sceneStart(scene:GameScene)
@@ -127,12 +131,17 @@ class PhysicsNape implements IPhysicsBackend{
         var napeObj = objects.get(obj);
         if(napeObj != null)
         {
-            napeObj.position.set(obj.position)
+            napeObj.read();
+        }
+        else
+        {
+            obj.position.addeq(obj.velocity);
         }
     }
 
     public function objectUpdate(obj:GameObject)
     {
+
     }
     
     public function preUpdate():Void{}

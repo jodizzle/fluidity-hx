@@ -8,7 +8,7 @@ import evsm.FState;
 import fluidity.backends.Backend;
 
 import fluidity.utils.StringBin;
-import fluidity.utils.Vec2;
+import nape.geom.Vec2;
 
 import lime.app.Application;
 import lime.ui.KeyCode;
@@ -41,8 +41,8 @@ class LimeGameManager extends Application{
         lgb = new GraphicsLime(window);
         limeInput = new LimeInput();
         Backend.graphics = lgb;
-        Backend.physics = new PhysicsNape();
-        // Backend.physics = new PhysicsSimple();
+        // Backend.physics = new PhysicsNape();
+        Backend.physics = new PhysicsSimple();
         Backend.input = limeInput;
         gameManager.init();
         window.onResize.add(_onResize);

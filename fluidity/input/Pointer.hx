@@ -1,7 +1,7 @@
 
 package fluidity.input;
 
-import fluidity.utils.Vec2;
+import nape.geom.Vec2;
 
 
 class Pointer {

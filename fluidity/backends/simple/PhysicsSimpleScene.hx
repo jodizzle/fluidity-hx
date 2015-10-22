@@ -1,7 +1,7 @@
 
 package fluidity.backends.simple;
 
-import fluidity.utils.Vec2;
+import nape.geom.Vec2;
 import fluidity.utils.ObjectBin;
 
 class PhysicsSimpleScene{

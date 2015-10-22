@@ -5,7 +5,7 @@ import fluidity.backends.simple.*;
 
 import fluidity.GameObject;
 import fluidity.Collider;
-// import fluidity.utils.Vec2;
+// import nape.geom.Vec2;
 
 import nape.space.Space;
 import nape.geom.Vec2;
@@ -35,6 +35,21 @@ class NapeObject{
         set(obj);
     }
 
+    public function read()
+    {
+        body.position.set(gameObj.position);
+        body.velocity.set(gameObj.velocity);
+        body.rotation = gameObj.angle;
+        body.angularVel = gameObj.angularVelocity;
+    }
+
+    public function update()
+    {
+        gameObj.position.set(body.position);
+        gameObj.velocity.set(body.velocity);
+        gameObj.angle = body.rotation;
+    }
+
     public function set(obj:GameObject)
     {
         // body = new Body();
@@ -61,5 +76,7 @@ class NapeObject{
         }
         solidShape.body = body;
         sensorShape.body = body;
+
+        read();
     }
 }
