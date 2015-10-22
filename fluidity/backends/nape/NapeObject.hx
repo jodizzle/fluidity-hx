@@ -26,9 +26,12 @@ class NapeObject{
 
     public static var solidMaterial:Material = new Material(0,0,0,1,0);
 
+    public var gameObj:GameObject;
+
     public function new(obj:GameObject)
     {
         body = new Body();
+        gameObj = obj;
         set(obj);
     }
 

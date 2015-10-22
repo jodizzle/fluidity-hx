@@ -124,7 +124,11 @@ class PhysicsNape implements IPhysicsBackend{
 
     public function objectChanged(obj:GameObject)
     {
-
+        var napeObj = objects.get(obj);
+        if(napeObj != null)
+        {
+            napeObj.position.set(obj.position)
+        }
     }
 
     public function objectUpdate(obj:GameObject)
