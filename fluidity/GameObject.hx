@@ -5,7 +5,7 @@ import evsm.FState;
 
 import haxe.ds.StringMap;
  
-import nape.geom.Vec2;
+import fluidity.utils.Vec2;
 import fluidity.backends.Backend;
 
 class GameObject{
@@ -18,6 +18,7 @@ class GameObject{
     public var worldAngle(get,never):Float;
     public var worldScale(get,never):Float;
     public var worldPosition(get,never):Vec2;
+    public var worldFlip(get,never):Bool;
 
     public var angle:Float = 0;
     public var angularVelocity:Float = 0;
@@ -44,18 +45,43 @@ class GameObject{
     public var flip:Bool = false;
 
     public var scene:GameScene;
+    private var events:Array<GameEvent> = [];
 
     public function new()
     {
         Backend.physics.newObject(this);
     }
 
+    private function processEvents()
+    {
+        for(e in events)
+        {
+            if(state != null)
+            {
+                state.processEvent(this,e);
+            }
+        }
+        events = [];
+        return;
+    }
+
     public function processEvent(e:GameEvent)
     {
-        if(state != null)
+        if(scene.inUpdate && state != null)
         {
             state.processEvent(this,e);
         }
+        else
+        {
+            events.push(e);
+        }
+        return this;
+    }
+
+    public function setFlip(f:Bool):GameObject
+    {
+        flip = f;
+        // Backend.graphics.objectChanged(this);
         return this;
     }
 
@@ -167,6 +193,7 @@ class GameObject{
 
     public function setGraphic(g:Graphic):GameObject
     {
+        currentAnimationTime = 0;
         Backend.graphics.objectSet(this,g);
         graphic = g;
         return this;
@@ -205,14 +232,38 @@ class GameObject{
         return this;
     }
 
+    public function get_worldFlip():Bool
+    {
+        if(parent == null)
+        {
+            return flip;
+        }
+        else
+        {
+            if(parent.worldFlip)
+            {
+                return !flip;
+            }
+            return flip;
+        }
+    }
+
     public function get_worldAngle()
     {
         if(parent == null)
         {
+            if(flip)
+            {
+                return -angle;
+            }
             return angle;
         }
         else
         {
+            if(flip)
+            {
+                return parent.worldAngle - angle;
+            }
             return parent.worldAngle + angle;
         }
     }
@@ -238,6 +289,10 @@ class GameObject{
         else
         {
             var worldPos = position.copy();
+            if(worldFlip)
+            {
+                worldPos.x *= -1;
+            }
             return worldPos.rotate(parent.worldAngle).muleq(parent.worldScale).addeq(parent.worldPosition);
         }
     }
@@ -254,7 +309,7 @@ class GameObject{
 
     public function update()
     {
-
+        processEvents();
         Backend.physics.objectUpdate(this);
         Backend.graphics.objectUpdate(this);
         if(state != null)

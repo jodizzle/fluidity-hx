@@ -27,6 +27,7 @@ class LimeScene{
         return switch (graphic) {
                 case Image(f): f;
                 case SpriteSheet(f,_,_,_,_,_): f;
+                case Animation(f,_,_,_): f;
          };
     }
 

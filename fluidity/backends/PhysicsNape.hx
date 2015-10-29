@@ -43,19 +43,30 @@ class PhysicsNape implements IPhysicsBackend{
     }
 
     function preHandler(cb:PreCallback):PreFlag {
-        if (Math.random() < 0.5)
+        var obj1:GameObject = cb.int1.userData.gameObj;
+        var obj2:GameObject = cb.int2.userData.gameObj;
+        if(obj1 == null || obj2 == null)
         {
-            return PreFlag.IGNORE_ONCE;
+            return PreFlag.IGNORE;
         }
-        else
+        if(obj1.type.collides(obj2.type) || obj2.type.collides(obj1.type))
         {
-            return null;
+            return PreFlag.ACCEPT;
         }
+        return PreFlag.IGNORE;
+        // if (Math.random() < 0.5)
+        // {
+        //     // return PreFlag.IGNORE_ONCE;
+        // }
+        // else
+        // {
+        //     return null;
+        // }
     }
 
     public function sceneAdd(scene:GameScene,obj:GameObject)
     {
-        if(obj.collider != null && obj.type == null)
+        if(obj.collider != null && obj.type != null)
         {
             objects.set(obj,new NapeObject(obj));
             scenes.get(scene).bodies.add(objects.get(obj).body);
@@ -118,12 +129,20 @@ class PhysicsNape implements IPhysicsBackend{
 
     public function objectSet(obj:GameObject,collider:Collider)
     {
-        
+        if(obj.scene != null && obj.type != null)
+        {
+            objects.set(obj,new NapeObject(obj));
+            scenes.get(obj.scene).bodies.add(objects.get(obj).body);
+        }
     }
 
     public function objectSetType(obj:GameObject,type:ObjectType)
     {
-
+        if(obj.collider != null && obj.scene != null)
+        {
+            objects.set(obj,new NapeObject(obj));
+            scenes.get(obj.scene).bodies.add(objects.get(obj).body);
+        }
     }
 
     public function objectChanged(obj:GameObject)

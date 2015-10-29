@@ -132,12 +132,14 @@ class GraphicsLimeObject {
         var filename:String = switch (obj1.graphic) {
                 case Image(f): f;
                 case SpriteSheet(f,_,_,_,_,_): f;
+                case Animation(f,_,_,_): f;
             };
 
 
         var filename2:String = switch (obj2.graphic) {
                 case Image(f): f;
                 case SpriteSheet(f,_,_,_,_,_): f;
+                case Animation(f,_,_,_): f;
             };
 
         return filename == filename2;
@@ -163,13 +165,13 @@ class GraphicsLimeObject {
             case SpriteSheet(_,w,h,frames,frameLength,loop):
                 if(Math.floor(obj.currentAnimationTime/frameLength) == frames.length)
                 {
-                    //send animend event
+                    obj.processEvent(new GameEvent("flAnimEnd"));
                 }
                 if(loop && Math.floor(obj.currentAnimationTime/frameLength) >= frames.length)
                 {
                     obj.currentAnimationTime = 0;
                 }
-                var frame:Int = Math.floor(Math.min(frames.length,Math.floor(obj.currentAnimationTime/frameLength)));
+                var frame:Int = Math.floor(Math.min(frames.length - 1,Math.floor(obj.currentAnimationTime/frameLength)));
 
                 offsetX = frames[frame]/(width/w);
                 texWidth = w/width;
@@ -177,6 +179,21 @@ class GraphicsLimeObject {
                 drawWidth = w;
                 drawHeight = h;
                 // offsetY = Math.floor(frames[frame] / imageWidth);
+            case Animation(_,w,frameLength,loop):
+                if(Math.floor(obj.currentAnimationTime/frameLength) == w)
+                {
+                    obj.processEvent(new GameEvent("flAnimEnd"));
+                }
+                if(loop && Math.floor(obj.currentAnimationTime/frameLength) >= w)
+                {
+                    obj.currentAnimationTime = 0;
+                }
+                var frame:Int = Math.floor(Math.min(w - 1,Math.floor(obj.currentAnimationTime/frameLength)));
+
+                offsetX = frame/w;
+                texWidth = 1/w;
+
+                drawWidth = Math.floor(width/w);
             default:
                 GL.uniform2f(texOffsetUniformLocation,0,0);
                 GL.uniform2f(texSizeUniformLocation,1,1);
@@ -186,8 +203,9 @@ class GraphicsLimeObject {
         GL.uniform2f(texSizeUniformLocation,texWidth,1);
 
         var flip = 1;
-        if(obj.flip)
+        if(obj.worldFlip)
         {
+            trace('y');
             flip = -1;
         }
         GL.uniform2f(scaleUniformLocation,flip*obj.worldScale * drawWidth,obj.worldScale * drawHeight);

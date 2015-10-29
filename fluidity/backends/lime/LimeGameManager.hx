@@ -8,7 +8,7 @@ import evsm.FState;
 import fluidity.backends.Backend;
 
 import fluidity.utils.StringBin;
-import nape.geom.Vec2;
+import fluidity.utils.Vec2;
 
 import lime.app.Application;
 import lime.ui.KeyCode;

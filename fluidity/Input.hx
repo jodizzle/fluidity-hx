@@ -140,6 +140,7 @@ class Input
             {
                 if(!scene.input.inputStates.get(keyName))
                 {
+                    scene.input.inputStates.set(keyName,true);
                     for(ev in scene.input.keyDownEvents)
                     {
                         switch(ev)
@@ -156,7 +157,6 @@ class Input
                                 }
                         }
                     }
-                    scene.input.inputStates.set(keyName,true);
                 }
             }
             if(scene.input.positiveKeyAxisMap.exists(key))
@@ -181,6 +181,7 @@ class Input
             {
                 if(scene.input.inputStates.get(keyName))
                 {
+                    scene.input.inputStates.set(keyName,false);
                     for(ev in scene.input.keyUpEvents)
                     {
                         switch(ev)
@@ -197,7 +198,6 @@ class Input
                                 }
                         }
                     }
-                    scene.input.inputStates.set(keyName,false);
                 }
             }
              

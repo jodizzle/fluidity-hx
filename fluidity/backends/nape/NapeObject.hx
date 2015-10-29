@@ -28,9 +28,12 @@ class NapeObject{
 
     public var gameObj:GameObject;
 
+    public var previousScale:Float = 1;
+
     public function new(obj:GameObject)
     {
         body = new Body();
+        body.userData.gameObj = obj;
         gameObj = obj;
         set(obj);
     }
@@ -41,6 +44,9 @@ class NapeObject{
         body.velocity.set(gameObj.velocity);
         body.rotation = gameObj.angle;
         body.angularVel = gameObj.angularVelocity;
+
+        body.scaleShapes(gameObj.scale/previousScale,gameObj.scale/previousScale);
+        previousScale = gameObj.scale;
     }
 
     public function update()
@@ -68,9 +74,10 @@ class NapeObject{
                 sensorShape = new Circle(r,new Vec2(x,y));
                 sensorShape.sensorEnabled = true;
             case Rectangle(x,y,w,h):
-                solidShape = new Polygon(Polygon.rect(x,y,w,h),solidMaterial);
-                sensorShape = new Polygon(Polygon.rect(x,y,w,h));
+                solidShape = new Polygon(Polygon.rect(x - w/2,y - h/2,w,h),solidMaterial);
+                sensorShape = new Polygon(Polygon.rect(x - w/2,y - h/2,w,h));
                 sensorShape.sensorEnabled = true;
+                trace('worked');
             default:
                 trace('fuck');
         }

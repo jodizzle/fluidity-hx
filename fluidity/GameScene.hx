@@ -9,7 +9,7 @@ import fluidity.input.SceneInput;
 import fluidity.backends.Backend;
 
 import fluidity.utils.StringBin;
-import nape.geom.Vec2;
+import fluidity.utils.Vec2;
 
 class GameScene{
 
@@ -29,6 +29,8 @@ class GameScene{
     public var toAdd:Array<GameObject> = [];
     public var toRemove:Array<GameObject> = [];
     public var toDelete:Array<GameObject> = [];
+
+    public var inUpdate = false;
 
     public function new(?gravity:Vec2)
     {
@@ -108,13 +110,15 @@ class GameScene{
 
     public function update()
     {
+        Backend.physics.sceneUpdate(this);
         input.update();
+        inUpdate = true;
         onUpdate();
         for(obj in objects)
         {
             obj.update();
         }
-        Backend.physics.sceneUpdate(this);
+        inUpdate = false;
         Backend.graphics.sceneUpdate(this);
 
         for(obj in toAdd)

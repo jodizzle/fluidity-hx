@@ -1,7 +1,7 @@
 
 package fluidity.backends.simple;
 
-import nape.geom.Vec2;
+import fluidity.utils.Vec2;
 import fluidity.utils.ObjectBin;
 
 class PhysicsSimpleScene{
@@ -286,7 +286,7 @@ class PhysicsSimpleScene{
             msv = compareMSV(msv,new Vec2(p2l - r,0));
         }
 
-        trace(t,p2b);
+        // trace(t,p2b);
 
         if(t >= p2b)
         {

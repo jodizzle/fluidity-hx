@@ -28,6 +28,12 @@ class ObjectType{
         }
     }
 
+    // public function collides(other:ObjectType)
+    // {
+    //     // trace(collisionTypes.length);
+    //     return collisionTypes.indexOf(other) >= 0;
+    // }
+
     public function addCollision(other:ObjectType)
     {
         collisionTypes.push(other);
