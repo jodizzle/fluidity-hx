@@ -205,7 +205,6 @@ class GraphicsLimeObject {
         var flip = 1;
         if(obj.worldFlip)
         {
-            trace('y');
             flip = -1;
         }
         GL.uniform2f(scaleUniformLocation,flip*obj.worldScale * drawWidth,obj.worldScale * drawHeight);

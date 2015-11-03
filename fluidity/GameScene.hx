@@ -162,7 +162,7 @@ class GameScene{
     {
         while(objects.length > 0)
         {
-            delete(objects[objects.length - 1]);
+            __delete(objects[objects.length - 1]);
         }
         Backend.graphics.sceneReset(this);
         Backend.physics.sceneReset(this);

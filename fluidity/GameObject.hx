@@ -67,7 +67,7 @@ class GameObject{
 
     public function processEvent(e:GameEvent)
     {
-        if(scene.inUpdate && state != null)
+        if(scene != null && scene.inUpdate && state != null)
         {
             state.processEvent(this,e);
         }
@@ -289,7 +289,7 @@ class GameObject{
         else
         {
             var worldPos = position.copy();
-            if(worldFlip)
+            if(parent.worldFlip)
             {
                 worldPos.x *= -1;
             }
