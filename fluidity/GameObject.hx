@@ -78,6 +78,12 @@ class GameObject{
         return this;
     }
 
+    public function toggleFlip():GameObject
+    {
+        flip = !flip;
+        return this;
+    }
+
     public function setFlip(f:Bool):GameObject
     {
         flip = f;
