@@ -1,0 +1,3436 @@
+<haxe>
+	<class path="Array" params="T" file="/opt/haxe/std/Array.hx" extern="1">
+		<length public="1" set="null">
+			<x path="Int"/>
+			<haxe_doc>The length of `this` Array.</haxe_doc>
+		</length>
+		<concat public="1" set="method">
+			<f a="a">
+				<c path="Array"><c path="Array.T"/></c>
+				<c path="Array"><c path="Array.T"/></c>
+			</f>
+			<haxe_doc>Returns a new Array by appending the elements of `a` to the elements of
+		`this` Array.
+
+		This operation does not modify `this` Array.
+
+		If `a` is the empty Array `[]`, a copy of `this` Array is returned.
+
+		The length of the returned Array is equal to the sum of `this.length`
+		and `a.length`.
+
+		If `a` is `null`, the result is unspecified.</haxe_doc>
+		</concat>
+		<join public="1" set="method">
+			<f a="sep">
+				<c path="String"/>
+				<c path="String"/>
+			</f>
+			<haxe_doc>Returns a string representation of `this` Array, with `sep` separating
+		each element.
+
+		The result of this operation is equal to `Std.string(this[0]) + sep +
+		Std.string(this[1]) + sep + ... + sep + Std.string(this[this.length-1])`
+
+		If `this` is the empty Array `[]`, the result is the empty String `""`.
+		If `this` has exactly one element, the result is equal to a call to
+		`Std.string(this[0])`.
+
+		If `sep` is null, the result is unspecified.</haxe_doc>
+		</join>
+		<pop public="1" set="method">
+			<f a=""><t path="Null"><c path="Array.T"/></t></f>
+			<haxe_doc>Removes the last element of `this` Array and returns it.
+
+		This operation modifies `this` Array in place.
+
+		If `this` has at least one element, `this.length` will decrease by 1.
+
+		If `this` is the empty Array `[]`, null is returned and the length
+		remains 0.</haxe_doc>
+		</pop>
+		<push public="1" set="method">
+			<f a="x">
+				<c path="Array.T"/>
+				<x path="Int"/>
+			</f>
+			<haxe_doc>Adds the element `x` at the end of `this` Array and returns the new
+		length of `this` Array.
+
+		This operation modifies `this` Array in place.
+
+		`this.length` increases by 1.</haxe_doc>
+		</push>
+		<reverse public="1" set="method">
+			<f a=""><x path="Void"/></f>
+			<haxe_doc><![CDATA[Reverse the order of elements of `this` Array.
+
+		This operation modifies `this` Array in place.
+
+		If `this.length < 2`, `this` remains unchanged.]]></haxe_doc>
+		</reverse>
+		<shift public="1" set="method">
+			<f a=""><t path="Null"><c path="Array.T"/></t></f>
+			<haxe_doc>Removes the first element of `this` Array and returns it.
+
+		This operation modifies `this` Array in place.
+
+		If `this` has at least one element, `this`.length and the index of each
+		remaining element is decreased by 1.
+
+		If `this` is the empty Array `[]`, `null` is returned and the length
+		remains 0.</haxe_doc>
+		</shift>
+		<slice public="1" set="method">
+			<f a="pos:?end">
+				<x path="Int"/>
+				<x path="Int"/>
+				<c path="Array"><c path="Array.T"/></c>
+			</f>
+			<haxe_doc>Creates a shallow copy of the range of `this` Array, starting at and
+		including `pos`, up to but not including `end`.
+
+		This operation does not modify `this` Array.
+
+		The elements are not copied and retain their identity.
+
+		If `end` is omitted or exceeds `this.length`, it defaults to the end of
+		`this` Array.
+
+		If `pos` or `end` are negative, their offsets are calculated from the
+		end	of `this` Array by `this.length + pos` and `this.length + end`
+		respectively. If this yields a negative value, 0 is used instead.
+
+		If `pos` exceeds `this.length` or if `end` exceeds or equals `pos`,
+		the result is `[]`.</haxe_doc>
+		</slice>
+		<sort public="1" set="method">
+			<f a="f">
+				<f a=":">
+					<c path="Array.T"/>
+					<c path="Array.T"/>
+					<x path="Int"/>
+				</f>
+				<x path="Void"/>
+			</f>
+			<haxe_doc><![CDATA[Sorts `this` Array according to the comparison function `f`, where
+		`f(x,y)` returns 0 if x == y, a positive Int if x > y and a
+		negative Int if x < y.
+
+		This operation modifies `this` Array in place.
+
+		The sort operation is not guaranteed to be stable, which means that the
+		order of equal elements may not be retained. For a stable Array sorting
+		algorithm, `haxe.ds.ArraySort.sort()` can be used instead.
+
+		If `f` is null, the result is unspecified.]]></haxe_doc>
+		</sort>
+		<splice public="1" set="method">
+			<f a="pos:len">
+				<x path="Int"/>
+				<x path="Int"/>
+				<c path="Array"><c path="Array.T"/></c>
+			</f>
+			<haxe_doc><![CDATA[Removes `len` elements from `this` Array, starting at and including
+		`pos`, an returns them.
+
+		This operation modifies `this` Array in place.
+
+		If `len` is < 0 or `pos` exceeds `this`.length, the result is the empty
+		Array [].
+
+		If `pos` is negative, its value is calculated from the end	of `this`
+		Array by `this.length + pos`. If this yields a negative value, 0 is
+		used instead.
+
+		If the sum of the resulting values for `len` and `pos` exceed
+		`this.length`, this operation will affect the elements from `pos` to the
+		end of `this` Array.
+
+		The length of the returned Array is equal to the new length of `this`
+		Array subtracted from the original length of `this` Array. In other
+		words, each element of the original `this` Array either remains in
+		`this` Array or becomes an element of the returned Array.]]></haxe_doc>
+		</splice>
+		<toString public="1" set="method">
+			<f a=""><c path="String"/></f>
+			<haxe_doc>Returns a string representation of `this` Array.
+
+		The result will include the individual elements' String representations
+		separated by comma. The enclosing [ ] may be missing on some platforms,
+		use Std.string() to get a String representation that is consistent
+		across platforms.</haxe_doc>
+		</toString>
+		<unshift public="1" set="method">
+			<f a="x">
+				<c path="Array.T"/>
+				<x path="Void"/>
+			</f>
+			<haxe_doc>Adds the element `x` at the start of `this` Array.
+
+		This operation modifies `this` Array in place.
+
+		`this.length` and the index of each Array element increases by 1.</haxe_doc>
+		</unshift>
+		<insert public="1" set="method">
+			<f a="pos:x">
+				<x path="Int"/>
+				<c path="Array.T"/>
+				<x path="Void"/>
+			</f>
+			<haxe_doc>Inserts the element `x` at the position `pos`.
+
+		This operation modifies `this` Array in place.
+
+		The offset is calculated like so:
+
+		- If `pos` exceeds `this.length`, the offset is `this.length`.
+		- If `pos` is negative, the offset is calculated from the end of `this`
+		  Array, i.e. `this.length + pos`. If this yields a negative value, the
+		  offset is 0.
+		- Otherwise, the offset is `pos`.
+
+		If the resulting offset does not exceed `this.length`, all elements from
+		and including that offset to the end of `this` Array are moved one index
+		ahead.</haxe_doc>
+		</insert>
+		<remove public="1" set="method">
+			<f a="x">
+				<c path="Array.T"/>
+				<x path="Bool"/>
+			</f>
+			<haxe_doc>Removes the first occurence of `x` in `this` Array.
+
+		This operation modifies `this` Array in place.
+
+		If `x` is found by checking standard equality, it is removed from `this`
+		Array and all following elements are reindexed acoordingly. The function
+		then returns true.
+
+		If `x` is not found, `this` Array is not changed and the function
+		returns false.</haxe_doc>
+		</remove>
+		<indexOf public="1" set="method">
+			<f a="x:?fromIndex">
+				<c path="Array.T"/>
+				<x path="Int"/>
+				<x path="Int"/>
+			</f>
+			<haxe_doc>Returns position of the first occurense of `x` in `this` Array, searching front to back.
+
+		If `x` is found by checking standard equality, the function returns its index.
+
+		If `x` is not found, the function returns -1.
+
+		If `fromIndex` is specified, it will be used as the starting index to search from,
+		otherwise search starts with zero index. If it is negative, it will be taken as the
+		offset from the end of `this` Array to compute the starting index. If given or computed
+		starting index is less than 0, the whole array will be searched, if it is greater than
+		or equal to the length of `this` Array, the function returns -1.</haxe_doc>
+		</indexOf>
+		<lastIndexOf public="1" set="method">
+			<f a="x:?fromIndex">
+				<c path="Array.T"/>
+				<x path="Int"/>
+				<x path="Int"/>
+			</f>
+			<haxe_doc>Returns position of the last occurense of `x` in `this` Array, searching back to front.
+
+		If `x` is found by checking standard equality, the function returns its index.
+
+		If `x` is not found, the function returns -1.
+
+		If `fromIndex` is specified, it will be used as the starting index to search from,
+		otherwise search starts with the last element index. If it is negative, it will be
+		taken as the offset from the end of `this` Array to compute the starting index. If
+		given or computed starting index is greater than or equal to the length of `this` Array,
+		the whole array will be searched, if it is less than 0, the function returns -1.</haxe_doc>
+		</lastIndexOf>
+		<copy public="1" set="method">
+			<f a=""><c path="Array"><c path="Array.T"/></c></f>
+			<haxe_doc>Returns a shallow copy of `this` Array.
+
+		The elements are not copied and retain their identity, so
+		`a[i] == a.copy()[i]` is true for any valid `i`. However,
+		`a == a.copy()` is always false.</haxe_doc>
+		</copy>
+		<iterator public="1" set="method">
+			<f a=""><t path="Iterator"><c path="Array.T"/></t></f>
+			<haxe_doc>Returns an iterator of the Array values.</haxe_doc>
+		</iterator>
+		<map public="1" params="S" set="method">
+			<f a="f">
+				<f a="">
+					<c path="Array.T"/>
+					<c path="map.S"/>
+				</f>
+				<c path="Array"><c path="map.S"/></c>
+			</f>
+			<haxe_doc>Creates a new Array by applying function `f` to all elements of `this`.
+
+		The order of elements is preserved.
+
+		If `f` is null, the result is unspecified.</haxe_doc>
+		</map>
+		<filter public="1" set="method">
+			<f a="f">
+				<f a="">
+					<c path="Array.T"/>
+					<x path="Bool"/>
+				</f>
+				<c path="Array"><c path="Array.T"/></c>
+			</f>
+			<haxe_doc>Returns an Array containing those elements of `this` for which `f`
+		returned true.
+
+		The individual elements are not duplicated and retain their identity.
+
+		If `f` is null, the result is unspecified.</haxe_doc>
+		</filter>
+		<new public="1" set="method">
+			<f a=""><x path="Void"/></f>
+			<haxe_doc>Creates a new Array.</haxe_doc>
+		</new>
+		<haxe_doc>An Array is a storage for values. You can access it using indexes or
+	with its API.</haxe_doc>
+		<meta><m n=":directlyUsed"/></meta>
+	</class>
+	<abstract path="Class" params="T" file="/opt/haxe/std/Class.hx">
+		<this><x path="Class"><c path="Class.T"/></x></this>
+		<haxe_doc>An abstract type that represents a Class.
+
+	See `Type` for the Haxe Reflection API.</haxe_doc>
+		<meta>
+			<m n=":coreType"/>
+			<m n=":runtimeValue"/>
+		</meta>
+	</abstract>
+	<abstract path="Enum" params="T" file="/opt/haxe/std/Enum.hx">
+		<this><x path="Enum"><c path="Enum.T"/></x></this>
+		<haxe_doc>An abstract type that represents an Enum type.
+
+	The corresponding enum instance type is `EnumValue`.
+
+	See `Type` for the Haxe Reflection API.</haxe_doc>
+		<meta>
+			<m n=":coreType"/>
+			<m n=":runtimeValue"/>
+		</meta>
+	</abstract>
+	<abstract path="EnumValue" params="" file="/opt/haxe/std/EnumValue.hx">
+		<this><x path="EnumValue"/></this>
+		<haxe_doc>An abstract type that represents any enum value.
+	See `Type` for the Haxe Reflection API.</haxe_doc>
+		<meta><m n=":coreType"/></meta>
+	</abstract>
+	<abstract path="Map" params="K:V" file="/opt/haxe/std/Map.hx">
+		<from>
+			<icast field="fromStringMap"><c path="haxe.ds.StringMap"><c path="fromStringMap.V"/></c></icast>
+			<icast field="fromIntMap"><c path="haxe.ds.IntMap"><c path="fromIntMap.V"/></c></icast>
+			<icast field="fromObjectMap"><c path="haxe.ds.ObjectMap">
+	<c path="fromObjectMap.K"/>
+	<c path="fromObjectMap.V"/>
+</c></icast>
+		</from>
+		<this><t path="IMap">
+	<c path="Map.K"/>
+	<c path="Map.V"/>
+</t></this>
+		<to>
+			<icast field="toStringMap"><c path="haxe.ds.StringMap"><c path="toStringMap.V"/></c></icast>
+			<icast field="toIntMap"><c path="haxe.ds.IntMap"><c path="toIntMap.V"/></c></icast>
+			<icast field="toEnumValueMapMap"><c path="haxe.ds.EnumValueMap">
+	<c path="toEnumValueMapMap.K"/>
+	<c path="toEnumValueMapMap.V"/>
+</c></icast>
+			<icast field="toObjectMap"><c path="haxe.ds.ObjectMap">
+	<c path="toObjectMap.K"/>
+	<c path="toObjectMap.V"/>
+</c></icast>
+		</to>
+		<haxe_doc><![CDATA[Map allows key to value mapping for arbitrary value types, and many key
+	types.
+
+	This is a multi-type abstract, it is instantiated as one of its
+	specialization types depending on its type parameters.
+
+	A Map can be instantiated without explicit type parameters. Type inference
+	will then determine the type parameters from the usage.
+
+	Maps can also be created with `key1 => value1, key2 => value2` syntax.
+
+	Map is an abstract type, it is not available at runtime.]]></haxe_doc>
+		<meta><m n=":multiType"><e>K</e></m></meta>
+		<impl><class path="_Map.Map_Impl_" params="" file="/opt/haxe/std/Map.hx" private="1" module="Map"><meta><m n=":keep"/></meta></class></impl>
+	</abstract>
+	<typedef path="IMap" params="K:V" file="/opt/haxe/std/Map.hx" module="Map">
+		<c path="haxe.IMap">
+			<c path="IMap.K"/>
+			<c path="IMap.V"/>
+		</c>
+		<meta><m n=":deprecated"/></meta>
+	</typedef>
+	<class path="Math" params="" file="/opt/haxe/std/Math.hx" extern="1">
+		<PI public="1" set="null" static="1">
+			<x path="Float"/>
+			<haxe_doc>Represents the ratio of the circumference of a circle to its diameter,
+		specified by the constant, π. `PI` is approximately 3.141592653589793.</haxe_doc>
+		</PI>
+		<NEGATIVE_INFINITY public="1" set="null" static="1">
+			<x path="Float"/>
+			<haxe_doc>A special `Float` constant which denotes negative infinity.
+
+		For example, this is the result of -1.0 / 0.0.
+
+		Operations with `NEGATIVE_INFINITY` as an operand may result in
+		`NEGATIVE_INFINITY`, `POSITIVE_INFINITY` or `NaN`.
+
+		If this constant is converted to an `Int`, e.g. through `Std.int()`, the
+		result is unspecified.</haxe_doc>
+		</NEGATIVE_INFINITY>
+		<POSITIVE_INFINITY public="1" set="null" static="1">
+			<x path="Float"/>
+			<haxe_doc>A special `Float` constant which denotes negative infinity.
+
+		For example, this is the result of 1.0 / 0.0.
+
+		Operations with `POSITIVE_INFINITY` as an operand may result in
+		`NEGATIVE_INFINITY`, `POSITIVE_INFINITY` or `NaN`.
+
+		If this constant is converted to an `Int`, e.g. through `Std.int()`, the
+		result is unspecified.</haxe_doc>
+		</POSITIVE_INFINITY>
+		<NaN public="1" set="null" static="1">
+			<x path="Float"/>
+			<haxe_doc>A special `Float` constant which denotes an invalid number.
+
+		NaN stands for "Not a Number". It occurs when a mathematically incorrect
+		operation is executed, such as taking the square root of a negative
+		number: Math.sqrt(-1).
+
+		All further operations with `NaN` as an operand will result in `NaN`.
+
+		If this constant is converted to an `Int`, e.g. through `Std.int()`, the
+		result is unspecified.
+
+		In order to test if a value is `NaN`, you should use `Math.isNaN()` function.
+
+		@php In PHP versions prior to 5.3.1 VC 9 there may be unexpected
+		results when performing arithmetic operations with `NaN` on Windows,
+		see [https://bugs.php.net/bug.php?id=42143]</haxe_doc>
+		</NaN>
+		<abs public="1" set="method" static="1">
+			<f a="v">
+				<x path="Float"/>
+				<x path="Float"/>
+			</f>
+			<haxe_doc>Returns the absolute value of `v`.
+
+		If `v` is positive or 0, the result is unchanged. Otherwise the result
+		is -`v`.
+
+		If `v` is `NEGATIVE_INFINITY` or `POSITIVE_INFINITY`, the result is
+		`POSITIVE_INFINITY`.
+
+		If `v` is `NaN`, the result is `NaN`.</haxe_doc>
+		</abs>
+		<min public="1" set="method" static="1">
+			<f a="a:b">
+				<x path="Float"/>
+				<x path="Float"/>
+				<x path="Float"/>
+			</f>
+			<haxe_doc>Returns the smaller of values `a` and `b`.
+
+		If `a` or `b` are `NaN`, the result is `NaN`.
+		If `a` or `b` are `NEGATIVE_INFINITY`, the result is `NEGATIVE_INFINITY`.
+		If `a` and `b` are `POSITIVE_INFINITY`, the result is `POSITIVE_INFINITY`.</haxe_doc>
+		</min>
+		<max public="1" set="method" static="1">
+			<f a="a:b">
+				<x path="Float"/>
+				<x path="Float"/>
+				<x path="Float"/>
+			</f>
+			<haxe_doc>Returns the greater of values `a` and `b`.
+
+		If `a` or `b` are `NaN`, the result is `NaN`.
+		If `a` or `b` are `POSITIVE_INFINITY`, the result is `POSITIVE_INFINITY`.
+		If `a` and `b` are `NEGATIVE_INFINITY`, the result is `NEGATIVE_INFINITY`.</haxe_doc>
+		</max>
+		<sin public="1" set="method" static="1">
+			<f a="v">
+				<x path="Float"/>
+				<x path="Float"/>
+			</f>
+			<haxe_doc>Returns the trigonometric sine of the specified angle `v`, in radians.
+
+		If `v` is `NaN` or infinite, the result is `NaN`.</haxe_doc>
+		</sin>
+		<cos public="1" set="method" static="1">
+			<f a="v">
+				<x path="Float"/>
+				<x path="Float"/>
+			</f>
+			<haxe_doc>Returns the trigonometric cosine of the specified angle `v`, in radians.
+
+		If `v` is `NaN` or infinite, the result is `NaN`.</haxe_doc>
+		</cos>
+		<tan public="1" set="method" static="1">
+			<f a="v">
+				<x path="Float"/>
+				<x path="Float"/>
+			</f>
+			<haxe_doc>Returns the trigonometric tangent of the specified angle `v`, in radians.
+
+		If `v` is `NaN` or infinite, the result is `NaN`.</haxe_doc>
+		</tan>
+		<asin public="1" set="method" static="1">
+			<f a="v">
+				<x path="Float"/>
+				<x path="Float"/>
+			</f>
+			<haxe_doc>Returns the trigonometric arc of the specified angle `v`, in radians.
+
+		If `v` is `NaN` or infinite, the result is `NaN`.</haxe_doc>
+		</asin>
+		<acos public="1" set="method" static="1">
+			<f a="v">
+				<x path="Float"/>
+				<x path="Float"/>
+			</f>
+			<haxe_doc>Returns the trigonometric arc cosine of the specified angle `v`,
+		in radians.
+
+		If `v` is `NaN` or infinite, the result is `NaN`.</haxe_doc>
+		</acos>
+		<atan public="1" set="method" static="1">
+			<f a="v">
+				<x path="Float"/>
+				<x path="Float"/>
+			</f>
+			<haxe_doc>Returns the trigonometric arc tangent of the specified angle `v`,
+		in radians.
+
+		If `v` is `NaN` or infinite, the result is `NaN`.</haxe_doc>
+		</atan>
+		<atan2 public="1" set="method" static="1">
+			<f a="y:x">
+				<x path="Float"/>
+				<x path="Float"/>
+				<x path="Float"/>
+			</f>
+			<haxe_doc>Returns the trigonometric arc tangent whose tangent is the quotient of
+		two specified numbers, in radians.
+
+		If parameter `x` or `y`  is `NaN`, `NEGATIVE_INFINITY` or `POSITIVE_INFINITY`,
+		the result is `NaN`.</haxe_doc>
+		</atan2>
+		<exp public="1" set="method" static="1">
+			<f a="v">
+				<x path="Float"/>
+				<x path="Float"/>
+			</f>
+			<haxe_doc>Returns Euler's number, raised to the power of `v`.
+
+		exp(1.0) is approximately 2.718281828459.
+
+		If `v` is `POSITIVE_INFINITY`, the result is `POSITIVE_INFINITY`.
+		If `v` is `NEGATIVE_INFINITY`, the result is `0.0`.
+		If `v` is `NaN`, the result is `NaN`.</haxe_doc>
+		</exp>
+		<log public="1" set="method" static="1">
+			<f a="v">
+				<x path="Float"/>
+				<x path="Float"/>
+			</f>
+			<haxe_doc>Returns the natural logarithm of `v`.
+
+		This is the mathematical inverse operation of exp,
+		i.e. `log(exp(v)) == v` always holds.
+
+		If `v` is negative (including `NEGATIVE_INFINITY`) or `NaN`, the result
+		is `NaN`.
+		If `v` is `POSITIVE_INFINITY`, the result is `POSITIVE_INFINITY`.
+		If `v` is `0.0`, the result is `NEGATIVE_INFINITY`.</haxe_doc>
+		</log>
+		<pow public="1" set="method" static="1">
+			<f a="v:exp">
+				<x path="Float"/>
+				<x path="Float"/>
+				<x path="Float"/>
+			</f>
+			<haxe_doc>Returns a specified base `v` raised to the specified power `exp`.</haxe_doc>
+		</pow>
+		<sqrt public="1" set="method" static="1">
+			<f a="v">
+				<x path="Float"/>
+				<x path="Float"/>
+			</f>
+			<haxe_doc>Returns the square root of `v`.
+
+		If `v` is negative (including `NEGATIVE_INFINITY`) or `NaN`, the result
+		is `NaN`.
+		If `v` is `POSITIVE_INFINITY`, the result is `POSITIVE_INFINITY`.
+		If `v` is `0.0`, the result is `0.0`.</haxe_doc>
+		</sqrt>
+		<round public="1" set="method" static="1">
+			<f a="v">
+				<x path="Float"/>
+				<x path="Int"/>
+			</f>
+			<haxe_doc>Rounds `v` to the nearest integer value.
+
+		If `v` is outside of the signed `Int32` range, or is `NaN`, `NEGATIVE_INFINITY`
+		or `POSITIVE_INFINITY`, the result is unspecified.</haxe_doc>
+		</round>
+		<floor public="1" set="method" static="1">
+			<f a="v">
+				<x path="Float"/>
+				<x path="Int"/>
+			</f>
+			<haxe_doc>Returns the largest integer value that is not greater than `v`.
+
+		If `v` is outside of the signed `Int32` range, or is `NaN`, `NEGATIVE_INFINITY`
+		or `POSITIVE_INFINITY`, the result is unspecified.</haxe_doc>
+		</floor>
+		<ceil public="1" set="method" static="1">
+			<f a="v">
+				<x path="Float"/>
+				<x path="Int"/>
+			</f>
+			<haxe_doc>Returns the smallest integer value that is not less than `v`.
+
+		If `v` is outside of the signed `Int32` range, or is `NaN`, `NEGATIVE_INFINITY`
+		or `POSITIVE_INFINITY`, the result is unspecified.</haxe_doc>
+		</ceil>
+		<random public="1" set="method" static="1">
+			<f a=""><x path="Float"/></f>
+			<haxe_doc>Returns a pseudo-random number which is greater than or equal to 0.0,
+		and less than 1.0.</haxe_doc>
+		</random>
+		<ffloor public="1" set="method" static="1">
+			<f a="v">
+				<x path="Float"/>
+				<x path="Float"/>
+			</f>
+			<haxe_doc>Returns the largest integer value that is not greater than `v`, as a `Float`.
+
+		If `v` is is `NaN`, `NEGATIVE_INFINITY` or `POSITIVE_INFINITY`,
+		the result is unspecified.</haxe_doc>
+		</ffloor>
+		<fceil public="1" set="method" static="1">
+			<f a="v">
+				<x path="Float"/>
+				<x path="Float"/>
+			</f>
+			<haxe_doc>Returns the smallest integer value that is not less than `v`, as a `Float`.
+
+		If `v` is is `NaN`, `NEGATIVE_INFINITY` or `POSITIVE_INFINITY`,
+		the result is unspecified.</haxe_doc>
+		</fceil>
+		<fround public="1" set="method" static="1">
+			<f a="v">
+				<x path="Float"/>
+				<x path="Float"/>
+			</f>
+			<haxe_doc>Rounds `v` to the nearest integer value, as a Float.
+
+		If `v` is is `NaN`, `NEGATIVE_INFINITY` or `POSITIVE_INFINITY`,
+		the result is unspecified.</haxe_doc>
+		</fround>
+		<isFinite public="1" set="method" static="1">
+			<f a="f">
+				<x path="Float"/>
+				<x path="Bool"/>
+			</f>
+			<haxe_doc>Tells if `f` is a finite number.
+
+		If `f` is `POSITIVE_INFINITY`, `NEGATIVE_INFINITY` or `NaN`, the result
+		is `false`, otherwise the result is `true`.</haxe_doc>
+		</isFinite>
+		<isNaN public="1" set="method" static="1">
+			<f a="f">
+				<x path="Float"/>
+				<x path="Bool"/>
+			</f>
+			<haxe_doc>Tells if `f` is not a valid number.
+
+		If `f` is `NaN`, the result is `true`, otherwise the result is `false`.
+		In particular, both `POSITIVE_INFINITY` and `NEGATIVE_INFINITY` are
+		not considered `NaN`.</haxe_doc>
+		</isNaN>
+		<haxe_doc>This class defines mathematical functions and constants.</haxe_doc>
+		<meta>
+			<m n=":directlyUsed"/>
+			<m n=":include"><e>"hxMath.h"</e></m>
+		</meta>
+	</class>
+	<class path="Reflect" params="" file="/opt/haxe/std/cpp/_std/Reflect.hx">
+		<compare public="1" params="T" set="method" line="64" static="1">
+			<f a="a:b">
+				<c path="compare.T"/>
+				<c path="compare.T"/>
+				<x path="Int"/>
+			</f>
+			<haxe_doc>Compares `a` and `b`.
+
+		If `a` is less than `b`, the result is negative. If `b` is less than
+		`a`, the result is positive. If `a` and `b` are equal, the result is 0.
+
+		This function is only defined if `a` and `b` are of the same type.
+
+		If that type is a function, the result is unspecified and
+		`Reflect.compareMethods` should be used instead.
+
+		For all other types, the result is 0 if `a` and `b` are equal. If they
+		are not equal, the result depends on the type and is negative if:
+
+		- Numeric types: a is less than b
+		- String: a is lexicographically less than b
+		- Other: unspecified
+
+		If `a` and `b` are null, the result is 0. If only one of them is null,
+		the result is unspecified.</haxe_doc>
+		</compare>
+		<isEnumValue public="1" set="method" line="83" static="1">
+			<f a="v">
+				<d/>
+				<x path="Bool"/>
+			</f>
+			<meta><m n=":has_untyped"/></meta>
+			<haxe_doc>Tells if `v` is an enum value.
+
+		The result is true if `v` is of type EnumValue, i.e. an enum
+		constructor.
+
+		Otherwise, including if `v` is null, the result is false.</haxe_doc>
+		</isEnumValue>
+		<haxe_doc>The Reflect API is a way to manipulate values dynamically through an
+	abstract interface in an untyped manner. Use with care.</haxe_doc>
+		<meta>
+			<m n=":keep"/>
+			<m n=":directlyUsed"/>
+			<m n=":coreApi"/>
+		</meta>
+	</class>
+	<class path="Std" params="" file="/opt/haxe/std/cpp/_std/Std.hx">
+		<is public="1" set="method" line="23" static="1">
+			<f a="v:t">
+				<d/>
+				<d/>
+				<x path="Bool"/>
+			</f>
+			<meta>
+				<m n=":has_untyped"/>
+				<m n=":keep"/>
+			</meta>
+			<haxe_doc>Tells if a value `v` is of the type `t`. Returns `false` if `v` or `t` are null.</haxe_doc>
+		</is>
+		<instance public="1" params="T:S" set="method" line="27" static="1">
+			<f a="value:c">
+				<c path="instance.T"/>
+				<x path="Class"><c path="instance.S"/></x>
+				<c path="instance.S"/>
+			</f>
+			<meta><m n=":keep"/></meta>
+			<haxe_doc>Checks if object `value` is an instance of class `c`.
+
+		Compiles only if the class specified by `c` can be assigned to the type
+		of `value`.
+
+		This method checks if a downcast is possible. That is, if the runtime
+		type of `value` is assignable to the class specified by `c`, `value` is
+		returned. Otherwise null is returned.
+
+		This method is not guaranteed to work with interfaces or core types such
+		as `String`, `Array` and `Date`.
+
+		If `value` is null, the result is null. If `c` is null, the result is
+		unspecified.</haxe_doc>
+		</instance>
+		<string public="1" set="method" line="31" static="1">
+			<f a="s">
+				<d/>
+				<c path="String"/>
+			</f>
+			<meta>
+				<m n=":has_untyped"/>
+				<m n=":keep"/>
+			</meta>
+			<haxe_doc>Converts any value to a String.
+
+		If `s` is of `String`, `Int`, `Float` or `Bool`, its value is returned.
+
+		If `s` is an instance of a class and that class or one of its parent classes has
+		a `toString` method, that method is called. If no such method is present, the result
+		is unspecified.
+
+		If `s` is an enum constructor without argument, the constructor's name is returned. If
+		arguments exists, the constructor's name followed by the String representations of
+		the arguments is returned.
+
+		If `s` is a structure, the field names along with their values are returned. The field order
+		and the operator separating field names and values are unspecified.
+
+		If s is null, "null" is returned.</haxe_doc>
+		</string>
+		<int public="1" set="method" line="35" static="1">
+			<f a="x">
+				<x path="Float"/>
+				<x path="Int"/>
+			</f>
+			<meta>
+				<m n=":has_untyped"/>
+				<m n=":keep"/>
+			</meta>
+			<haxe_doc>Converts a `Float` to an `Int`, rounded towards 0.
+
+		If `x` is outside of the signed Int32 range, or is `NaN`, `NEGATIVE_INFINITY` or `POSITIVE_INFINITY`, the result is unspecified.</haxe_doc>
+		</int>
+		<parseInt public="1" set="method" line="39" static="1">
+			<f a="x">
+				<c path="String"/>
+				<t path="Null"><x path="Int"/></t>
+			</f>
+			<meta>
+				<m n=":has_untyped"/>
+				<m n=":keep"/>
+			</meta>
+			<haxe_doc>Converts a `String` to an `Int`.
+
+		Leading whitespaces are ignored.
+
+		If `x` starts with 0x or 0X, hexadecimal notation is recognized where the following digits may
+		contain 0-9 and A-F.
+
+		Otherwise `x` is read as decimal number with 0-9 being allowed characters. `x` may also start with
+		a - to denote a negative value.
+
+		In decimal mode, parsing continues until an invalid character is detected, in which case the
+		result up to that point is returned. For hexadecimal notation, the effect of invalid characters
+		is unspecified.
+
+		Leading 0s that are not part of the 0x/0X hexadecimal notation are ignored, which means octal
+		notation is not supported.
+
+		If the input cannot be recognized, the result is `null`.</haxe_doc>
+		</parseInt>
+		<parseFloat public="1" set="method" line="43" static="1">
+			<f a="x">
+				<c path="String"/>
+				<x path="Float"/>
+			</f>
+			<meta>
+				<m n=":has_untyped"/>
+				<m n=":keep"/>
+			</meta>
+			<haxe_doc>Converts a `String` to a `Float`.
+
+		The parsing rules for `parseInt` apply here as well, with the exception of invalid input
+		resulting in a `NaN` value instead of null.
+
+		Additionally, decimal notation may contain a single `.` to denote the start of the fractions.</haxe_doc>
+		</parseFloat>
+		<random public="1" set="method" line="47" static="1">
+			<f a="x">
+				<x path="Int"/>
+				<x path="Int"/>
+			</f>
+			<meta>
+				<m n=":has_untyped"/>
+				<m n=":keep"/>
+			</meta>
+			<haxe_doc><![CDATA[Return a random integer between 0 included and `x` excluded.
+
+		If `x <= 1`, the result is always 0.]]></haxe_doc>
+		</random>
+		<haxe_doc>The Std class provides standard methods for manipulating basic types.</haxe_doc>
+		<meta>
+			<m n=":keep"/>
+			<m n=":directlyUsed"/>
+			<m n=":coreApi"/>
+		</meta>
+	</class>
+	<abstract path="Void" params="" file="/opt/haxe/std/StdTypes.hx" module="StdTypes">
+		<this><x path="Void"/></this>
+		<haxe_doc>The standard Void type. Only `null` values can be of the type `Void`.</haxe_doc>
+		<meta><m n=":coreType"/></meta>
+	</abstract>
+	<abstract path="Float" params="" file="/opt/haxe/std/StdTypes.hx" module="StdTypes">
+		<this><x path="Float"/></this>
+		<haxe_doc><![CDATA[The standard Float type, this is a double-precision IEEE 64bit float.
+
+	On static targets, null cannot be assigned to Float. If this is necessary,
+	`Null<Float>` can be used instead.]]></haxe_doc>
+		<meta>
+			<m n=":coreType"/>
+			<m n=":notNull"/>
+			<m n=":runtimeValue"/>
+		</meta>
+	</abstract>
+	<abstract path="Int" params="" file="/opt/haxe/std/StdTypes.hx" module="StdTypes">
+		<this><x path="Int"/></this>
+		<to><icast><x path="Float"/></icast></to>
+		<haxe_doc><![CDATA[The standard Int type. Its precision depends on the platform.
+
+	On static targets, null cannot be assigned to Int. If this is necessary,
+	`Null<Int>` can be used instead.]]></haxe_doc>
+		<meta>
+			<m n=":coreType"/>
+			<m n=":notNull"/>
+			<m n=":runtimeValue"/>
+		</meta>
+	</abstract>
+	<typedef path="Null" params="T" file="/opt/haxe/std/StdTypes.hx" module="StdTypes">
+		<c path="Null.T"/>
+		<haxe_doc>`Null` can be useful in two cases. In order to document some methods
+	that accepts or can return a `null` value, or for the Flash compiler and AS3
+	generator to distinguish between base values that can be null and others that
+	can't.</haxe_doc>
+	</typedef>
+	<abstract path="Bool" params="" file="/opt/haxe/std/StdTypes.hx" module="StdTypes">
+		<this><x path="Bool"/></this>
+		<haxe_doc><![CDATA[The standard Boolean type, which can either be true or false.
+
+	On static targets, null cannot be assigned to Bool. If this is necessary,
+	`Null<Bool>` can be used instead.]]></haxe_doc>
+		<meta>
+			<m n=":coreType"/>
+			<m n=":notNull"/>
+			<m n=":runtimeValue"/>
+		</meta>
+	</abstract>
+	<abstract path="Dynamic" params="T" file="/opt/haxe/std/StdTypes.hx" module="StdTypes">
+		<this><x path="Dynamic"><c path="Dynamic.T"/></x></this>
+		<haxe_doc>Dynamic is a special type which is compatible with all other types.
+
+	Use of Dynamic should be minimized as it prevents several compiler
+	checks and optimizations.</haxe_doc>
+		<meta>
+			<m n=":coreType"/>
+			<m n=":runtimeValue"/>
+		</meta>
+	</abstract>
+	<typedef path="Iterator" params="T" file="/opt/haxe/std/StdTypes.hx" module="StdTypes">
+		<a>
+			<next set="method">
+				<f a=""><c path="Iterator.T"/></f>
+				<haxe_doc>Returns the current item of the Iterator and advances to the next one.
+
+		This method is not required to check `hasNext` first. A call to this
+		method while `hasNext` is false yields unspecified behavior.
+
+		On the other hand iterators should not require a call to `hasNext`
+		before the first call to `next` if an element is available.</haxe_doc>
+			</next>
+			<hasNext set="method">
+				<f a=""><x path="Bool"/></f>
+				<haxe_doc>Returns false if the iteration is complete, true otherwise.
+
+		Usually iteration is considered to be complete if all elements of the
+		underlying data structure were handled through calls to next(). However,
+		in custom iterators any logic may be used to determine the completion
+		state.</haxe_doc>
+			</hasNext>
+		</a>
+		<haxe_doc>An Iterator is a structure that permits iteration over elements of type T.
+
+	Any class with matching hasNext and next fields is considered an Iterator
+	and can then be used e.g. in for-loops. This makes it easy to implement
+	custom iterators.</haxe_doc>
+	</typedef>
+	<typedef path="Iterable" params="T" file="/opt/haxe/std/StdTypes.hx" module="StdTypes">
+		<a><iterator set="method"><f a=""><t path="Iterator"><c path="Iterable.T"/></t></f></iterator></a>
+		<haxe_doc>An Iterable is a data structure which has an iterator() method.
+	See `Lambda` for generic functions on iterable structures.</haxe_doc>
+	</typedef>
+	<class path="ArrayAccess" params="T" file="/opt/haxe/std/StdTypes.hx" module="StdTypes" extern="1" interface="1"><haxe_doc>ArrayAccess is used to indicate a class that can be accessed using brackets.
+	The type parameter represents the type of the elements stored.</haxe_doc></class>
+	<class path="String" params="" file="/opt/haxe/std/String.hx" extern="1">
+		<fromCharCode public="1" set="method" static="1">
+			<f a="code">
+				<x path="Int"/>
+				<c path="String"/>
+			</f>
+			<haxe_doc>Returns the String corresponding to the character code `code`.
+
+		If `code` is negative or has another invalid value, the result is
+		unspecified.</haxe_doc>
+		</fromCharCode>
+		<length public="1" set="null">
+			<x path="Int"/>
+			<haxe_doc>The number of characters in `this` String.</haxe_doc>
+		</length>
+		<toUpperCase public="1" set="method">
+			<f a=""><c path="String"/></f>
+			<haxe_doc>Returns a String where all characters of `this` String are upper case.
+
+		Affects the characters `a-z`. Other characters remain unchanged.</haxe_doc>
+		</toUpperCase>
+		<toLowerCase public="1" set="method">
+			<f a=""><c path="String"/></f>
+			<haxe_doc>Returns a String where all characters of `this` String are lower case.
+
+		Affects the characters `A-Z`. Other characters remain unchanged.</haxe_doc>
+		</toLowerCase>
+		<charAt public="1" set="method">
+			<f a="index">
+				<x path="Int"/>
+				<c path="String"/>
+			</f>
+			<haxe_doc>Returns the character at position `index` of `this` String.
+
+		If `index` is negative or exceeds `this.length`, the empty String ""
+		is returned.</haxe_doc>
+		</charAt>
+		<charCodeAt public="1" set="method">
+			<f a="index">
+				<x path="Int"/>
+				<t path="Null"><x path="Int"/></t>
+			</f>
+			<haxe_doc>Returns the character code at position `index` of `this` String.
+
+		If `index` is negative or exceeds `this.length`, null is returned.
+
+		To obtain the character code of a single character, "x".code can be used
+		instead to inline the character code at compile time. Note that this
+		only works on String literals of length 1.</haxe_doc>
+		</charCodeAt>
+		<indexOf public="1" set="method">
+			<f a="str:?startIndex">
+				<c path="String"/>
+				<x path="Int"/>
+				<x path="Int"/>
+			</f>
+			<haxe_doc>Returns the position of the leftmost occurence of `str` within `this`
+		String.
+
+		If `startIndex` is given, the search is performed within the substring
+		of `this` String starting from `startIndex`. Otherwise the search is
+		performed within `this` String. In either case, the returned position
+		is relative to the beginning of `this` String.
+
+		If `str` cannot be found, -1 is returned.</haxe_doc>
+		</indexOf>
+		<lastIndexOf public="1" set="method">
+			<f a="str:?startIndex">
+				<c path="String"/>
+				<x path="Int"/>
+				<x path="Int"/>
+			</f>
+			<haxe_doc>Returns the position of the rightmost occurence of `str` within `this`
+		String.
+
+		If `startIndex` is given, the search is performed within the substring
+		of `this` String from 0 to `startIndex`. Otherwise the search is
+		performed within `this` String. In either case, the returned position
+		is relative to the beginning of `this` String.
+
+		If `str` cannot be found, -1 is returned.</haxe_doc>
+		</lastIndexOf>
+		<split public="1" set="method">
+			<f a="delimiter">
+				<c path="String"/>
+				<c path="Array"><c path="String"/></c>
+			</f>
+			<haxe_doc>Splits `this` String at each occurence of `delimiter`.
+
+		If `this` String is the empty String "", the result is not consistent
+		across targets and may either be `[]` (on Js, Cpp) or `[""]`.
+
+		If `delimiter` is the empty String "", `this` String is split into an
+		Array of `this.length` elements, where the elements correspond to the
+		characters of `this` String.
+
+		If `delimiter` is not found within `this` String, the result is an Array
+		with one element, which equals `this` String.
+
+		If `delimiter` is null, the result is unspecified.
+
+		Otherwise, `this` String is split into parts at each occurence of
+		`delimiter`. If `this` String starts (or ends) with [delimiter}, the
+		result Array contains a leading (or trailing) empty String "" element.
+		Two subsequent delimiters also result in an empty String "" element.</haxe_doc>
+		</split>
+		<substr public="1" set="method">
+			<f a="pos:?len">
+				<x path="Int"/>
+				<x path="Int"/>
+				<c path="String"/>
+			</f>
+			<haxe_doc>Returns `len` characters of `this` String, starting at position `pos`.
+
+		If `len` is omitted, all characters from position `pos` to the end of
+		`this` String are included.
+
+		If `pos` is negative, its value is calculated from the end of `this`
+		String by `this.length + pos`. If this yields a negative value, 0 is
+		used instead.
+
+		If the calculated position + `len` exceeds `this.length`, the characters
+		from that position to the end of `this` String are returned.
+
+		If `len` is negative, the result is unspecified.</haxe_doc>
+		</substr>
+		<substring public="1" set="method">
+			<f a="startIndex:?endIndex">
+				<x path="Int"/>
+				<x path="Int"/>
+				<c path="String"/>
+			</f>
+			<haxe_doc>Returns the part of `this` String from `startIndex` to but not including `endIndex`.
+
+		If `startIndex` or `endIndex` are negative, 0 is used instead.
+
+		If `startIndex` exceeds `endIndex`, they are swapped.
+
+		If the (possibly swapped) `endIndex` is omitted or exceeds
+		`this.length`, `this.length` is used instead.
+
+		If the (possibly swapped) `startIndex` exceeds `this.length`, the empty
+		String "" is returned.</haxe_doc>
+		</substring>
+		<toString public="1" set="method">
+			<f a=""><c path="String"/></f>
+			<haxe_doc>Returns the String itself.</haxe_doc>
+		</toString>
+		<new public="1" set="method">
+			<f a="string">
+				<c path="String"/>
+				<x path="Void"/>
+			</f>
+			<haxe_doc>Creates a copy from a given String.</haxe_doc>
+		</new>
+		<haxe_doc>The basic String class.
+
+	A haxe String is immutable, it is not possible to modify individual
+	characters. No method of this class changes the state of `this` String.
+
+	Strings can be constructed using the string literal syntax "string value".
+
+	String can be concatenated by using the + operator. If an operand is not a
+	String, it is passed through Std.string() first.</haxe_doc>
+	</class>
+	<class path="Type" params="" file="/opt/haxe/std/cpp/_std/Type.hx">
+		<enumParameters public="1" set="method" line="136" static="1">
+			<f a="e">
+				<x path="EnumValue"/>
+				<c path="Array"><d/></c>
+			</f>
+			<meta><m n=":has_untyped"/></meta>
+			<haxe_doc>Returns a list of the constructor arguments of enum instance `e`.
+
+		If `e` has no arguments, the result is [].
+
+		Otherwise the result are the values that were used as arguments to `e`,
+		in the order of their declaration.
+
+		If `e` is null, the result is unspecified.</haxe_doc>
+		</enumParameters>
+		<haxe_doc>The haxe Reflection API allows retrieval of type information at runtime.
+
+	This class complements the more lightweight Reflect class, with a focus on
+	class and enum instances.</haxe_doc>
+		<meta>
+			<m n=":keep"/>
+			<m n=":directlyUsed"/>
+			<m n=":coreApi"/>
+		</meta>
+	</class>
+	<typedef path="evsm.EventObject" params="" file="/home/aaron/haxelibs/evsm/evsm/EventObject.hx"><a><id><d/></id></a></typedef>
+	<class path="evsm.FState" params="T:U" file="/home/aaron/haxelibs/evsm/evsm/FState.hx">
+		<name public="1">
+			<c path="String"/>
+			<haxe_doc>*
+    * The name is used for debugging/identification purposes, and is not utilized within the class.
+    *</haxe_doc>
+		</name>
+		<addTransition public="1" set="method" line="39">
+			<f a="toState:eventID">
+				<c path="evsm.FState">
+					<c path="evsm.FState.T"/>
+					<c path="evsm.FState.U"/>
+				</c>
+				<c path="String"/>
+				<c path="evsm.FState">
+					<c path="evsm.FState.T"/>
+					<c path="evsm.FState.U"/>
+				</c>
+			</f>
+			<haxe_doc>*
+    * Adds a basic link between two states: if an event with the given ID is recieved by this state, it
+    * will transition to the one specified.
+    *
+    * @param toState The state to transition to.
+    *
+    * @param eventID The eventID that triggers this transition.
+    *</haxe_doc>
+		</addTransition>
+		<onEvent public="1" set="method" line="45"><f a="eventID:?func1:?func2">
+	<c path="String"/>
+	<f a="">
+		<c path="evsm.FState.T"/>
+		<x path="Void"/>
+	</f>
+	<f a=":">
+		<c path="evsm.FState.T"/>
+		<c path="evsm.FState.U"/>
+		<x path="Void"/>
+	</f>
+	<c path="evsm.FState">
+		<c path="evsm.FState.T"/>
+		<c path="evsm.FState.U"/>
+	</c>
+</f></onEvent>
+		<setUpdate public="1" set="method" line="71"><f a="func1">
+	<f a="">
+		<c path="evsm.FState.T"/>
+		<x path="Void"/>
+	</f>
+	<c path="evsm.FState">
+		<c path="evsm.FState.T"/>
+		<c path="evsm.FState.U"/>
+	</c>
+</f></setUpdate>
+		<setStart public="1" set="method" line="77"><f a="?func1:?func2">
+	<f a="">
+		<c path="evsm.FState.T"/>
+		<x path="Void"/>
+	</f>
+	<f a=":">
+		<c path="evsm.FState.T"/>
+		<c path="evsm.FState.U"/>
+		<x path="Void"/>
+	</f>
+	<c path="evsm.FState">
+		<c path="evsm.FState.T"/>
+		<c path="evsm.FState.U"/>
+	</c>
+</f></setStart>
+		<setEnd public="1" set="method" line="83"><f a="?func1:?func2">
+	<f a="">
+		<c path="evsm.FState.T"/>
+		<x path="Void"/>
+	</f>
+	<f a=":">
+		<c path="evsm.FState.T"/>
+		<c path="evsm.FState.U"/>
+		<x path="Void"/>
+	</f>
+	<c path="evsm.FState">
+		<c path="evsm.FState.T"/>
+		<c path="evsm.FState.U"/>
+	</c>
+</f></setEnd>
+		<addParent public="1" set="method" line="89"><f a="parent:?params">
+	<c path="evsm.FState">
+		<c path="evsm.FState.T"/>
+		<c path="evsm.FState.U"/>
+	</c>
+	<c path="Array"><d/></c>
+	<c path="evsm.FState">
+		<c path="evsm.FState.T"/>
+		<c path="evsm.FState.U"/>
+	</c>
+</f></addParent>
+		<getParameter public="1" set="method" line="100"><f a="i">
+	<x path="Int"/>
+	<d/>
+</f></getParameter>
+		<switchTo public="1" set="method" line="105"><f a="obj:toState:event">
+	<c path="evsm.FState.T"/>
+	<c path="evsm.FState">
+		<c path="evsm.FState.T"/>
+		<c path="evsm.FState.U"/>
+	</c>
+	<c path="evsm.FState.U"/>
+	<x path="Void"/>
+</f></switchTo>
+		<processEvent public="1" set="method" line="115"><f a="obj:event">
+	<c path="evsm.FState.T"/>
+	<c path="evsm.FState.U"/>
+	<x path="Bool"/>
+</f></processEvent>
+		<update public="1" set="method" line="136"><f a="obj">
+	<c path="evsm.FState.T"/>
+	<x path="Bool"/>
+</f></update>
+		<setCallback set="method" line="147"><f a="i:?func1:?func2">
+	<x path="Int"/>
+	<f a="">
+		<c path="evsm.FState.T"/>
+		<x path="Void"/>
+	</f>
+	<f a=":">
+		<c path="evsm.FState.T"/>
+		<c path="evsm.FState.U"/>
+		<x path="Void"/>
+	</f>
+	<c path="evsm.FState">
+		<c path="evsm.FState.T"/>
+		<c path="evsm.FState.U"/>
+	</c>
+</f></setCallback>
+		<processCallback set="method" line="170"><f a="obj:i:parameterRef:?event">
+	<c path="evsm.FState.T"/>
+	<x path="Int"/>
+	<c path="evsm.FState">
+		<c path="evsm.FState.T"/>
+		<c path="evsm.FState.U"/>
+	</c>
+	<t path="Null"><c path="evsm.FState.U"/></t>
+	<x path="Bool"/>
+</f></processCallback>
+		<start set="method" line="196"><f a="obj:?event">
+	<c path="evsm.FState.T"/>
+	<t path="Null"><c path="evsm.FState.U"/></t>
+	<x path="Bool"/>
+</f></start>
+		<end set="method" line="201"><f a="obj:?event">
+	<c path="evsm.FState.T"/>
+	<t path="Null"><c path="evsm.FState.U"/></t>
+	<x path="Bool"/>
+</f></end>
+		<CB_UPDATE><x path="Int"/></CB_UPDATE>
+		<CB_START><x path="Int"/></CB_START>
+		<CB_END><x path="Int"/></CB_END>
+		<callbacks><c path="Array"><f a=":">
+	<c path="evsm.FState.T"/>
+	<c path="evsm.FState.U"/>
+	<x path="Void"/>
+</f></c></callbacks>
+		<parents><c path="Array"><c path="evsm.FState">
+	<c path="evsm.FState.T"/>
+	<c path="evsm.FState.U"/>
+</c></c></parents>
+		<parameters><c path="haxe.ds.ObjectMap">
+	<c path="evsm.FState">
+		<c path="evsm.FState.T"/>
+		<c path="evsm.FState.U"/>
+	</c>
+	<c path="Array"><d/></c>
+</c></parameters>
+		<currentParameterRef><c path="haxe.ds.ObjectMap">
+	<c path="evsm.FState">
+		<c path="evsm.FState.T"/>
+		<c path="evsm.FState.U"/>
+	</c>
+	<c path="Array"><d/></c>
+</c></currentParameterRef>
+		<eventActions><c path="haxe.ds.StringMap"><f a=":">
+	<c path="evsm.FState.T"/>
+	<c path="evsm.FState.U"/>
+	<x path="Void"/>
+</f></c></eventActions>
+		<transitions><c path="haxe.ds.StringMap"><c path="evsm.FState">
+	<c path="evsm.FState.T"/>
+	<c path="evsm.FState.U"/>
+</c></c></transitions>
+		<new public="1" set="method" line="24"><f a="?n">
+	<c path="String"/>
+	<x path="Void"/>
+</f></new>
+		<haxe_doc>*
+    *  The FState class takes two type parameters, the first is the type of the object that contains the state,
+    *  and the second is the type of the object that will be used as event objects.
+    *  Each modifying function in FState returns the state that it was called upon, allowing them to be chained together.
+    *</haxe_doc>
+		<meta><m n=":directlyUsed"/></meta>
+	</class>
+	<typedef path="evsm.StateObject" params="" file="/home/aaron/haxelibs/evsm/evsm/StateObject.hx"><a><state><d/></state></a></typedef>
+	<enum path="fluidity.Collider" params="" file="fluidity/Collider.hx">
+		<None/>
+		<Circle a="x:y:r">
+			<x path="Float"/>
+			<x path="Float"/>
+			<x path="Float"/>
+		</Circle>
+		<Rectangle a="x:y:w:h">
+			<x path="Float"/>
+			<x path="Float"/>
+			<x path="Float"/>
+			<x path="Float"/>
+		</Rectangle>
+	</enum>
+	<class path="fluidity.Collision" params="" file="fluidity/Collision.hx">
+		<obj public="1"><c path="fluidity.GameObject"/></obj>
+		<normal public="1"><c path="fluidity.utils.Vec2"/></normal>
+		<new public="1" set="method" line="13">
+			<f a="o:n">
+				<c path="fluidity.GameObject"/>
+				<c path="fluidity.utils.Vec2"/>
+				<x path="Void"/>
+			</f>
+			<meta><m n=":dox"><e>hide</e></m></meta>
+		</new>
+	</class>
+	<class path="fluidity.GameEvent" params="" file="fluidity/GameEvent.hx">
+		<id public="1"><c path="String"/></id>
+		<attributes><c path="haxe.ds.StringMap"><d/></c></attributes>
+		<touch public="1"><c path="fluidity.input.Touch"/></touch>
+		<pointer public="1"><c path="fluidity.input.Pointer"/></pointer>
+		<button public="1"><x path="Int"/></button>
+		<collision public="1"><c path="fluidity.Collision"/></collision>
+		<setAttribute public="1" set="method" line="24"><f a="attrib:value">
+	<c path="String"/>
+	<d/>
+	<c path="fluidity.GameEvent"/>
+</f></setAttribute>
+		<getAttribute public="1" set="method" line="30"><f a="attrib">
+	<c path="String"/>
+	<d/>
+</f></getAttribute>
+		<new public="1" set="method" line="18"><f a="id:?col">
+	<c path="String"/>
+	<c path="fluidity.Collision"/>
+	<x path="Void"/>
+</f></new>
+		<meta><m n=":directlyUsed"/></meta>
+	</class>
+	<class path="fluidity.GameLayer" params="" file="fluidity/GameLayer.hx">
+		<activeLayers public="1" line="34" static="1"><c path="Array"><c path="fluidity.GameLayer"/></c></activeLayers>
+		<sendEventToLayers public="1" set="method" line="194" static="1"><f a="event">
+	<c path="fluidity.GameEvent"/>
+	<x path="Void"/>
+</f></sendEventToLayers>
+		<state public="1"><c path="evsm.FState">
+	<c path="fluidity.GameLayer"/>
+	<c path="fluidity.GameEvent"/>
+</c></state>
+		<position public="1"><c path="fluidity.utils.Vec2"/></position>
+		<sceneOffset public="1"><c path="fluidity.utils.Vec2"/></sceneOffset>
+		<width public="1"><x path="Int"/></width>
+		<height public="1"><x path="Int"/></height>
+		<vWidth public="1"><x path="Int"/></vWidth>
+		<vHeight public="1"><x path="Int"/></vHeight>
+		<states><x path="Map">
+	<c path="String"/>
+	<c path="evsm.FState">
+		<c path="fluidity.GameLayer"/>
+		<c path="fluidity.GameEvent"/>
+	</c>
+</x></states>
+		<scenes><x path="Map">
+	<c path="String"/>
+	<c path="fluidity.GameScene"/>
+</x></scenes>
+		<setX public="1" set="method" line="46"><f a="x">
+	<x path="Int"/>
+	<c path="fluidity.GameLayer"/>
+</f></setX>
+		<setY public="1" set="method" line="52"><f a="y">
+	<x path="Int"/>
+	<c path="fluidity.GameLayer"/>
+</f></setY>
+		<setPosition public="1" set="method" line="58"><f a="pos">
+	<c path="fluidity.utils.Vec2"/>
+	<c path="fluidity.GameLayer"/>
+</f></setPosition>
+		<setSceneX public="1" set="method" line="64"><f a="x">
+	<x path="Int"/>
+	<c path="fluidity.GameLayer"/>
+</f></setSceneX>
+		<setSceneY public="1" set="method" line="70"><f a="y">
+	<x path="Int"/>
+	<c path="fluidity.GameLayer"/>
+</f></setSceneY>
+		<setScenePosition public="1" set="method" line="76"><f a="pos">
+	<c path="fluidity.utils.Vec2"/>
+	<c path="fluidity.GameLayer"/>
+</f></setScenePosition>
+		<setWidth public="1" set="method" line="83"><f a="w">
+	<x path="Int"/>
+	<c path="fluidity.GameLayer"/>
+</f></setWidth>
+		<setHeight public="1" set="method" line="89"><f a="h">
+	<x path="Int"/>
+	<c path="fluidity.GameLayer"/>
+</f></setHeight>
+		<setDimensions public="1" set="method" line="95"><f a="w:h">
+	<x path="Int"/>
+	<x path="Int"/>
+	<c path="fluidity.GameLayer"/>
+</f></setDimensions>
+		<setVWidth public="1" set="method" line="102"><f a="vw">
+	<x path="Int"/>
+	<c path="fluidity.GameLayer"/>
+</f></setVWidth>
+		<setVHeight public="1" set="method" line="108"><f a="vh">
+	<x path="Int"/>
+	<c path="fluidity.GameLayer"/>
+</f></setVHeight>
+		<setVDimensions public="1" set="method" line="114"><f a="vw:vh">
+	<x path="Int"/>
+	<x path="Int"/>
+	<c path="fluidity.GameLayer"/>
+</f></setVDimensions>
+		<addScene public="1" set="method" line="122"><f a="stateName:scene">
+	<c path="String"/>
+	<c path="fluidity.GameScene"/>
+	<c path="fluidity.GameLayer"/>
+</f></addScene>
+		<addTransition public="1" set="method" line="129"><f a="eventID:stateFrom:?reset1:stateTo:?reset2">
+	<c path="String"/>
+	<c path="String"/>
+	<x path="Bool"/>
+	<c path="String"/>
+	<x path="Bool"/>
+	<c path="fluidity.GameLayer"/>
+</f></addTransition>
+		<start public="1" set="method" line="167"><f a="stateName">
+	<c path="String"/>
+	<c path="fluidity.GameLayer"/>
+</f></start>
+		<update public="1" set="method" line="176"><f a=""><c path="fluidity.GameLayer"/></f></update>
+		<render public="1" set="method" line="182"><f a=""><c path="fluidity.GameLayer"/></f></render>
+		<processEvent public="1" set="method" line="188"><f a="event">
+	<c path="fluidity.GameEvent"/>
+	<c path="fluidity.GameLayer"/>
+</f></processEvent>
+		<getScene public="1" set="method" line="202"><f a=""><c path="fluidity.GameScene"/></f></getScene>
+		<worldPointToLocal public="1" set="method" line="207"><f a="point">
+	<c path="fluidity.utils.Vec2"/>
+	<c path="fluidity.utils.Vec2"/>
+</f></worldPointToLocal>
+		<localPointToWorld public="1" set="method" line="218"><f a="point">
+	<c path="fluidity.utils.Vec2"/>
+	<c path="fluidity.utils.Vec2"/>
+</f></localPointToWorld>
+		<new public="1" set="method" line="40"><f a=""><x path="Void"/></f></new>
+		<meta><m n=":directlyUsed"/></meta>
+	</class>
+	<class path="fluidity.GameManager" params="" file="fluidity/GameManager.hx">
+		<layers public="1"><c path="fluidity.utils.StringBin"><c path="fluidity.GameLayer"/></c></layers>
+		<init public="1" set="method" line="25"><f a=""><x path="Void"/></f></init>
+		<update public="1" set="method" line="30"><f a=""><c path="fluidity.GameManager"/></f></update>
+		<render public="1" set="method" line="44"><f a=""><c path="fluidity.GameManager"/></f></render>
+		<onUpdate public="1" set="method" line="56"><f a=""><x path="Void"/></f></onUpdate>
+		<onRender public="1" set="method" line="61"><f a=""><x path="Void"/></f></onRender>
+		<onResize public="1" set="method" line="66"><f a=""><x path="Void"/></f></onResize>
+		<new public="1" set="method" line="17"><f a=""><x path="Void"/></f></new>
+	</class>
+	<class path="fluidity.GameObject" params="" file="fluidity/GameObject.hx">
+		<state public="1"><c path="evsm.FState">
+	<c path="fluidity.GameObject"/>
+	<c path="fluidity.GameEvent"/>
+</c></state>
+		<position public="1"><c path="fluidity.utils.Vec2"/></position>
+		<velocity public="1"><c path="fluidity.utils.Vec2"/></velocity>
+		<worldAngle public="1" get="accessor" set="null"><x path="Float"/></worldAngle>
+		<worldScale public="1" get="accessor" set="null"><x path="Float"/></worldScale>
+		<worldPosition public="1" get="accessor" set="null"><c path="fluidity.utils.Vec2"/></worldPosition>
+		<worldFlip public="1" get="accessor" set="null"><x path="Bool"/></worldFlip>
+		<angle public="1"><x path="Float"/></angle>
+		<angularVelocity public="1"><x path="Float"/></angularVelocity>
+		<parent public="1"><c path="fluidity.GameObject"/></parent>
+		<hasParent public="1"><x path="Bool"/></hasParent>
+		<z public="1"><x path="Float"/></z>
+		<scale public="1"><x path="Float"/></scale>
+		<physicsManaged public="1"><x path="Bool"/></physicsManaged>
+		<currentAnimationTime public="1"><x path="Int"/></currentAnimationTime>
+		<graphic public="1"><e path="fluidity.Graphic"/></graphic>
+		<collisions public="1"><c path="Array"><c path="fluidity.Collision"/></c></collisions>
+		<collider public="1"><e path="fluidity.Collider"/></collider>
+		<type public="1"><c path="fluidity.ObjectType"/></type>
+		<solid public="1"><x path="Bool"/></solid>
+		<flip public="1"><x path="Bool"/></flip>
+		<scene public="1"><c path="fluidity.GameScene"/></scene>
+		<events><c path="Array"><c path="fluidity.GameEvent"/></c></events>
+		<processEvents set="method" line="55"><f a=""><x path="Void"/></f></processEvents>
+		<processEvent public="1" set="method" line="68"><f a="e">
+	<c path="fluidity.GameEvent"/>
+	<c path="fluidity.GameObject"/>
+</f></processEvent>
+		<toggleFlip public="1" set="method" line="81"><f a=""><c path="fluidity.GameObject"/></f></toggleFlip>
+		<setFlip public="1" set="method" line="87"><f a="f">
+	<x path="Bool"/>
+	<c path="fluidity.GameObject"/>
+</f></setFlip>
+		<setX public="1" set="method" line="94"><f a="x">
+	<x path="Float"/>
+	<c path="fluidity.GameObject"/>
+</f></setX>
+		<setY public="1" set="method" line="101"><f a="y">
+	<x path="Float"/>
+	<c path="fluidity.GameObject"/>
+</f></setY>
+		<setAngle public="1" set="method" line="108"><f a="r">
+	<x path="Float"/>
+	<c path="fluidity.GameObject"/>
+</f></setAngle>
+		<translateX public="1" set="method" line="115"><f a="x">
+	<x path="Float"/>
+	<c path="fluidity.GameObject"/>
+</f></translateX>
+		<translateY public="1" set="method" line="122"><f a="y">
+	<x path="Float"/>
+	<c path="fluidity.GameObject"/>
+</f></translateY>
+		<translate public="1" set="method" line="129"><f a="v">
+	<c path="fluidity.utils.Vec2"/>
+	<c path="fluidity.GameObject"/>
+</f></translate>
+		<rotate public="1" set="method" line="135"><f a="r">
+	<x path="Float"/>
+	<c path="fluidity.GameObject"/>
+</f></rotate>
+		<setVelocityX public="1" set="method" line="142"><f a="x">
+	<x path="Float"/>
+	<c path="fluidity.GameObject"/>
+</f></setVelocityX>
+		<setVelocityY public="1" set="method" line="149"><f a="y">
+	<x path="Float"/>
+	<c path="fluidity.GameObject"/>
+</f></setVelocityY>
+		<setAngularVel public="1" set="method" line="156"><f a="r">
+	<x path="Float"/>
+	<c path="fluidity.GameObject"/>
+</f></setAngularVel>
+		<setPosition public="1" set="method" line="162"><f a="v">
+	<c path="fluidity.utils.Vec2"/>
+	<c path="fluidity.GameObject"/>
+</f></setPosition>
+		<setVelocity public="1" set="method" line="169"><f a="v">
+	<c path="fluidity.utils.Vec2"/>
+	<c path="fluidity.GameObject"/>
+</f></setVelocity>
+		<setZ public="1" set="method" line="176"><f a="z">
+	<x path="Float"/>
+	<c path="fluidity.GameObject"/>
+</f></setZ>
+		<setScale public="1" set="method" line="182"><f a="s">
+	<x path="Float"/>
+	<c path="fluidity.GameObject"/>
+</f></setScale>
+		<setAttribute public="1" set="method" line="189"><f a="attrib:value">
+	<c path="String"/>
+	<d/>
+	<c path="fluidity.GameObject"/>
+</f></setAttribute>
+		<getAttribute public="1" set="method" line="195"><f a="attrib">
+	<c path="String"/>
+	<d/>
+</f></getAttribute>
+		<setGraphic public="1" set="method" line="200"><f a="g">
+	<e path="fluidity.Graphic"/>
+	<c path="fluidity.GameObject"/>
+</f></setGraphic>
+		<setCollider public="1" set="method" line="208"><f a="c">
+	<e path="fluidity.Collider"/>
+	<c path="fluidity.GameObject"/>
+</f></setCollider>
+		<setType public="1" set="method" line="215"><f a="t">
+	<c path="fluidity.ObjectType"/>
+	<c path="fluidity.GameObject"/>
+</f></setType>
+		<isType public="1" set="method" line="230"><f a="t">
+	<c path="fluidity.ObjectType"/>
+	<x path="Bool"/>
+</f></isType>
+		<setParent public="1" set="method" line="235"><f a="obj">
+	<c path="fluidity.GameObject"/>
+	<c path="fluidity.GameObject"/>
+</f></setParent>
+		<get_worldFlip public="1" set="method" line="241"><f a=""><x path="Bool"/></f></get_worldFlip>
+		<get_worldAngle public="1" set="method" line="257"><f a=""><x path="Float"/></f></get_worldAngle>
+		<get_worldScale public="1" set="method" line="277"><f a=""><x path="Float"/></f></get_worldScale>
+		<get_worldPosition public="1" set="method" line="289"><f a=""><c path="fluidity.utils.Vec2"/></f></get_worldPosition>
+		<setState public="1" set="method" line="306"><f a="s">
+	<c path="evsm.FState">
+		<c path="fluidity.GameObject"/>
+		<c path="fluidity.GameEvent"/>
+	</c>
+	<c path="fluidity.GameObject"/>
+</f></setState>
+		<update public="1" set="method" line="316"><f a=""><x path="Void"/></f></update>
+		<addEventTrigger public="1" set="method" line="329"><f a="eventName:func">
+	<c path="String"/>
+	<f a="">
+		<c path="fluidity.GameObject"/>
+		<x path="Bool"/>
+	</f>
+	<x path="Void"/>
+</f></addEventTrigger>
+		<attributes><c path="haxe.ds.StringMap"><d/></c></attributes>
+		<eventTriggers><c path="Array"><a>
+	<func><f a="">
+	<c path="fluidity.GameObject"/>
+	<x path="Bool"/>
+</f></func>
+	<eventName><c path="String"/></eventName>
+</a></c></eventTriggers>
+		<new public="1" set="method" line="50"><f a=""><x path="Void"/></f></new>
+	</class>
+	<class path="fluidity.GameScene" params="" file="fluidity/GameScene.hx">
+		<layer public="1"><c path="fluidity.GameLayer"/></layer>
+		<active public="1" set="null"><x path="Bool"/></active>
+		<input public="1"><c path="fluidity.input.SceneInput"/></input>
+		<camera public="1"><c path="fluidity.utils.Vec2"/></camera>
+		<cameraScale public="1"><x path="Float"/></cameraScale>
+		<states public="1"><c path="fluidity.utils.StringBin"><c path="evsm.FState">
+	<c path="fluidity.GameObject"/>
+	<c path="fluidity.GameEvent"/>
+</c></c></states>
+		<updating public="1"><x path="Bool"/></updating>
+		<toAdd public="1"><c path="Array"><c path="fluidity.GameObject"/></c></toAdd>
+		<toRemove public="1"><c path="Array"><c path="fluidity.GameObject"/></c></toRemove>
+		<toDelete public="1"><c path="Array"><c path="fluidity.GameObject"/></c></toDelete>
+		<inUpdate public="1"><x path="Bool"/></inUpdate>
+		<setLayer public="1" set="method" line="48"><f a="l">
+	<c path="fluidity.GameLayer"/>
+	<c path="fluidity.GameScene"/>
+</f></setLayer>
+		<__add set="method" line="55"><f a="obj">
+	<c path="fluidity.GameObject"/>
+	<c path="fluidity.GameScene"/>
+</f></__add>
+		<add public="1" set="method" line="69"><f a="obj">
+	<c path="fluidity.GameObject"/>
+	<x path="Void"/>
+</f></add>
+		<__remove set="method" line="74"><f a="obj">
+	<c path="fluidity.GameObject"/>
+	<c path="fluidity.GameScene"/>
+</f></__remove>
+		<remove public="1" set="method" line="85"><f a="obj">
+	<c path="fluidity.GameObject"/>
+	<x path="Void"/>
+</f></remove>
+		<__delete set="method" line="90"><f a="obj">
+	<c path="fluidity.GameObject"/>
+	<x path="Void"/>
+</f></__delete>
+		<delete public="1" set="method" line="105"><f a="obj">
+	<c path="fluidity.GameObject"/>
+	<c path="fluidity.GameScene"/>
+</f></delete>
+		<update public="1" set="method" line="111"><f a=""><c path="fluidity.GameScene"/></f></update>
+		<render public="1" set="method" line="144"><f a=""><x path="Void"/></f></render>
+		<start public="1" set="method" line="149"><f a=""><c path="fluidity.GameScene"/></f></start>
+		<reset public="1" set="method" line="161"><f a=""><c path="fluidity.GameScene"/></f></reset>
+		<onStart public="1" set="method" line="180"><f a=""><x path="Void"/></f></onStart>
+		<onUpdate public="1" set="method" line="185"><f a=""><x path="Void"/></f></onUpdate>
+		<onReset public="1" set="method" line="190"><f a=""><x path="Void"/></f></onReset>
+		<processEvent public="1" set="method" line="195"><f a="event">
+	<c path="fluidity.GameEvent"/>
+	<c path="fluidity.GameScene"/>
+</f></processEvent>
+		<addGenerator public="1" set="method" line="204"><f a="name:?generatorWithoutArgs:?generatorWithArgs">
+	<c path="String"/>
+	<f a=""><c path="fluidity.GameObject"/></f>
+	<f a="">
+		<c path="Array"><d/></c>
+		<c path="fluidity.GameObject"/>
+	</f>
+	<c path="fluidity.GameScene"/>
+</f></addGenerator>
+		<generate public="1" set="method" line="227"><f a="name:?args">
+	<c path="String"/>
+	<c path="Array"><d/></c>
+	<c path="fluidity.GameObject"/>
+</f></generate>
+		<objects><c path="Array"><c path="fluidity.GameObject"/></c></objects>
+		<generatorMap><c path="haxe.ds.StringMap"><f a="">
+	<c path="Array"><d/></c>
+	<c path="fluidity.GameObject"/>
+</f></c></generatorMap>
+		<new public="1" set="method" line="35"><f a="?gravity">
+	<c path="fluidity.utils.Vec2"/>
+	<x path="Void"/>
+</f></new>
+	</class>
+	<enum path="fluidity.Graphic" params="" file="fluidity/Graphic.hx">
+		<Image a="filename"><c path="String"/></Image>
+		<Animation a="filename:numFrames:frameLength:loop">
+			<c path="String"/>
+			<x path="Int"/>
+			<x path="Int"/>
+			<x path="Bool"/>
+		</Animation>
+		<SpriteSheet a="filename:width:height:frames:frameLength:loop">
+			<c path="String"/>
+			<x path="Int"/>
+			<x path="Int"/>
+			<c path="Array"><x path="Int"/></c>
+			<x path="Int"/>
+			<x path="Bool"/>
+		</SpriteSheet>
+	</enum>
+	<class path="fluidity.Input" params="" file="fluidity/Input.hx">
+		<scenes public="1"><c path="Array"><c path="fluidity.GameScene"/></c></scenes>
+		<pointers public="1"><c path="Array"><c path="fluidity.input.Pointer"/></c></pointers>
+		<touches public="1"><c path="Array"><c path="fluidity.input.Touch"/></c></touches>
+		<addScene public="1" set="method" line="23"><f a="scene">
+	<c path="fluidity.GameScene"/>
+	<x path="Void"/>
+</f></addScene>
+		<removeScene public="1" set="method" line="31"><f a="scene">
+	<c path="fluidity.GameScene"/>
+	<x path="Void"/>
+</f></removeScene>
+		<reset public="1" set="method" line="36"><f a=""><x path="Void"/></f></reset>
+		<onMouseMove public="1" set="method" line="41"><f a="x:y">
+	<x path="Float"/>
+	<x path="Float"/>
+	<x path="Void"/>
+</f></onMouseMove>
+		<onMouseDown public="1" set="method" line="63"><f a="x:y:button">
+	<x path="Float"/>
+	<x path="Float"/>
+	<x path="Int"/>
+	<x path="Void"/>
+</f></onMouseDown>
+		<onMouseUp public="1" set="method" line="91"><f a="x:y:button">
+	<x path="Float"/>
+	<x path="Float"/>
+	<x path="Int"/>
+	<x path="Void"/>
+</f></onMouseUp>
+		<onTouchBegin public="1" set="method" line="119"><f a="touch">
+	<c path="fluidity.input.Touch"/>
+	<x path="Void"/>
+</f></onTouchBegin>
+		<onTouchMove public="1" set="method" line="124"><f a="touch">
+	<c path="fluidity.input.Touch"/>
+	<x path="Void"/>
+</f></onTouchMove>
+		<onTouchEnd public="1" set="method" line="129"><f a="touch">
+	<c path="fluidity.input.Touch"/>
+	<x path="Void"/>
+</f></onTouchEnd>
+		<onKeyDown public="1" set="method" line="134"><f a="key">
+	<c path="fluidity.input.Key"/>
+	<x path="Void"/>
+</f></onKeyDown>
+		<onKeyUp public="1" set="method" line="175"><f a="key">
+	<c path="fluidity.input.Key"/>
+	<x path="Void"/>
+</f></onKeyUp>
+		<new public="1" set="method" line="18"><f a=""><x path="Void"/></f></new>
+	</class>
+	<class path="fluidity.ObjectType" params="" file="fluidity/ObjectType.hx">
+		<objects public="1"><c path="Array"><c path="fluidity.GameObject"/></c></objects>
+		<startInteractionEvents public="1"><x path="Map">
+	<c path="fluidity.ObjectType"/>
+	<c path="String"/>
+</x></startInteractionEvents>
+		<continueInteractionEvents public="1"><x path="Map">
+	<c path="fluidity.ObjectType"/>
+	<c path="String"/>
+</x></continueInteractionEvents>
+		<stopInteractionEvents public="1"><x path="Map">
+	<c path="fluidity.ObjectType"/>
+	<c path="String"/>
+</x></stopInteractionEvents>
+		<collisionTypes public="1"><c path="Array"><c path="fluidity.ObjectType"/></c></collisionTypes>
+		<addObject public="1" set="method" line="16"><f a="obj">
+	<c path="fluidity.GameObject"/>
+	<x path="Void"/>
+</f></addObject>
+		<removeObject public="1" set="method" line="22"><f a="obj">
+	<c path="fluidity.GameObject"/>
+	<x path="Void"/>
+</f></removeObject>
+		<addCollision public="1" set="method" line="37"><f a="other">
+	<c path="fluidity.ObjectType"/>
+	<c path="fluidity.ObjectType"/>
+</f></addCollision>
+		<addCollisionStartEvent public="1" set="method" line="44"><f a="eventName:other">
+	<c path="String"/>
+	<c path="fluidity.ObjectType"/>
+	<c path="fluidity.ObjectType"/>
+</f></addCollisionStartEvent>
+		<addCollisionStopEvent public="1" set="method" line="66"><f a="eventName:other">
+	<c path="String"/>
+	<c path="fluidity.ObjectType"/>
+	<c path="fluidity.ObjectType"/>
+</f></addCollisionStopEvent>
+		<new public="1" set="method" line="14"><f a=""><x path="Void"/></f></new>
+	</class>
+	<class path="fluidity.backends.Backend" params="" file="fluidity/backends/Backend.hx">
+		<graphics public="1" static="1"><c path="fluidity.backends.IGraphicsBackend"/></graphics>
+		<physics public="1" static="1"><c path="fluidity.backends.IPhysicsBackend"/></physics>
+		<input public="1" static="1"><c path="fluidity.Input"/></input>
+		<meta><m n=":directlyUsed"/></meta>
+	</class>
+	<class path="fluidity.backends.IGraphicsBackend" params="" file="fluidity/backends/IGraphicsBackend.hx" interface="1">
+		<width public="1"><x path="Int"/></width>
+		<height public="1"><x path="Int"/></height>
+		<newLayer public="1" set="method"><f a="layer">
+	<c path="fluidity.GameLayer"/>
+	<x path="Void"/>
+</f></newLayer>
+		<layerDimensionsChanged public="1" set="method"><f a="layer">
+	<c path="fluidity.GameLayer"/>
+	<x path="Void"/>
+</f></layerDimensionsChanged>
+		<layerPositionsChanged public="1" set="method"><f a="layer">
+	<c path="fluidity.GameLayer"/>
+	<x path="Void"/>
+</f></layerPositionsChanged>
+		<layerRender public="1" set="method"><f a="layer">
+	<c path="fluidity.GameLayer"/>
+	<x path="Void"/>
+</f></layerRender>
+		<newScene public="1" set="method"><f a="scene">
+	<c path="fluidity.GameScene"/>
+	<x path="Void"/>
+</f></newScene>
+		<sceneAdd public="1" set="method"><f a="scene:obj">
+	<c path="fluidity.GameScene"/>
+	<c path="fluidity.GameObject"/>
+	<x path="Void"/>
+</f></sceneAdd>
+		<sceneRemove public="1" set="method"><f a="scene:obj">
+	<c path="fluidity.GameScene"/>
+	<c path="fluidity.GameObject"/>
+	<x path="Void"/>
+</f></sceneRemove>
+		<sceneUpdate public="1" set="method"><f a="scene">
+	<c path="fluidity.GameScene"/>
+	<x path="Void"/>
+</f></sceneUpdate>
+		<sceneRender public="1" set="method"><f a="scene">
+	<c path="fluidity.GameScene"/>
+	<x path="Void"/>
+</f></sceneRender>
+		<sceneStart public="1" set="method"><f a="scene">
+	<c path="fluidity.GameScene"/>
+	<x path="Void"/>
+</f></sceneStart>
+		<sceneReset public="1" set="method"><f a="scene">
+	<c path="fluidity.GameScene"/>
+	<x path="Void"/>
+</f></sceneReset>
+		<sceneLayerSet public="1" set="method"><f a="scene">
+	<c path="fluidity.GameScene"/>
+	<x path="Void"/>
+</f></sceneLayerSet>
+		<newObject public="1" set="method"><f a="obj">
+	<c path="fluidity.GameObject"/>
+	<x path="Void"/>
+</f></newObject>
+		<objectSet public="1" set="method"><f a="obj:graphic">
+	<c path="fluidity.GameObject"/>
+	<e path="fluidity.Graphic"/>
+	<x path="Void"/>
+</f></objectSet>
+		<objectDispose public="1" set="method"><f a="obj">
+	<c path="fluidity.GameObject"/>
+	<x path="Void"/>
+</f></objectDispose>
+		<objectUpdate public="1" set="method"><f a="obj">
+	<c path="fluidity.GameObject"/>
+	<x path="Void"/>
+</f></objectUpdate>
+		<preUpdate public="1" set="method"><f a=""><x path="Void"/></f></preUpdate>
+		<postUpdate public="1" set="method"><f a=""><x path="Void"/></f></postUpdate>
+		<preRender public="1" set="method"><f a=""><x path="Void"/></f></preRender>
+		<postRender public="1" set="method"><f a=""><x path="Void"/></f></postRender>
+	</class>
+	<class path="fluidity.backends.IPhysicsBackend" params="" file="fluidity/backends/IPhysicsBackend.hx" interface="1">
+		<newScene public="1" set="method"><f a="scene">
+	<c path="fluidity.GameScene"/>
+	<x path="Void"/>
+</f></newScene>
+		<sceneAdd public="1" set="method"><f a="scene:obj">
+	<c path="fluidity.GameScene"/>
+	<c path="fluidity.GameObject"/>
+	<x path="Void"/>
+</f></sceneAdd>
+		<sceneRemove public="1" set="method"><f a="scene:obj">
+	<c path="fluidity.GameScene"/>
+	<c path="fluidity.GameObject"/>
+	<x path="Void"/>
+</f></sceneRemove>
+		<sceneUpdate public="1" set="method"><f a="scene">
+	<c path="fluidity.GameScene"/>
+	<x path="Void"/>
+</f></sceneUpdate>
+		<sceneStart public="1" set="method"><f a="scene">
+	<c path="fluidity.GameScene"/>
+	<x path="Void"/>
+</f></sceneStart>
+		<sceneReset public="1" set="method"><f a="scene">
+	<c path="fluidity.GameScene"/>
+	<x path="Void"/>
+</f></sceneReset>
+		<typeAddCollision public="1" set="method"><f a="type:otherType">
+	<c path="fluidity.ObjectType"/>
+	<c path="fluidity.ObjectType"/>
+	<x path="Void"/>
+</f></typeAddCollision>
+		<typeAddInteractionStartEvent public="1" set="method"><f a="type:eventName:otherType">
+	<c path="fluidity.ObjectType"/>
+	<c path="String"/>
+	<c path="fluidity.ObjectType"/>
+	<x path="Void"/>
+</f></typeAddInteractionStartEvent>
+		<typeAddInteractionStopEvent public="1" set="method"><f a="type:eventName:otherType">
+	<c path="fluidity.ObjectType"/>
+	<c path="String"/>
+	<c path="fluidity.ObjectType"/>
+	<x path="Void"/>
+</f></typeAddInteractionStopEvent>
+		<newObject public="1" set="method"><f a="obj">
+	<c path="fluidity.GameObject"/>
+	<x path="Void"/>
+</f></newObject>
+		<objectSet public="1" set="method"><f a="obj:collider">
+	<c path="fluidity.GameObject"/>
+	<e path="fluidity.Collider"/>
+	<x path="Void"/>
+</f></objectSet>
+		<objectSetType public="1" set="method"><f a="obj:type">
+	<c path="fluidity.GameObject"/>
+	<c path="fluidity.ObjectType"/>
+	<x path="Void"/>
+</f></objectSetType>
+		<objectDispose public="1" set="method"><f a="obj">
+	<c path="fluidity.GameObject"/>
+	<x path="Void"/>
+</f></objectDispose>
+		<objectChanged public="1" set="method"><f a="obj">
+	<c path="fluidity.GameObject"/>
+	<x path="Void"/>
+</f></objectChanged>
+		<objectUpdate public="1" set="method"><f a="obj">
+	<c path="fluidity.GameObject"/>
+	<x path="Void"/>
+</f></objectUpdate>
+		<preUpdate public="1" set="method"><f a=""><x path="Void"/></f></preUpdate>
+		<postUpdate public="1" set="method"><f a=""><x path="Void"/></f></postUpdate>
+	</class>
+	<class path="fluidity.input.Axis" params="" file="fluidity/input/Axis.hx">
+		<positive public="1"><x path="Bool"/></positive>
+		<negative public="1"><x path="Bool"/></negative>
+		<value public="1"><x path="Int"/></value>
+		<new public="1" set="method" line="15"><f a=""><x path="Void"/></f></new>
+		<meta><m n=":directlyUsed"/></meta>
+	</class>
+	<class path="fluidity.input.Key" params="" file="fluidity/input/Key.hx">
+		<code public="1"><x path="Int"/></code>
+		<char public="1"><c path="String"/></char>
+		<output public="1"><c path="String"/></output>
+		<shiftOutput public="1"><c path="String"/></shiftOutput>
+		<new public="1" set="method" line="7"><f a="code:char:output:shiftOutput">
+	<x path="Int"/>
+	<c path="String"/>
+	<c path="String"/>
+	<c path="String"/>
+	<x path="Void"/>
+</f></new>
+		<meta><m n=":directlyUsed"/></meta>
+	</class>
+	<enum path="fluidity.input.KeyHandler" params="" file="fluidity/input/KeyHandler.hx">
+		<Object a="inputName:object:event">
+			<c path="String"/>
+			<c path="fluidity.GameObject"/>
+			<c path="String"/>
+		</Object>
+		<Function a="inputName:func">
+			<c path="String"/>
+			<f a=""><x path="Void"/></f>
+		</Function>
+		<meta><m n=":directlyUsed"/></meta>
+	</enum>
+	<class path="fluidity.input.KeyboardKeys" params="" file="fluidity/input/KeyboardKeys.hx">
+		<NUMBER_0 public="1" line="17" static="1">
+			<c path="fluidity.input.Key"/>
+			<haxe_doc>* Constant associated with the key code value for the 0 key(48).</haxe_doc>
+		</NUMBER_0>
+		<NUMBER_1 public="1" line="22" static="1">
+			<c path="fluidity.input.Key"/>
+			<haxe_doc>* Constant associated with the key code value for the 1 key(49).</haxe_doc>
+		</NUMBER_1>
+		<NUMBER_2 public="1" line="27" static="1">
+			<c path="fluidity.input.Key"/>
+			<haxe_doc>* Constant associated with the key code value for the 2 key(50).</haxe_doc>
+		</NUMBER_2>
+		<NUMBER_3 public="1" line="32" static="1">
+			<c path="fluidity.input.Key"/>
+			<haxe_doc>* Constant associated with the key code value for the 3 key(51).</haxe_doc>
+		</NUMBER_3>
+		<NUMBER_4 public="1" line="37" static="1">
+			<c path="fluidity.input.Key"/>
+			<haxe_doc>* Constant associated with the key code value for the 4 key(52).</haxe_doc>
+		</NUMBER_4>
+		<NUMBER_5 public="1" line="42" static="1">
+			<c path="fluidity.input.Key"/>
+			<haxe_doc>* Constant associated with the key code value for the 5 key(53).</haxe_doc>
+		</NUMBER_5>
+		<NUMBER_6 public="1" line="47" static="1">
+			<c path="fluidity.input.Key"/>
+			<haxe_doc>* Constant associated with the key code value for the 6 key(54).</haxe_doc>
+		</NUMBER_6>
+		<NUMBER_7 public="1" line="52" static="1">
+			<c path="fluidity.input.Key"/>
+			<haxe_doc>* Constant associated with the key code value for the 7 key(55).</haxe_doc>
+		</NUMBER_7>
+		<NUMBER_8 public="1" line="57" static="1">
+			<c path="fluidity.input.Key"/>
+			<haxe_doc>* Constant associated with the key code value for the 8 key(56).</haxe_doc>
+		</NUMBER_8>
+		<NUMBER_9 public="1" line="62" static="1">
+			<c path="fluidity.input.Key"/>
+			<haxe_doc>* Constant associated with the key code value for the 9 key(57).</haxe_doc>
+		</NUMBER_9>
+		<A public="1" line="67" static="1">
+			<c path="fluidity.input.Key"/>
+			<haxe_doc>* Constant associated with the key code value for the A key(65).</haxe_doc>
+		</A>
+		<B public="1" line="72" static="1">
+			<c path="fluidity.input.Key"/>
+			<haxe_doc>* Constant associated with the key code value for the B key(66).</haxe_doc>
+		</B>
+		<C public="1" line="77" static="1">
+			<c path="fluidity.input.Key"/>
+			<haxe_doc>* Constant associated with the key code value for the C key(67).</haxe_doc>
+		</C>
+		<D public="1" line="82" static="1">
+			<c path="fluidity.input.Key"/>
+			<haxe_doc>* Constant associated with the key code value for the D key(68).</haxe_doc>
+		</D>
+		<E public="1" line="87" static="1">
+			<c path="fluidity.input.Key"/>
+			<haxe_doc>* Constant associated with the key code value for the E key(69).</haxe_doc>
+		</E>
+		<F public="1" line="92" static="1">
+			<c path="fluidity.input.Key"/>
+			<haxe_doc>* Constant associated with the key code value for the F key(70).</haxe_doc>
+		</F>
+		<G public="1" line="97" static="1">
+			<c path="fluidity.input.Key"/>
+			<haxe_doc>* Constant associated with the key code value for the G key(71).</haxe_doc>
+		</G>
+		<H public="1" line="102" static="1">
+			<c path="fluidity.input.Key"/>
+			<haxe_doc>* Constant associated with the key code value for the H key(72).</haxe_doc>
+		</H>
+		<I public="1" line="107" static="1">
+			<c path="fluidity.input.Key"/>
+			<haxe_doc>* Constant associated with the key code value for the I key(73).</haxe_doc>
+		</I>
+		<J public="1" line="112" static="1">
+			<c path="fluidity.input.Key"/>
+			<haxe_doc>* Constant associated with the key code value for the J key(74).</haxe_doc>
+		</J>
+		<K public="1" line="117" static="1">
+			<c path="fluidity.input.Key"/>
+			<haxe_doc>* Constant associated with the key code value for the K key(75).</haxe_doc>
+		</K>
+		<L public="1" line="122" static="1">
+			<c path="fluidity.input.Key"/>
+			<haxe_doc>* Constant associated with the key code value for the L key(76).</haxe_doc>
+		</L>
+		<M public="1" line="127" static="1">
+			<c path="fluidity.input.Key"/>
+			<haxe_doc>* Constant associated with the key code value for the M key(77).</haxe_doc>
+		</M>
+		<N public="1" line="132" static="1">
+			<c path="fluidity.input.Key"/>
+			<haxe_doc>* Constant associated with the key code value for the N key(78).</haxe_doc>
+		</N>
+		<O public="1" line="137" static="1">
+			<c path="fluidity.input.Key"/>
+			<haxe_doc>* Constant associated with the key code value for the O key(79).</haxe_doc>
+		</O>
+		<P public="1" line="142" static="1">
+			<c path="fluidity.input.Key"/>
+			<haxe_doc>* Constant associated with the key code value for the P key(80).</haxe_doc>
+		</P>
+		<Q public="1" line="147" static="1">
+			<c path="fluidity.input.Key"/>
+			<haxe_doc>* Constant associated with the key code value for the Q key(81).</haxe_doc>
+		</Q>
+		<R public="1" line="152" static="1">
+			<c path="fluidity.input.Key"/>
+			<haxe_doc>* Constant associated with the key code value for the R key(82).</haxe_doc>
+		</R>
+		<S public="1" line="157" static="1">
+			<c path="fluidity.input.Key"/>
+			<haxe_doc>* Constant associated with the key code value for the S key(83).</haxe_doc>
+		</S>
+		<T public="1" line="162" static="1">
+			<c path="fluidity.input.Key"/>
+			<haxe_doc>* Constant associated with the key code value for the T key(84).</haxe_doc>
+		</T>
+		<U public="1" line="167" static="1">
+			<c path="fluidity.input.Key"/>
+			<haxe_doc>* Constant associated with the key code value for the U key(85).</haxe_doc>
+		</U>
+		<V public="1" line="172" static="1">
+			<c path="fluidity.input.Key"/>
+			<haxe_doc>* Constant associated with the key code value for the V key(85).</haxe_doc>
+		</V>
+		<W public="1" line="177" static="1">
+			<c path="fluidity.input.Key"/>
+			<haxe_doc>* Constant associated with the key code value for the W key(87).</haxe_doc>
+		</W>
+		<X public="1" line="182" static="1">
+			<c path="fluidity.input.Key"/>
+			<haxe_doc>* Constant associated with the key code value for the X key(88).</haxe_doc>
+		</X>
+		<Y public="1" line="187" static="1">
+			<c path="fluidity.input.Key"/>
+			<haxe_doc>* Constant associated with the key code value for the Y key(89).</haxe_doc>
+		</Y>
+		<Z public="1" line="192" static="1">
+			<c path="fluidity.input.Key"/>
+			<haxe_doc>* Constant associated with the key code value for the Z key(90).</haxe_doc>
+		</Z>
+		<NUMPAD_0 public="1" line="198" static="1">
+			<c path="fluidity.input.Key"/>
+			<haxe_doc>* Constant associated with the key code value for the number 0 key on the
+     * number pad(96).</haxe_doc>
+		</NUMPAD_0>
+		<NUMPAD_1 public="1" line="204" static="1">
+			<c path="fluidity.input.Key"/>
+			<haxe_doc>* Constant associated with the key code value for the number 1 key on the
+     * number pad(97).</haxe_doc>
+		</NUMPAD_1>
+		<NUMPAD_2 public="1" line="210" static="1">
+			<c path="fluidity.input.Key"/>
+			<haxe_doc>* Constant associated with the key code value for the number 2 key on the
+     * number pad(98).</haxe_doc>
+		</NUMPAD_2>
+		<NUMPAD_3 public="1" line="216" static="1">
+			<c path="fluidity.input.Key"/>
+			<haxe_doc>* Constant associated with the key code value for the number 3 key on the
+     * number pad(99).</haxe_doc>
+		</NUMPAD_3>
+		<NUMPAD_4 public="1" line="222" static="1">
+			<c path="fluidity.input.Key"/>
+			<haxe_doc>* Constant associated with the key code value for the number 4 key on the
+     * number pad(100).</haxe_doc>
+		</NUMPAD_4>
+		<NUMPAD_5 public="1" line="228" static="1">
+			<c path="fluidity.input.Key"/>
+			<haxe_doc>* Constant associated with the key code value for the number 5 key on the
+     * number pad(101).</haxe_doc>
+		</NUMPAD_5>
+		<NUMPAD_6 public="1" line="234" static="1">
+			<c path="fluidity.input.Key"/>
+			<haxe_doc>* Constant associated with the key code value for the number 6 key on the
+     * number pad(102).</haxe_doc>
+		</NUMPAD_6>
+		<NUMPAD_7 public="1" line="240" static="1">
+			<c path="fluidity.input.Key"/>
+			<haxe_doc>* Constant associated with the key code value for the number 7 key on the
+     * number pad(103).</haxe_doc>
+		</NUMPAD_7>
+		<NUMPAD_8 public="1" line="246" static="1">
+			<c path="fluidity.input.Key"/>
+			<haxe_doc>* Constant associated with the key code value for the number 8 key on the
+     * number pad(104).</haxe_doc>
+		</NUMPAD_8>
+		<NUMPAD_9 public="1" line="252" static="1">
+			<c path="fluidity.input.Key"/>
+			<haxe_doc>* Constant associated with the key code value for the number 9 key on the
+     * number pad(105).</haxe_doc>
+		</NUMPAD_9>
+		<NUMPAD_MULTIPLY public="1" line="258" static="1">
+			<c path="fluidity.input.Key"/>
+			<haxe_doc>* Constant associated with the key code value for the multiplication key on
+     * the number pad(106).</haxe_doc>
+		</NUMPAD_MULTIPLY>
+		<NUMPAD_ADD public="1" line="264" static="1">
+			<c path="fluidity.input.Key"/>
+			<haxe_doc>* Constant associated with the key code value for the addition key on the
+     * number pad(107).</haxe_doc>
+		</NUMPAD_ADD>
+		<NUMPAD_ENTER public="1" line="270" static="1">
+			<c path="fluidity.input.Key"/>
+			<haxe_doc>* Constant associated with the key code value for the Enter key on the
+     * number pad(108).</haxe_doc>
+		</NUMPAD_ENTER>
+		<NUMPAD_SUBTRACT public="1" line="276" static="1">
+			<c path="fluidity.input.Key"/>
+			<haxe_doc>* Constant associated with the key code value for the subtraction key on the
+     * number pad(109).</haxe_doc>
+		</NUMPAD_SUBTRACT>
+		<NUMPAD_DECIMAL public="1" line="282" static="1">
+			<c path="fluidity.input.Key"/>
+			<haxe_doc>* Constant associated with the key code value for the decimal key on the
+     * number pad(110).</haxe_doc>
+		</NUMPAD_DECIMAL>
+		<NUMPAD_DIVIDE public="1" line="288" static="1">
+			<c path="fluidity.input.Key"/>
+			<haxe_doc>* Constant associated with the key code value for the division key on the
+     * number pad(111).</haxe_doc>
+		</NUMPAD_DIVIDE>
+		<F1 public="1" line="293" static="1">
+			<c path="fluidity.input.Key"/>
+			<haxe_doc>* Constant associated with the key code value for the F1 key(112).</haxe_doc>
+		</F1>
+		<F2 public="1" line="298" static="1">
+			<c path="fluidity.input.Key"/>
+			<haxe_doc>* Constant associated with the key code value for the F2 key(113).</haxe_doc>
+		</F2>
+		<F3 public="1" line="303" static="1">
+			<c path="fluidity.input.Key"/>
+			<haxe_doc>* Constant associated with the key code value for the F3 key(114).</haxe_doc>
+		</F3>
+		<F4 public="1" line="308" static="1">
+			<c path="fluidity.input.Key"/>
+			<haxe_doc>* Constant associated with the key code value for the F4 key(115).</haxe_doc>
+		</F4>
+		<F5 public="1" line="313" static="1">
+			<c path="fluidity.input.Key"/>
+			<haxe_doc>* Constant associated with the key code value for the F5 key(116).</haxe_doc>
+		</F5>
+		<F6 public="1" line="318" static="1">
+			<c path="fluidity.input.Key"/>
+			<haxe_doc>* Constant associated with the key code value for the F6 key(117).</haxe_doc>
+		</F6>
+		<F7 public="1" line="323" static="1">
+			<c path="fluidity.input.Key"/>
+			<haxe_doc>* Constant associated with the key code value for the F7 key(118).</haxe_doc>
+		</F7>
+		<F8 public="1" line="328" static="1">
+			<c path="fluidity.input.Key"/>
+			<haxe_doc>* Constant associated with the key code value for the F8 key(119).</haxe_doc>
+		</F8>
+		<F9 public="1" line="333" static="1">
+			<c path="fluidity.input.Key"/>
+			<haxe_doc>* Constant associated with the key code value for the F9 key(120).</haxe_doc>
+		</F9>
+		<F10 public="1" line="338" static="1">
+			<c path="fluidity.input.Key"/>
+			<haxe_doc>* Constant associated with the key code value for the F10 key(121).</haxe_doc>
+		</F10>
+		<F11 public="1" line="343" static="1">
+			<c path="fluidity.input.Key"/>
+			<haxe_doc>* Constant associated with the key code value for the F11 key(122).</haxe_doc>
+		</F11>
+		<F12 public="1" line="348" static="1">
+			<c path="fluidity.input.Key"/>
+			<haxe_doc>* Constant associated with the key code value for the F12 key(123).</haxe_doc>
+		</F12>
+		<F13 public="1" line="353" static="1">
+			<c path="fluidity.input.Key"/>
+			<haxe_doc>* Constant associated with the key code value for the F13 key(124).</haxe_doc>
+		</F13>
+		<F14 public="1" line="358" static="1">
+			<c path="fluidity.input.Key"/>
+			<haxe_doc>* Constant associated with the key code value for the F14 key(125).</haxe_doc>
+		</F14>
+		<F15 public="1" line="363" static="1">
+			<c path="fluidity.input.Key"/>
+			<haxe_doc>* Constant associated with the key code value for the F15 key(126).</haxe_doc>
+		</F15>
+		<BACKSPACE public="1" line="368" static="1">
+			<c path="fluidity.input.Key"/>
+			<haxe_doc>* Constant associated with the key code value for the Backspace key(8).</haxe_doc>
+		</BACKSPACE>
+		<TAB public="1" line="373" static="1">
+			<c path="fluidity.input.Key"/>
+			<haxe_doc>* Constant associated with the key code value for the Tab key(9).</haxe_doc>
+		</TAB>
+		<ALTERNATE public="1" line="379" static="1">
+			<c path="fluidity.input.Key"/>
+			<haxe_doc>* Constant associated with the key code value for the Alternate(Option) key
+     * (18).</haxe_doc>
+		</ALTERNATE>
+		<ENTER public="1" line="384" static="1">
+			<c path="fluidity.input.Key"/>
+			<haxe_doc>* Constant associated with the key code value for the Enter key(13).</haxe_doc>
+		</ENTER>
+		<COMMAND public="1" line="390" static="1">
+			<c path="fluidity.input.Key"/>
+			<haxe_doc>* Constant associated with the Mac command key(15). This constant is
+     * currently only used for setting menu key equivalents.</haxe_doc>
+		</COMMAND>
+		<SHIFT public="1" line="395" static="1">
+			<c path="fluidity.input.Key"/>
+			<haxe_doc>* Constant associated with the key code value for the Shift key(16).</haxe_doc>
+		</SHIFT>
+		<CONTROL public="1" line="400" static="1">
+			<c path="fluidity.input.Key"/>
+			<haxe_doc>* Constant associated with the key code value for the Control key(17).</haxe_doc>
+		</CONTROL>
+		<CAPS_LOCK public="1" line="405" static="1">
+			<c path="fluidity.input.Key"/>
+			<haxe_doc>* Constant associated with the key code value for the Caps Lock key(20).</haxe_doc>
+		</CAPS_LOCK>
+		<NUMPAD public="1" line="411" static="1">
+			<c path="fluidity.input.Key"/>
+			<haxe_doc>* Constant associated with the pseudo-key code for the the number pad(21).
+     * Use to set numpad modifier on key equivalents</haxe_doc>
+		</NUMPAD>
+		<ESCAPE public="1" line="416" static="1">
+			<c path="fluidity.input.Key"/>
+			<haxe_doc>* Constant associated with the key code value for the Escape key(27).</haxe_doc>
+		</ESCAPE>
+		<SPACE public="1" line="421" static="1">
+			<c path="fluidity.input.Key"/>
+			<haxe_doc>* Constant associated with the key code value for the Spacebar(32).</haxe_doc>
+		</SPACE>
+		<PAGE_UP public="1" line="426" static="1">
+			<c path="fluidity.input.Key"/>
+			<haxe_doc>* Constant associated with the key code value for the Page Up key(33).</haxe_doc>
+		</PAGE_UP>
+		<PAGE_DOWN public="1" line="431" static="1">
+			<c path="fluidity.input.Key"/>
+			<haxe_doc>* Constant associated with the key code value for the Page Down key(34).</haxe_doc>
+		</PAGE_DOWN>
+		<END public="1" line="436" static="1">
+			<c path="fluidity.input.Key"/>
+			<haxe_doc>* Constant associated with the key code value for the End key(35).</haxe_doc>
+		</END>
+		<HOME public="1" line="441" static="1">
+			<c path="fluidity.input.Key"/>
+			<haxe_doc>* Constant associated with the key code value for the Home key(36).</haxe_doc>
+		</HOME>
+		<LEFT public="1" line="446" static="1">
+			<c path="fluidity.input.Key"/>
+			<haxe_doc>* Constant associated with the key code value for the Left Arrow key(37).</haxe_doc>
+		</LEFT>
+		<RIGHT public="1" line="451" static="1">
+			<c path="fluidity.input.Key"/>
+			<haxe_doc>* Constant associated with the key code value for the Right Arrow key(39).</haxe_doc>
+		</RIGHT>
+		<UP public="1" line="456" static="1">
+			<c path="fluidity.input.Key"/>
+			<haxe_doc>* Constant associated with the key code value for the Up Arrow key(38).</haxe_doc>
+		</UP>
+		<DOWN public="1" line="461" static="1">
+			<c path="fluidity.input.Key"/>
+			<haxe_doc>* Constant associated with the key code value for the Down Arrow key(40).</haxe_doc>
+		</DOWN>
+		<INSERT public="1" line="466" static="1">
+			<c path="fluidity.input.Key"/>
+			<haxe_doc>* Constant associated with the key code value for the Insert key(45).</haxe_doc>
+		</INSERT>
+		<DELETE public="1" line="471" static="1">
+			<c path="fluidity.input.Key"/>
+			<haxe_doc>* Constant associated with the key code value for the Delete key(46).</haxe_doc>
+		</DELETE>
+		<NUMLOCK public="1" line="472" static="1"><c path="fluidity.input.Key"/></NUMLOCK>
+		<BREAK public="1" line="473" static="1"><c path="fluidity.input.Key"/></BREAK>
+		<SEMICOLON public="1" line="478" static="1">
+			<c path="fluidity.input.Key"/>
+			<haxe_doc>* Constant associated with the key code value for the ; key(186).</haxe_doc>
+		</SEMICOLON>
+		<EQUAL public="1" line="483" static="1">
+			<c path="fluidity.input.Key"/>
+			<haxe_doc>* Constant associated with the key code value for the = key(187).</haxe_doc>
+		</EQUAL>
+		<COMMA public="1" line="488" static="1">
+			<c path="fluidity.input.Key"/>
+			<haxe_doc>* Constant associated with the key code value for the , key(188).</haxe_doc>
+		</COMMA>
+		<MINUS public="1" line="493" static="1">
+			<c path="fluidity.input.Key"/>
+			<haxe_doc>* Constant associated with the key code value for the - key(189).</haxe_doc>
+		</MINUS>
+		<PERIOD public="1" line="498" static="1">
+			<c path="fluidity.input.Key"/>
+			<haxe_doc>* Constant associated with the key code value for the . key(190).</haxe_doc>
+		</PERIOD>
+		<SLASH public="1" line="503" static="1">
+			<c path="fluidity.input.Key"/>
+			<haxe_doc>* Constant associated with the key code value for the / key(191).</haxe_doc>
+		</SLASH>
+		<BACKQUOTE public="1" line="508" static="1">
+			<c path="fluidity.input.Key"/>
+			<haxe_doc>* Constant associated with the key code value for the ` key(192).</haxe_doc>
+		</BACKQUOTE>
+		<LEFTBRACKET public="1" line="513" static="1"><c path="fluidity.input.Key"/></LEFTBRACKET>
+		<BACKSLASH public="1" line="518" static="1">
+			<c path="fluidity.input.Key"/>
+			<haxe_doc>* Constant associated with the key code value for the \ key(220).</haxe_doc>
+		</BACKSLASH>
+		<RIGHTBRACKET public="1" line="523" static="1">
+			<c path="fluidity.input.Key"/>
+			<haxe_doc>* Constant associated with the key code value for the ] key(221).</haxe_doc>
+		</RIGHTBRACKET>
+		<QUOTE public="1" line="528" static="1">
+			<c path="fluidity.input.Key"/>
+			<haxe_doc>* Constant associated with the key code value for the ' key(222).</haxe_doc>
+		</QUOTE>
+		<keys public="1" line="530" static="1"><c path="Array"><c path="fluidity.input.Key"/></c></keys>
+		<getKeyFromCode public="1" set="method" line="532" static="1"><f a="code">
+	<x path="Int"/>
+	<c path="fluidity.input.Key"/>
+</f></getKeyFromCode>
+		<haxe_doc>* The Keyboard class is used to build an interface that can be controlled by
+ * a user with a standard keyboard. You can use the methods and properties of
+ * the Keyboard class without using a constructor. The properties of the
+ * Keyboard class are constants representing the keys that are most commonly
+ * used to control games.</haxe_doc>
+		<meta><m n=":directlyUsed"/></meta>
+	</class>
+	<class path="fluidity.utils.Vec2" params="" file="fluidity/utils/Vec2.hx">
+		<distance public="1" set="method" line="20" static="1"><f a="a:b">
+	<c path="fluidity.utils.Vec2"/>
+	<c path="fluidity.utils.Vec2"/>
+	<x path="Float"/>
+</f></distance>
+		<fromPolar public="1" set="method" line="26" static="1"><f a="length:angle">
+	<x path="Float"/>
+	<x path="Float"/>
+	<c path="fluidity.utils.Vec2"/>
+</f></fromPolar>
+		<x public="1"><x path="Float"/></x>
+		<y public="1"><x path="Float"/></y>
+		<length public="1" get="accessor" set="accessor"><x path="Float"/></length>
+		<angle public="1" get="accessor" set="accessor"><x path="Float"/></angle>
+		<add public="1" get="inline" set="null" line="31"><f a="vec">
+	<c path="fluidity.utils.Vec2"/>
+	<c path="fluidity.utils.Vec2"/>
+</f></add>
+		<addMul public="1" get="inline" set="null" line="36"><f a="vec:scalar">
+	<c path="fluidity.utils.Vec2"/>
+	<x path="Float"/>
+	<c path="fluidity.utils.Vec2"/>
+</f></addMul>
+		<addeq public="1" get="inline" set="null" line="41"><f a="vec">
+	<c path="fluidity.utils.Vec2"/>
+	<c path="fluidity.utils.Vec2"/>
+</f></addeq>
+		<copy public="1" get="inline" set="null" line="48"><f a=""><c path="fluidity.utils.Vec2"/></f></copy>
+		<cross public="1" get="inline" set="null" line="53"><f a="vec">
+	<c path="fluidity.utils.Vec2"/>
+	<x path="Float"/>
+</f></cross>
+		<dot public="1" get="inline" set="null" line="59"><f a="vec">
+	<c path="fluidity.utils.Vec2"/>
+	<x path="Float"/>
+</f></dot>
+		<lsq public="1" get="inline" set="null" line="64"><f a=""><x path="Float"/></f></lsq>
+		<mul public="1" get="inline" set="null" line="70"><f a="scalar">
+	<x path="Float"/>
+	<c path="fluidity.utils.Vec2"/>
+</f></mul>
+		<muleq public="1" get="inline" set="null" line="75"><f a="scalar">
+	<x path="Float"/>
+	<c path="fluidity.utils.Vec2"/>
+</f></muleq>
+		<normalise public="1" get="inline" set="null" line="82"><f a=""><c path="fluidity.utils.Vec2"/></f></normalise>
+		<rotate public="1" get="inline" set="null" line="88"><f a="radians">
+	<x path="Float"/>
+	<c path="fluidity.utils.Vec2"/>
+</f></rotate>
+		<set public="1" get="inline" set="null" line="99"><f a="vec">
+	<c path="fluidity.utils.Vec2"/>
+	<c path="fluidity.utils.Vec2"/>
+</f></set>
+		<setxy public="1" get="inline" set="null" line="106"><f a="x:y">
+	<x path="Float"/>
+	<x path="Float"/>
+	<c path="fluidity.utils.Vec2"/>
+</f></setxy>
+		<sub public="1" get="inline" set="null" line="113"><f a="vec">
+	<c path="fluidity.utils.Vec2"/>
+	<c path="fluidity.utils.Vec2"/>
+</f></sub>
+		<subeq public="1" get="inline" set="null" line="118"><f a="vec">
+	<c path="fluidity.utils.Vec2"/>
+	<c path="fluidity.utils.Vec2"/>
+</f></subeq>
+		<unit public="1" get="inline" set="null" line="125"><f a=""><c path="fluidity.utils.Vec2"/></f></unit>
+		<get_length public="1" get="inline" set="null" line="130"><f a=""><x path="Float"/></f></get_length>
+		<set_length public="1" get="inline" set="null" line="135"><f a="a">
+	<x path="Float"/>
+	<x path="Float"/>
+</f></set_length>
+		<get_angle public="1" get="inline" set="null" line="143"><f a=""><x path="Float"/></f></get_angle>
+		<set_angle public="1" get="inline" set="null" line="148"><f a="a">
+	<x path="Float"/>
+	<x path="Float"/>
+</f></set_angle>
+		<new public="1" set="method" line="11"><f a="?x:?y">
+	<x path="Float"/>
+	<x path="Float"/>
+	<x path="Void"/>
+</f></new>
+		<meta><m n=":directlyUsed"/></meta>
+	</class>
+	<class path="fluidity.input.Pointer" params="" file="fluidity/input/Pointer.hx">
+		<mousePosition public="1" line="16" static="1"><c path="fluidity.utils.Vec2"/></mousePosition>
+		<mouseMovement public="1" line="17" static="1"><c path="fluidity.utils.Vec2"/></mouseMovement>
+		<active public="1"><x path="Bool"/></active>
+		<buttons public="1"><c path="Array"><x path="Bool"/></c></buttons>
+		<position public="1" get="accessor" set="null"><c path="fluidity.utils.Vec2"/></position>
+		<movement public="1" get="accessor" set="null"><c path="fluidity.utils.Vec2"/></movement>
+		<onMoveEvents public="1"><c path="Array"><e path="fluidity.input.PointerEventType"/></c></onMoveEvents>
+		<onReleaseEvents public="1"><c path="Array"><e path="fluidity.input.PointerEventType"/></c></onReleaseEvents>
+		<get_position public="1" set="method" line="29"><f a=""><c path="fluidity.utils.Vec2"/></f></get_position>
+		<get_movement public="1" set="method" line="34"><f a=""><c path="fluidity.utils.Vec2"/></f></get_movement>
+		<new public="1" set="method" line="22"><f a=""><x path="Void"/></f></new>
+		<meta><m n=":directlyUsed"/></meta>
+	</class>
+	<enum path="fluidity.input.PointerEventType" params="" file="fluidity/input/PointerEventType.hx">
+		<Object a="object:event">
+			<c path="fluidity.GameObject"/>
+			<c path="String"/>
+		</Object>
+		<Function a="func"><f a="">
+	<c path="fluidity.input.Pointer"/>
+	<x path="Void"/>
+</f></Function>
+		<ButtonObject a="button:object:event">
+			<x path="Int"/>
+			<c path="fluidity.GameObject"/>
+			<c path="String"/>
+		</ButtonObject>
+		<ButtonFunction a="button:func">
+			<x path="Int"/>
+			<f a="">
+				<c path="fluidity.input.Pointer"/>
+				<x path="Void"/>
+			</f>
+		</ButtonFunction>
+		<ObjectFunction a="object:func">
+			<c path="fluidity.GameObject"/>
+			<f a=":">
+				<c path="fluidity.input.Pointer"/>
+				<c path="fluidity.GameObject"/>
+				<x path="Void"/>
+			</f>
+		</ObjectFunction>
+		<meta><m n=":directlyUsed"/></meta>
+	</enum>
+	<class path="fluidity.input.SceneInput" params="" file="fluidity/input/SceneInput.hx">
+		<keyMap public="1"><x path="Map">
+	<c path="fluidity.input.Key"/>
+	<c path="String"/>
+</x></keyMap>
+		<inputStates public="1"><x path="Map">
+	<c path="String"/>
+	<x path="Bool"/>
+</x></inputStates>
+		<axisMap public="1"><x path="Map">
+	<c path="String"/>
+	<c path="fluidity.input.Axis"/>
+</x></axisMap>
+		<negativeKeyAxisMap public="1"><x path="Map">
+	<c path="fluidity.input.Key"/>
+	<c path="fluidity.input.Axis"/>
+</x></negativeKeyAxisMap>
+		<positiveKeyAxisMap public="1"><x path="Map">
+	<c path="fluidity.input.Key"/>
+	<c path="fluidity.input.Axis"/>
+</x></positiveKeyAxisMap>
+		<keyDownEvents public="1"><c path="Array"><e path="fluidity.input.KeyHandler"/></c></keyDownEvents>
+		<keyUpEvents public="1"><c path="Array"><e path="fluidity.input.KeyHandler"/></c></keyUpEvents>
+		<pointerClickEvents public="1"><c path="Array"><e path="fluidity.input.PointerEventType"/></c></pointerClickEvents>
+		<pointerMoveEvents public="1"><c path="Array"><e path="fluidity.input.PointerEventType"/></c></pointerMoveEvents>
+		<pointerReleaseEvents public="1"><c path="Array"><e path="fluidity.input.PointerEventType"/></c></pointerReleaseEvents>
+		<touchClickEvents public="1"><c path="Array"><e path="fluidity.input.TouchEventType"/></c></touchClickEvents>
+		<touchMoveEvents public="1"><c path="Array"><e path="fluidity.input.TouchEventType"/></c></touchMoveEvents>
+		<touchReleaseEvents public="1"><c path="Array"><e path="fluidity.input.TouchEventType"/></c></touchReleaseEvents>
+		<registerAxis public="1" set="method" line="28"><f a="negativeKey:positiveKey:axisName">
+	<c path="fluidity.input.Key"/>
+	<c path="fluidity.input.Key"/>
+	<c path="String"/>
+	<c path="fluidity.input.SceneInput"/>
+</f></registerAxis>
+		<delete public="1" set="method" line="42"><f a="obj">
+	<c path="fluidity.GameObject"/>
+	<x path="Void"/>
+</f></delete>
+		<removeObjectFromList set="method" line="48"><f a="events:obj">
+	<c path="Array"><e path="fluidity.input.KeyHandler"/></c>
+	<c path="fluidity.GameObject"/>
+	<x path="Void"/>
+</f></removeObjectFromList>
+		<registerInput public="1" set="method" line="69"><f a="key:inputName">
+	<c path="fluidity.input.Key"/>
+	<c path="String"/>
+	<c path="fluidity.input.SceneInput"/>
+</f></registerInput>
+		<getInput public="1" set="method" line="79"><f a="inputName">
+	<c path="String"/>
+	<t path="Null"><x path="Bool"/></t>
+</f></getInput>
+		<registerObjectOnKeyDown public="1" set="method" line="84"><f a="inputName:obj:eventName">
+	<c path="String"/>
+	<c path="fluidity.GameObject"/>
+	<c path="String"/>
+	<c path="fluidity.input.SceneInput"/>
+</f></registerObjectOnKeyDown>
+		<registerObjectOnKeyUp public="1" set="method" line="90"><f a="inputName:obj:eventName">
+	<c path="String"/>
+	<c path="fluidity.GameObject"/>
+	<c path="String"/>
+	<c path="fluidity.input.SceneInput"/>
+</f></registerObjectOnKeyUp>
+		<registerFunctionOnKeyDown public="1" set="method" line="96"><f a="inputName:func">
+	<c path="String"/>
+	<f a=""><x path="Void"/></f>
+	<c path="fluidity.input.SceneInput"/>
+</f></registerFunctionOnKeyDown>
+		<registerFunctionOnKeyUp public="1" set="method" line="102"><f a="inputName:func">
+	<c path="String"/>
+	<f a=""><x path="Void"/></f>
+	<c path="fluidity.input.SceneInput"/>
+</f></registerFunctionOnKeyUp>
+		<getAxis public="1" set="method" line="108"><f a="axisName">
+	<c path="String"/>
+	<x path="Int"/>
+</f></getAxis>
+		<registerFunctionOnPointerClick public="1" set="method" line="113"><f a="button:func">
+	<x path="Int"/>
+	<f a="">
+		<c path="fluidity.input.Pointer"/>
+		<x path="Void"/>
+	</f>
+	<c path="fluidity.input.SceneInput"/>
+</f></registerFunctionOnPointerClick>
+		<registerFunctionOnPointerMove public="1" set="method" line="119"><f a="func">
+	<f a="">
+		<c path="fluidity.input.Pointer"/>
+		<x path="Void"/>
+	</f>
+	<c path="fluidity.input.SceneInput"/>
+</f></registerFunctionOnPointerMove>
+		<registerFunctionOnPointerRelease public="1" set="method" line="125"><f a="button:func">
+	<x path="Int"/>
+	<f a="">
+		<c path="fluidity.input.Pointer"/>
+		<x path="Void"/>
+	</f>
+	<c path="fluidity.input.SceneInput"/>
+</f></registerFunctionOnPointerRelease>
+		<registerObjectOnPointerClick public="1" set="method" line="131"><f a="obj:button:eventName">
+	<c path="fluidity.GameObject"/>
+	<x path="Int"/>
+	<c path="String"/>
+	<c path="fluidity.input.SceneInput"/>
+</f></registerObjectOnPointerClick>
+		<registerFunctionOnTouchClick public="1" set="method" line="137"><f a="func">
+	<f a="">
+		<c path="fluidity.input.Touch"/>
+		<x path="Void"/>
+	</f>
+	<c path="fluidity.input.SceneInput"/>
+</f></registerFunctionOnTouchClick>
+		<registerFunctionOnTouchMove public="1" set="method" line="143"><f a="func">
+	<f a="">
+		<c path="fluidity.input.Touch"/>
+		<x path="Void"/>
+	</f>
+	<c path="fluidity.input.SceneInput"/>
+</f></registerFunctionOnTouchMove>
+		<registerFunctionOnTouchRelease public="1" set="method" line="149"><f a="func">
+	<f a="">
+		<c path="fluidity.input.Touch"/>
+		<x path="Void"/>
+	</f>
+	<c path="fluidity.input.SceneInput"/>
+</f></registerFunctionOnTouchRelease>
+		<registerObjectOnTouchClick public="1" set="method" line="155"><f a="obj:eventName">
+	<c path="fluidity.GameObject"/>
+	<c path="String"/>
+	<c path="fluidity.input.SceneInput"/>
+</f></registerObjectOnTouchClick>
+		<update public="1" set="method" line="161"><f a=""><x path="Void"/></f></update>
+		<new public="1" set="method" line="7"><f a=""><x path="Void"/></f></new>
+		<meta><m n=":directlyUsed"/></meta>
+	</class>
+	<class path="fluidity.input.Touch" params="" file="fluidity/input/Touch.hx">
+		<active public="1"><x path="Bool"/></active>
+		<id public="1"><x path="Int"/></id>
+		<position public="1"><c path="fluidity.utils.Vec2"/></position>
+		<movement public="1"><c path="fluidity.utils.Vec2"/></movement>
+		<getEvent set="method" line="22"><f a="eventName">
+	<c path="String"/>
+	<x path="Void"/>
+</f></getEvent>
+		<new public="1" set="method" line="15"><f a="id:position:movement">
+	<x path="Int"/>
+	<c path="fluidity.utils.Vec2"/>
+	<c path="fluidity.utils.Vec2"/>
+	<x path="Void"/>
+</f></new>
+	</class>
+	<enum path="fluidity.input.TouchEventType" params="" file="fluidity/input/TouchEventType.hx">
+		<Object a="object:event">
+			<c path="fluidity.GameObject"/>
+			<c path="String"/>
+		</Object>
+		<Function a="func"><f a="">
+	<c path="fluidity.input.Touch"/>
+	<x path="Void"/>
+</f></Function>
+		<ObjectFunction a="object:func">
+			<c path="fluidity.GameObject"/>
+			<f a=":">
+				<c path="fluidity.input.Touch"/>
+				<c path="fluidity.GameObject"/>
+				<x path="Void"/>
+			</f>
+		</ObjectFunction>
+		<meta><m n=":directlyUsed"/></meta>
+	</enum>
+	<class path="fluidity.utils.AdMob" params="" file="fluidity/utils/AdMob.hx">
+		<leaveAppCallback public="1" line="7" static="1"><f a=""><x path="Void"/></f></leaveAppCallback>
+		<appBlockedCallback public="1" line="8" static="1"><f a=""><x path="Void"/></f></appBlockedCallback>
+		<init public="1" get="inline" set="null" line="10" static="1"><f a=""><x path="Void"/></f></init>
+		<cacheInterstitial public="1" get="inline" set="null" line="17" static="1"><f a="interstitialId">
+	<c path="String"/>
+	<x path="Void"/>
+</f></cacheInterstitial>
+		<showInterstitial public="1" get="inline" set="null" line="24" static="1"><f a="interstitialId">
+	<c path="String"/>
+	<x path="Void"/>
+</f></showInterstitial>
+	</class>
+	<class path="fluidity.utils.EnumBin" params="K:V" file="fluidity/utils/EnumBin.hx">
+		<binMap public="1"><c path="haxe.ds.EnumValueMap">
+	<c path="fluidity.utils.EnumBin.K"/>
+	<c path="fluidity.utils.EnumBin.V"/>
+</c></binMap>
+		<instantiator public="1"><f a="">
+	<c path="fluidity.utils.EnumBin.K"/>
+	<c path="fluidity.utils.EnumBin.V"/>
+</f></instantiator>
+		<get public="1" get="inline" set="null" line="17"><f a="name">
+	<c path="fluidity.utils.EnumBin.K"/>
+	<t path="Null"><c path="fluidity.utils.EnumBin.V"/></t>
+</f></get>
+		<remove public="1" get="inline" set="null" line="30"><f a="key">
+	<c path="fluidity.utils.EnumBin.K"/>
+	<x path="Void"/>
+</f></remove>
+		<new public="1" set="method" line="12"><f a="f">
+	<f a="">
+		<c path="fluidity.utils.EnumBin.K"/>
+		<c path="fluidity.utils.EnumBin.V"/>
+	</f>
+	<x path="Void"/>
+</f></new>
+	</class>
+	<class path="fluidity.utils.Kongregate" params="" file="fluidity/utils/Kongregate.hx"><submit public="1" get="inline" set="null" line="6" static="1"><f a="name:value">
+	<c path="String"/>
+	<x path="Int"/>
+	<x path="Void"/>
+</f></submit></class>
+	<class path="fluidity.utils.ObjectBin" params="K:V" file="fluidity/utils/ObjectBin.hx">
+		<binMap public="1"><c path="haxe.ds.ObjectMap">
+	<c path="fluidity.utils.ObjectBin.K"/>
+	<c path="fluidity.utils.ObjectBin.V"/>
+</c></binMap>
+		<instantiator public="1"><f a="">
+	<c path="fluidity.utils.ObjectBin.K"/>
+	<c path="fluidity.utils.ObjectBin.V"/>
+</f></instantiator>
+		<get public="1" get="inline" set="null" line="17"><f a="name">
+	<c path="fluidity.utils.ObjectBin.K"/>
+	<t path="Null"><c path="fluidity.utils.ObjectBin.V"/></t>
+</f></get>
+		<remove public="1" get="inline" set="null" line="34"><f a="key">
+	<c path="fluidity.utils.ObjectBin.K"/>
+	<x path="Void"/>
+</f></remove>
+		<new public="1" set="method" line="12"><f a="f">
+	<f a="">
+		<c path="fluidity.utils.ObjectBin.K"/>
+		<c path="fluidity.utils.ObjectBin.V"/>
+	</f>
+	<x path="Void"/>
+</f></new>
+	</class>
+	<class path="fluidity.utils.StringBin" params="V" file="fluidity/utils/StringBin.hx">
+		<binMap public="1"><x path="Map">
+	<c path="String"/>
+	<c path="fluidity.utils.StringBin.V"/>
+</x></binMap>
+		<instantiator public="1"><f a="">
+	<c path="String"/>
+	<c path="fluidity.utils.StringBin.V"/>
+</f></instantiator>
+		<get public="1" get="inline" set="null" line="15"><f a="name">
+	<c path="String"/>
+	<t path="Null"><c path="fluidity.utils.StringBin.V"/></t>
+</f></get>
+		<remove public="1" get="inline" set="null" line="28"><f a="key">
+	<c path="String"/>
+	<x path="Void"/>
+</f></remove>
+		<new public="1" set="method" line="10"><f a="f">
+	<f a="">
+		<c path="String"/>
+		<c path="fluidity.utils.StringBin.V"/>
+	</f>
+	<x path="Void"/>
+</f></new>
+		<meta><m n=":directlyUsed"/></meta>
+	</class>
+	<abstract path="haxe.Function" params="" file="/opt/haxe/std/haxe/Constraints.hx" module="haxe.Constraints">
+		<this><d/></this>
+		<haxe_doc>This type unifies with any function type.
+
+	It is intended to be used as a type parameter constraint. If used as a real
+	type, the underlying type will be `Dynamic`.</haxe_doc>
+		<meta><m n=":callable"/></meta>
+		<impl><class path="haxe._Constraints.Function_Impl_" params="" file="/opt/haxe/std/haxe/Constraints.hx" private="1" module="haxe.Constraints"><meta><m n=":keep"/></meta></class></impl>
+	</abstract>
+	<abstract path="haxe.FlatEnum" params="" file="/opt/haxe/std/haxe/Constraints.hx" module="haxe.Constraints">
+		<this><d/></this>
+		<haxe_doc>This type unifies with an enum instance if all constructors of the enum
+	require no arguments.
+
+	It is intended to be used as a type parameter constraint. If used as a real
+	type, the underlying type will be `Dynamic`.</haxe_doc>
+		<impl><class path="haxe._Constraints.FlatEnum_Impl_" params="" file="/opt/haxe/std/haxe/Constraints.hx" private="1" module="haxe.Constraints"><meta><m n=":keep"/></meta></class></impl>
+	</abstract>
+	<class path="haxe.IMap" params="K:V" file="/opt/haxe/std/haxe/Constraints.hx" module="haxe.Constraints" interface="1"><meta><m n=":keep"/></meta></class>
+	<class path="haxe.EnumTools" params="" file="/opt/haxe/std/haxe/EnumTools.hx" extern="1">
+		<getName public="1" params="T" get="inline" set="null" line="41" static="1">
+			<f a="e">
+				<x path="Enum"><c path="getName.T"/></x>
+				<c path="String"/>
+			</f>
+			<haxe_doc>Returns the name of enum `e`, including its path.
+
+		If `e` is inside a package, the package structure is returned dot-
+		separated, with another dot separating the enum name:
+			pack1.pack2.(...).packN.EnumName
+		If `e` is a sub-type of a haxe module, that module is not part of the
+		package structure.
+
+		If `e` has no package, the enum name is returned.
+
+		If `e` is null, the result is unspecified.
+
+		The enum name does not include any type parameters.</haxe_doc>
+		</getName>
+		<createByName public="1" params="T" get="inline" set="null" line="54" static="1">
+			<f a="e:constr:?params">
+				<x path="Enum"><c path="createByName.T"/></x>
+				<c path="String"/>
+				<c path="Array"><d/></c>
+				<c path="createByName.T"/>
+			</f>
+			<haxe_doc>Creates an instance of enum `e` by calling its constructor `constr` with
+		arguments `params`.
+
+		If `e` or `constr` is null, or if enum `e` has no constructor named
+		`constr`, or if the number of elements in `params` does not match the
+		expected number of constructor arguments, or if any argument has an
+		invalid type, the result is unspecified.</haxe_doc>
+		</createByName>
+		<createByIndex public="1" params="T" get="inline" set="null" line="70" static="1">
+			<f a="e:index:?params">
+				<x path="Enum"><c path="createByIndex.T"/></x>
+				<x path="Int"/>
+				<c path="Array"><d/></c>
+				<c path="createByIndex.T"/>
+			</f>
+			<haxe_doc>Creates an instance of enum `e` by calling its constructor number
+		`index` with arguments `params`.
+
+		The constructor indices are preserved from haxe syntax, so the first
+		declared is index 0, the next index 1 etc.
+
+		If `e` or `index` is null, or if enum `e` has no constructor
+		corresponding to index `index`, or if the number of elements in `params`
+		does not match the expected number of constructor arguments, or if any
+		argument has an invalid type, the result is unspecified.</haxe_doc>
+		</createByIndex>
+		<createAll public="1" params="T" get="inline" set="null" line="87" static="1">
+			<f a="e">
+				<x path="Enum"><c path="createAll.T"/></x>
+				<c path="Array"><c path="createAll.T"/></c>
+			</f>
+			<haxe_doc>Returns a list of all constructors of enum `e` that require no
+		arguments.
+
+		This may return the empty Array [] if all constructors of `e` require
+		arguments.
+
+		Otherwise an instance of `e` constructed through each of its non-
+		argument constructors is returned, in the order of the constructor
+		declaration.
+
+		If `e` is null, the result is unspecified.</haxe_doc>
+		</createAll>
+		<getConstructors public="1" params="T" get="inline" set="null" line="99" static="1">
+			<f a="e">
+				<x path="Enum"><c path="getConstructors.T"/></x>
+				<c path="Array"><c path="String"/></c>
+			</f>
+			<haxe_doc>Returns a list of the names of all constructors of enum `e`.
+
+		The order of the constructor names in the returned Array is preserved
+		from the original syntax.
+
+		If `c` is null, the result is unspecified.</haxe_doc>
+		</getConstructors>
+	</class>
+	<class path="haxe.EnumValueTools" params="" file="/opt/haxe/std/haxe/EnumTools.hx" module="haxe.EnumTools" extern="1">
+		<equals public="1" params="T" get="inline" set="null" line="114" static="1">
+			<f a="a:b">
+				<c path="equals.T"/>
+				<c path="equals.T"/>
+				<x path="Bool"/>
+			</f>
+			<haxe_doc>Recursively compares two enum instances `a` and `b` by value.
+
+		Unlike `a == b`, this function performs a deep equality check on the
+		arguments of the constructors, if exists.
+
+		If `a` or `b` are null, the result is unspecified.</haxe_doc>
+		</equals>
+		<getName public="1" get="inline" set="null" line="125" static="1">
+			<f a="e">
+				<x path="EnumValue"/>
+				<c path="String"/>
+			</f>
+			<haxe_doc>Returns the constructor name of enum instance `e`.
+
+		The result String does not contain any constructor arguments.
+
+		If `e` is null, the result is unspecified.</haxe_doc>
+		</getName>
+		<getParameters public="1" get="inline" set="null" line="139" static="1">
+			<f a="e">
+				<x path="EnumValue"/>
+				<c path="Array"><d/></c>
+			</f>
+			<haxe_doc>Returns a list of the constructor arguments of enum instance `e`.
+
+		If `e` has no arguments, the result is [].
+
+		Otherwise the result are the values that were used as arguments to `e`,
+		in the order of their declaration.
+
+		If `e` is null, the result is unspecified.</haxe_doc>
+		</getParameters>
+		<getIndex public="1" get="inline" set="null" line="151" static="1">
+			<f a="e">
+				<x path="EnumValue"/>
+				<x path="Int"/>
+			</f>
+			<haxe_doc>Returns the index of enum instance `e`.
+
+		This corresponds to the original syntactic position of `e`. The index of
+		the first declared constructor is 0, the next one is 1 etc.
+
+		If `e` is null, the result is unspecified.</haxe_doc>
+		</getIndex>
+		<match public="1" set="method" static="1">
+			<f a="e:pattern">
+				<x path="EnumValue"/>
+				<d/>
+				<x path="Bool"/>
+			</f>
+			<haxe_doc>Matches enum instance `e` against pattern `pattern`, returning true if
+		matching succeeded and false otherwise.
+
+		Example usage:
+
+		```
+		if (e.match(pattern)) {
+			// codeIfTrue
+		} else {
+			// codeIfFalse
+		}
+		```
+
+		This is equivalent to the following code:
+
+		```
+		switch (e) {
+			case pattern:
+				// codeIfTrue
+			case _:
+				// codeIfFalse
+		}
+		```
+
+		This method is implemented in the compiler. This definition exists only
+		for documentation.</haxe_doc>
+		</match>
+	</class>
+	<class path="haxe.Log" params="" file="/opt/haxe/std/haxe/Log.hx">
+		<trace public="1" set="dynamic" line="45" static="1">
+			<f a="v:?infos">
+				<d/>
+				<t path="haxe.PosInfos"/>
+				<x path="Void"/>
+			</f>
+			<meta><m n=":has_untyped"/></meta>
+			<haxe_doc>Outputs `v` in a platform-dependent way.
+
+		The second parameter `infos` is injected by the compiler and contains
+		information about the position where the trace() call was made.
+
+		This method can be rebound to a custom function:
+			var oldTrace = haxe.Log.trace; // store old function
+			haxe.Log.trace = function(v,infos) { // handle trace }
+			...
+			haxe.Log.trace = oldTrace;
+
+		If it is bound to null, subsequent calls to trace() will cause an
+		exception.</haxe_doc>
+		</trace>
+		<haxe_doc>Log primarily provides the trace() method, which is invoked upon a call to
+	trace() in haxe code.</haxe_doc>
+		<meta>
+			<m n=":keep"/>
+			<m n=":directlyUsed"/>
+		</meta>
+	</class>
+	<typedef path="haxe.PosInfos" params="" file="/opt/haxe/std/haxe/PosInfos.hx">
+		<a>
+			<methodName><c path="String"/></methodName>
+			<lineNumber><x path="Int"/></lineNumber>
+			<fileName><c path="String"/></fileName>
+			<customParams>
+				<t path="Null"><c path="Array"><d/></c></t>
+				<meta><m n=":optional"/></meta>
+			</customParams>
+			<className><c path="String"/></className>
+		</a>
+		<haxe_doc>PosInfos is a magic type which can be used to generate position information
+	into the output for debugging use.
+
+	If a function has a final optional argument of this type, i.e.
+	(..., ?pos:haxe.PosInfos), each call to that function which does not assign
+	a value to that argument has its position added as call argument.
+
+	This can be used to track positions of calls in e.g. a unit testing
+	framework.</haxe_doc>
+	</typedef>
+	<class path="haxe.ds.BalancedTree" params="K:V" file="/opt/haxe/std/haxe/ds/BalancedTree.hx">
+		<root><c path="haxe.ds.TreeNode">
+	<c path="haxe.ds.BalancedTree.K"/>
+	<c path="haxe.ds.BalancedTree.V"/>
+</c></root>
+		<set public="1" set="method" line="50">
+			<f a="key:value">
+				<c path="haxe.ds.BalancedTree.K"/>
+				<c path="haxe.ds.BalancedTree.V"/>
+				<x path="Void"/>
+			</f>
+			<haxe_doc>Binds `key` to `value`.
+
+		If `key` is already bound to a value, that binding disappears.
+
+		If `key` is null, the result is unspecified.</haxe_doc>
+		</set>
+		<get public="1" set="method" line="61">
+			<f a="key">
+				<c path="haxe.ds.BalancedTree.K"/>
+				<t path="Null"><c path="haxe.ds.BalancedTree.V"/></t>
+			</f>
+			<haxe_doc>Returns the value `key` is bound to.
+
+		If `key` is not bound to any value, `null` is returned.
+
+		If `key` is null, the result is unspecified.</haxe_doc>
+		</get>
+		<remove public="1" set="method" line="82">
+			<f a="key">
+				<c path="haxe.ds.BalancedTree.K"/>
+				<x path="Bool"/>
+			</f>
+			<haxe_doc>Removes the current binding of `key`.
+
+		If `key` has no binding, `this` BalancedTree is unchanged and false is
+		returned.
+
+		Otherwise the binding of `key` is removed and true is returned.
+
+		If `key` is null, the result is unspecified.</haxe_doc>
+		</remove>
+		<exists public="1" set="method" line="99">
+			<f a="key">
+				<c path="haxe.ds.BalancedTree.K"/>
+				<x path="Bool"/>
+			</f>
+			<haxe_doc>Tells if `key` is bound to a value.
+
+		This method returns true even if `key` is bound to null.
+
+		If `key` is null, the result is unspecified.</haxe_doc>
+		</exists>
+		<setLoop set="method" line="132"><f a="k:v:node">
+	<c path="haxe.ds.BalancedTree.K"/>
+	<c path="haxe.ds.BalancedTree.V"/>
+	<c path="haxe.ds.TreeNode">
+		<c path="haxe.ds.BalancedTree.K"/>
+		<c path="haxe.ds.BalancedTree.V"/>
+	</c>
+	<c path="haxe.ds.TreeNode">
+		<c path="haxe.ds.BalancedTree.K"/>
+		<c path="haxe.ds.BalancedTree.V"/>
+	</c>
+</f></setLoop>
+		<removeLoop set="method" line="145"><f a="k:node">
+	<c path="haxe.ds.BalancedTree.K"/>
+	<c path="haxe.ds.TreeNode">
+		<c path="haxe.ds.BalancedTree.K"/>
+		<c path="haxe.ds.BalancedTree.V"/>
+	</c>
+	<c path="haxe.ds.TreeNode">
+		<c path="haxe.ds.BalancedTree.K"/>
+		<c path="haxe.ds.BalancedTree.V"/>
+	</c>
+</f></removeLoop>
+		<merge set="method" line="169"><f a="t1:t2">
+	<c path="haxe.ds.TreeNode">
+		<c path="haxe.ds.BalancedTree.K"/>
+		<c path="haxe.ds.BalancedTree.V"/>
+	</c>
+	<c path="haxe.ds.TreeNode">
+		<c path="haxe.ds.BalancedTree.K"/>
+		<c path="haxe.ds.BalancedTree.V"/>
+	</c>
+	<c path="haxe.ds.TreeNode">
+		<c path="haxe.ds.BalancedTree.K"/>
+		<c path="haxe.ds.BalancedTree.V"/>
+	</c>
+</f></merge>
+		<minBinding set="method" line="176"><f a="t">
+	<c path="haxe.ds.TreeNode">
+		<c path="haxe.ds.BalancedTree.K"/>
+		<c path="haxe.ds.BalancedTree.V"/>
+	</c>
+	<c path="haxe.ds.TreeNode">
+		<c path="haxe.ds.BalancedTree.K"/>
+		<c path="haxe.ds.BalancedTree.V"/>
+	</c>
+</f></minBinding>
+		<removeMinBinding set="method" line="182"><f a="t">
+	<c path="haxe.ds.TreeNode">
+		<c path="haxe.ds.BalancedTree.K"/>
+		<c path="haxe.ds.BalancedTree.V"/>
+	</c>
+	<c path="haxe.ds.TreeNode">
+		<c path="haxe.ds.BalancedTree.K"/>
+		<c path="haxe.ds.BalancedTree.V"/>
+	</c>
+</f></removeMinBinding>
+		<balance set="method" line="187"><f a="l:k:v:r">
+	<c path="haxe.ds.TreeNode">
+		<c path="haxe.ds.BalancedTree.K"/>
+		<c path="haxe.ds.BalancedTree.V"/>
+	</c>
+	<c path="haxe.ds.BalancedTree.K"/>
+	<c path="haxe.ds.BalancedTree.V"/>
+	<c path="haxe.ds.TreeNode">
+		<c path="haxe.ds.BalancedTree.K"/>
+		<c path="haxe.ds.BalancedTree.V"/>
+	</c>
+	<c path="haxe.ds.TreeNode">
+		<c path="haxe.ds.BalancedTree.K"/>
+		<c path="haxe.ds.BalancedTree.V"/>
+	</c>
+</f></balance>
+		<compare set="method" line="201"><f a="k1:k2">
+	<c path="haxe.ds.BalancedTree.K"/>
+	<c path="haxe.ds.BalancedTree.K"/>
+	<x path="Int"/>
+</f></compare>
+		<new public="1" set="method" line="41">
+			<f a=""><x path="Void"/></f>
+			<haxe_doc>Creates a new BalancedTree, which is initially empty.</haxe_doc>
+		</new>
+		<haxe_doc>BalancedTree allows key-value mapping with arbitrary keys, as long as they
+	can be ordered. By default, `Reflect.compare` is used in the `compare`
+	method, which can be overridden in subclasses.
+
+	Operations have a logarithmic average and worst-case cost.
+
+	Iteration over keys and values, using `keys` and `iterator` respectively,
+	are in-order.</haxe_doc>
+		<meta><m n=":keep"/></meta>
+	</class>
+	<class path="haxe.ds.TreeNode" params="K:V" file="/opt/haxe/std/haxe/ds/BalancedTree.hx" module="haxe.ds.BalancedTree">
+		<left public="1"><c path="haxe.ds.TreeNode">
+	<c path="haxe.ds.TreeNode.K"/>
+	<c path="haxe.ds.TreeNode.V"/>
+</c></left>
+		<right public="1"><c path="haxe.ds.TreeNode">
+	<c path="haxe.ds.TreeNode.K"/>
+	<c path="haxe.ds.TreeNode.V"/>
+</c></right>
+		<key public="1"><c path="haxe.ds.TreeNode.K"/></key>
+		<value public="1"><c path="haxe.ds.TreeNode.V"/></value>
+		<_height><x path="Int"/></_height>
+		<new public="1" set="method" line="220"><f a="l:k:v:r:?h">
+	<c path="haxe.ds.TreeNode">
+		<c path="haxe.ds.TreeNode.K"/>
+		<c path="haxe.ds.TreeNode.V"/>
+	</c>
+	<c path="haxe.ds.TreeNode.K"/>
+	<c path="haxe.ds.TreeNode.V"/>
+	<c path="haxe.ds.TreeNode">
+		<c path="haxe.ds.TreeNode.K"/>
+		<c path="haxe.ds.TreeNode.V"/>
+	</c>
+	<x path="Int"/>
+	<x path="Void"/>
+</f></new>
+		<meta>
+			<m n=":keep"/>
+			<m n=":directlyUsed"/>
+		</meta>
+	</class>
+	<class path="haxe.ds.EnumValueMap" params="K:V" file="/opt/haxe/std/haxe/ds/EnumValueMap.hx">
+		<extends path="haxe.ds.BalancedTree">
+			<c path="haxe.ds.EnumValueMap.K"/>
+			<c path="haxe.ds.EnumValueMap.V"/>
+		</extends>
+		<implements path="haxe.IMap">
+			<c path="haxe.ds.EnumValueMap.K"/>
+			<c path="haxe.ds.EnumValueMap.V"/>
+		</implements>
+		<compare set="method" line="33" override="1"><f a="k1:k2">
+	<x path="EnumValue"/>
+	<x path="EnumValue"/>
+	<x path="Int"/>
+</f></compare>
+		<compareArgs set="method" line="42"><f a="a1:a2">
+	<c path="Array"><d/></c>
+	<c path="Array"><d/></c>
+	<x path="Int"/>
+</f></compareArgs>
+		<compareArg set="method" line="52"><f a="v1:v2">
+	<d/>
+	<d/>
+	<x path="Int"/>
+</f></compareArg>
+		<new public="1" set="method" line="31"><f a=""><x path="Void"/></f></new>
+		<haxe_doc>EnumValueMap allows mapping of enum value keys to arbitrary values.
+
+	Keys are compared by value and recursively over their parameters. If any
+	parameter is not an enum value, `Reflect.compare` is used to compare them.</haxe_doc>
+		<meta>
+			<m n=":keep"/>
+			<m n=":directlyUsed"/>
+		</meta>
+	</class>
+	<abstract path="haxe.ds.HashMap" params="K:V" file="/opt/haxe/std/haxe/ds/HashMap.hx">
+		<this><c path="haxe.ds._HashMap.HashMapData">
+	<c path="haxe.ds.HashMap.K"/>
+	<c path="haxe.ds.HashMap.V"/>
+</c></this>
+		<impl><class path="haxe.ds._HashMap.HashMap_Impl_" params="" file="/opt/haxe/std/haxe/ds/HashMap.hx" private="1" module="haxe.ds.HashMap"><meta><m n=":keep"/></meta></class></impl>
+	</abstract>
+	<class path="haxe.ds.ObjectMap" params="K:V" file="/opt/haxe/std/cpp/_std/haxe/ds/ObjectMap.hx">
+		<implements path="haxe.IMap">
+			<c path="haxe.ds.ObjectMap.K"/>
+			<c path="haxe.ds.ObjectMap.V"/>
+		</implements>
+		<h><d/></h>
+		<set public="1" set="method" line="53">
+			<f a="key:value">
+				<c path="haxe.ds.ObjectMap.K"/>
+				<c path="haxe.ds.ObjectMap.V"/>
+				<x path="Void"/>
+			</f>
+			<meta><m n=":has_untyped"/></meta>
+			<haxe_doc>See `Map.set`</haxe_doc>
+		</set>
+		<get public="1" set="method" line="57">
+			<f a="key">
+				<c path="haxe.ds.ObjectMap.K"/>
+				<t path="Null"><c path="haxe.ds.ObjectMap.V"/></t>
+			</f>
+			<meta><m n=":has_untyped"/></meta>
+			<haxe_doc>See `Map.get`</haxe_doc>
+		</get>
+		<exists public="1" set="method" line="61">
+			<f a="key">
+				<c path="haxe.ds.ObjectMap.K"/>
+				<x path="Bool"/>
+			</f>
+			<meta><m n=":has_untyped"/></meta>
+			<haxe_doc>See `Map.exists`</haxe_doc>
+		</exists>
+		<remove public="1" set="method" line="65">
+			<f a="key">
+				<c path="haxe.ds.ObjectMap.K"/>
+				<x path="Bool"/>
+			</f>
+			<meta><m n=":has_untyped"/></meta>
+			<haxe_doc>See `Map.remove`</haxe_doc>
+		</remove>
+		<toString public="1" set="method" line="79">
+			<f a=""><c path="String"/></f>
+			<meta><m n=":has_untyped"/></meta>
+			<haxe_doc>See `Map.toString`</haxe_doc>
+		</toString>
+		<new public="1" set="method" line="51">
+			<f a=""><x path="Void"/></f>
+			<haxe_doc>Creates a new ObjectMap.</haxe_doc>
+		</new>
+		<haxe_doc>ObjectMap allows mapping of object keys to arbitrary values.
+
+	On static targets, the keys are considered to be strong references. Refer
+	to `haxe.ds.WeakMap` for a weak reference version.
+
+	See `Map` for documentation details.</haxe_doc>
+		<meta>
+			<m n=":keep"/>
+			<m n=":directlyUsed"/>
+			<m n=":headerClassCode"><e><![CDATA["\n  inline void set(Dynamic key, ::null value) { __object_hash_set(h,key,value); }\n  inline void set(Dynamic key, bool value) { __object_hash_set(h,key,value); }\n  inline void set(Dynamic key, char value) { __object_hash_set_int(h,key,value); }\n  inline void set(Dynamic key, unsigned char value) { __object_hash_set_int(h,key,value); }\n  inline void set(Dynamic key, signed char value) { __object_hash_set_int(h,key,value); }\n  inline void set(Dynamic key, short value) { __object_hash_set_int(h,key,value); }\n  inline void set(Dynamic key, unsigned short value) { __object_hash_set_int(h,key,value); }\n  inline void set(Dynamic key, int value) { __object_hash_set_int(h,key,value); }\n  inline void set(Dynamic key, unsigned int value) { __object_hash_set_int(h,key,value); }\n  inline void set(Dynamic key, float value) { __object_hash_set_float(h,key,value); }\n  inline void set(Dynamic key, double value) { __object_hash_set_float(h,key,value); }\n  inline void set(Dynamic key, ::String value) { __object_hash_set_string(h,key,value); }\n\n\n  template<typename V, typename H>\n  inline void set(Dynamic key, const ::cpp::Struct<V,H> &value) {__object_hash_set(h,key,value); }\n  template<typename V>\n  inline void set(Dynamic key, const ::cpp::Function<V> &value) {__object_hash_set(h,key,(Dynamic)value ); }\n  template<typename V>\n  inline void set(Dynamic key, const ::cpp::Pointer<V> &value) {__object_hash_set(h,key,(Dynamic)value ); }\n\n"]]></e></m>
+			<m n=":coreApi"/>
+		</meta>
+	</class>
+	<class path="haxe.ds.StringMap" params="T" file="/opt/haxe/std/cpp/_std/haxe/ds/StringMap.hx">
+		<implements path="haxe.IMap">
+			<c path="String"/>
+			<c path="haxe.ds.StringMap.T"/>
+		</implements>
+		<h><d/></h>
+		<set public="1" set="method" line="53">
+			<f a="key:value">
+				<c path="String"/>
+				<c path="haxe.ds.StringMap.T"/>
+				<x path="Void"/>
+			</f>
+			<meta><m n=":has_untyped"/></meta>
+			<haxe_doc>See `Map.set`</haxe_doc>
+		</set>
+		<get public="1" set="method" line="57">
+			<f a="key">
+				<c path="String"/>
+				<t path="Null"><c path="haxe.ds.StringMap.T"/></t>
+			</f>
+			<meta><m n=":has_untyped"/></meta>
+			<haxe_doc>See `Map.get`</haxe_doc>
+		</get>
+		<exists public="1" set="method" line="61">
+			<f a="key">
+				<c path="String"/>
+				<x path="Bool"/>
+			</f>
+			<meta><m n=":has_untyped"/></meta>
+			<haxe_doc>See `Map.exists`</haxe_doc>
+		</exists>
+		<remove public="1" set="method" line="65">
+			<f a="key">
+				<c path="String"/>
+				<x path="Bool"/>
+			</f>
+			<meta><m n=":has_untyped"/></meta>
+			<haxe_doc>See `Map.remove`</haxe_doc>
+		</remove>
+		<iterator public="1" set="method" line="74">
+			<f a=""><t path="Iterator"><c path="haxe.ds.StringMap.T"/></t></f>
+			<meta><m n=":has_untyped"/></meta>
+			<haxe_doc>See `Map.iterator`</haxe_doc>
+		</iterator>
+		<new public="1" set="method" line="51">
+			<f a=""><x path="Void"/></f>
+			<haxe_doc>Creates a new StringMap.</haxe_doc>
+		</new>
+		<haxe_doc>StringMap allows mapping of String keys to arbitrary values.
+
+	See `Map` for documentation details.</haxe_doc>
+		<meta>
+			<m n=":keep"/>
+			<m n=":directlyUsed"/>
+			<m n=":headerClassCode"><e><![CDATA["\n  inline void set(String key, ::null value) { __string_hash_set(h,key,value); }\n  inline void set(String key, bool value) { __string_hash_set(h,key,value); }\n  inline void set(String key, char value) { __string_hash_set_int(h,key,value); }\n  inline void set(String key, unsigned char value) { __string_hash_set_int(h,key,value); }\n  inline void set(String key, signed char value) { __string_hash_set_int(h,key,value); }\n  inline void set(String key, short value) { __string_hash_set_int(h,key,value); }\n  inline void set(String key, unsigned short value) { __string_hash_set_int(h,key,value); }\n  inline void set(String key, int value) { __string_hash_set_int(h,key,value); }\n  inline void set(String key, unsigned int value) { __string_hash_set_int(h,key,value); }\n  inline void set(String key, float value) { __string_hash_set_float(h,key,value); }\n  inline void set(String key, double value) { __string_hash_set_float(h,key,value); }\n  inline void set(String key, ::String value) { __string_hash_set_string(h,key,value); }\n\n  template<typename V, typename H>\n  inline void set(String key, const ::cpp::Struct<V,H> &value) {__string_hash_set(h,key,value); }\n  template<typename V>\n  inline void set(String key, const ::cpp::Function<V> &value) {__string_hash_set(h,key,(Dynamic)value ); }\n  template<typename V>\n  inline void set(String key, const ::cpp::Pointer<V> &value) {__string_hash_set(h,key,(Dynamic)value ); }\n\n  template<typename VALUE>\n  inline Void set(Dynamic &key, const VALUE &value) { set( (String)key, value ); return null(); }\n"]]></e></m>
+			<m n=":coreApi"/>
+		</meta>
+	</class>
+</haxe>
