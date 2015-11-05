@@ -126,7 +126,9 @@ Fluidity is a new approach to game development that uses [evsm](https://github.c
             })
     ;
     
-For a full example, look at the [monster](https://github.com/sepharoth213/monster) repository. Full documentation will arrive when the full API has been decided.
+For a full example, look at the [monster](https://github.com/sepharoth213/monster) repository.
+
+Documentation is currently being developed, and can be viewed here: http://sepharoth213.github.io/fluidity-hx/
 
 To install, run:
 
